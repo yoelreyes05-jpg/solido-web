@@ -1,0 +1,1133 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1" />
+  <meta name="description" content="Sólido Auto Servicio — Taller automotriz profesional en Santo Domingo. Mecánica, diagnóstico, electricidad y cafetería. Consulta el estado de tu vehículo en tiempo real." />
+  <meta name="theme-color" content="#0f172a" />
+  <title>Sólido Auto Servicio — Mas que un taller, una Experiencia</title>
+
+  <!-- ═══════════════════════════════════════════════
+       CONFIGURACIÓN — Cambia solo esta sección
+  ═══════════════════════════════════════════════ -->
+  <script>
+    const CONFIG = {
+      API_BASE:   "https://crm-automotriz-production.up.railway.app",  // ← Tu URL de Railway
+      WHATSAPP:   "18097122027",
+      TELEFONO:   "809-712-2027",
+      DIRECCION:  "Santo Domingo, República Dominicana",
+      MAPS_EMBED: "https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d241847.98695484637!2d-70.06791265!3d18.47390185!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x8eaf89f1097c1af7%3A0x76ac80c5803c58e7!2sSanto%20Domingo!5e0!3m2!1ses!2sdo!4v1713983000000",
+      HORARIO: [
+        { dia: "Lunes – Viernes", hora: "8:00 AM – 6:00 PM" },
+        { dia: "Sábados",         hora: "8:00 AM – 4:00 PM" },
+        { dia: "Domingos",        hora: "9:00 AM – 2:00 PM" },
+      ],
+    };
+  </script>
+
+  <style>
+    /* ── Reset & Variables ─────────────────────────── */
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+    :root {
+      --blue:    #3b82f6;
+      --blue2:   #1d4ed8;
+      --orange:  #f97316;
+      --dark:    #0f172a;
+      --dark2:   #1e293b;
+      --dark3:   #111827;
+      --gray:    #374151;
+      --light:   #f8fafc;
+      --white:   #ffffff;
+      --text:    #1e293b;
+      --muted:   #64748b;
+      --border:  #e2e8f0;
+      --green:   #16a34a;
+      --radius:  16px;
+      --shadow:  0 4px 32px rgba(0,0,0,0.10);
+      --shadowL: 0 8px 48px rgba(0,0,0,0.16);
+    }
+    html { scroll-behavior: smooth; }
+    body {
+      font-family: 'Segoe UI', system-ui, Arial, sans-serif;
+      color: var(--text);
+      background: var(--white);
+      overflow-x: hidden;
+    }
+    a { text-decoration: none; color: inherit; }
+    img { max-width: 100%; }
+    button { cursor: pointer; font-family: inherit; }
+    ::-webkit-scrollbar { width: 6px; }
+    ::-webkit-scrollbar-thumb { background: var(--blue); border-radius: 3px; }
+
+    /* ── Utilidades ─────────────────────────────────── */
+    .container { max-width: 1180px; margin: 0 auto; padding: 0 20px; }
+    .section-title {
+      font-size: clamp(26px, 4vw, 40px);
+      font-weight: 900;
+      color: var(--dark);
+      text-align: center;
+      margin-bottom: 10px;
+      line-height: 1.2;
+    }
+    .section-subtitle {
+      font-size: 16px;
+      color: var(--muted);
+      text-align: center;
+      max-width: 560px;
+      margin: 0 auto 48px;
+      line-height: 1.7;
+    }
+    .badge {
+      display: inline-block;
+      background: rgba(59,130,246,0.1);
+      color: var(--blue);
+      border: 1px solid rgba(59,130,246,0.25);
+      border-radius: 20px;
+      padding: 4px 14px;
+      font-size: 12px;
+      font-weight: 700;
+      letter-spacing: 1px;
+      text-transform: uppercase;
+      margin-bottom: 16px;
+    }
+    .btn {
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+      padding: 14px 28px;
+      border-radius: 12px;
+      font-weight: 700;
+      font-size: 15px;
+      border: none;
+      transition: all 0.2s;
+      cursor: pointer;
+    }
+    .btn-primary { background: var(--blue); color: #fff; box-shadow: 0 4px 20px rgba(59,130,246,0.35); }
+    .btn-primary:hover { background: var(--blue2); transform: translateY(-2px); box-shadow: 0 8px 28px rgba(59,130,246,0.45); }
+    .btn-wa { background: #16a34a; color: #fff; box-shadow: 0 4px 20px rgba(22,163,74,0.35); }
+    .btn-wa:hover { background: #15803d; transform: translateY(-2px); }
+
+    /* ══════════════════════════════════════════════════
+       NAV
+    ══════════════════════════════════════════════════ */
+    #nav {
+      position: fixed; top: 0; left: 0; right: 0;
+      z-index: 1000; padding: 0 20px;
+      transition: all 0.3s;
+    }
+    #nav.scrolled {
+      background: rgba(15,23,42,0.96);
+      backdrop-filter: blur(12px);
+      box-shadow: 0 2px 24px rgba(0,0,0,0.3);
+    }
+    .nav-inner {
+      max-width: 1180px; margin: 0 auto;
+      height: 68px; display: flex;
+      align-items: center; justify-content: space-between; gap: 20px;
+    }
+    .nav-logo { display: flex; align-items: center; gap: 10px; flex-shrink: 0; }
+    .nav-logo img {
+      width: 40px; height: 40px; border-radius: 10px;
+      object-fit: contain; background: rgba(255,255,255,0.08);
+      padding: 3px; border: 1.5px solid rgba(59,130,246,0.3);
+    }
+    .nav-logo-text { color: #fff; }
+    .nav-logo-text strong { display: block; font-size: 14px; font-weight: 900; letter-spacing: 0.5px; }
+    .nav-logo-text span  { display: block; font-size: 10px; font-weight: 600; color: #93c5fd; letter-spacing: 1.5px; }
+    .nav-links { display: flex; align-items: center; gap: 4px; }
+    .nav-links a {
+      padding: 8px 14px; border-radius: 8px;
+      font-size: 13px; font-weight: 600; color: rgba(255,255,255,0.75);
+      transition: all 0.15s;
+    }
+    .nav-links a:hover { color: #fff; background: rgba(255,255,255,0.08); }
+    .nav-cta {
+      display: flex; align-items: center; gap: 8px;
+      background: #16a34a; color: #fff;
+      padding: 8px 16px; border-radius: 10px;
+      font-size: 13px; font-weight: 700;
+      transition: all 0.2s; flex-shrink: 0;
+    }
+    .nav-cta:hover { background: #15803d; transform: translateY(-1px); }
+    .hamburger {
+      display: none; flex-direction: column; gap: 5px;
+      background: none; border: none; padding: 8px; cursor: pointer;
+    }
+    .hamburger span { display: block; width: 24px; height: 2px; background: #fff; border-radius: 2px; transition: all 0.2s; }
+    .nav-mobile {
+      display: none; flex-direction: column; gap: 4px;
+      background: rgba(15,23,42,0.98);
+      padding: 16px 20px;
+      border-top: 1px solid rgba(255,255,255,0.07);
+    }
+    .nav-mobile.open { display: flex; }
+    .nav-mobile a {
+      padding: 12px 14px; border-radius: 10px;
+      font-size: 15px; font-weight: 600; color: rgba(255,255,255,0.8);
+      transition: background 0.15s;
+    }
+    .nav-mobile a:hover { color: #fff; background: rgba(255,255,255,0.07); }
+
+    /* ══════════════════════════════════════════════════
+       HERO
+    ══════════════════════════════════════════════════ */
+    #hero {
+      min-height: 100vh;
+      background: linear-gradient(135deg, #0f172a 0%, #1e3a5f 50%, #0f172a 100%);
+      display: flex; flex-direction: column;
+      align-items: center; justify-content: center;
+      position: relative; overflow: hidden;
+      padding: 120px 20px 80px; text-align: center;
+    }
+    .hero-grid-bg {
+      position: absolute; inset: 0;
+      background-image:
+        linear-gradient(rgba(59,130,246,0.04) 1px, transparent 1px),
+        linear-gradient(90deg, rgba(59,130,246,0.04) 1px, transparent 1px);
+      background-size: 48px 48px; pointer-events: none;
+    }
+    .hero-glow-1 {
+      position: absolute; top: -200px; right: -200px;
+      width: 600px; height: 600px; border-radius: 50%;
+      background: radial-gradient(circle, rgba(59,130,246,0.12) 0%, transparent 70%);
+      pointer-events: none;
+    }
+    .hero-glow-2 {
+      position: absolute; bottom: -150px; left: -150px;
+      width: 500px; height: 500px; border-radius: 50%;
+      background: radial-gradient(circle, rgba(249,115,22,0.08) 0%, transparent 70%);
+      pointer-events: none;
+    }
+    .hero-logo {
+      width: 100px; height: 100px; border-radius: 26px;
+      object-fit: contain; background: rgba(255,255,255,0.07);
+      padding: 10px; border: 2px solid rgba(59,130,246,0.3);
+      box-shadow: 0 8px 40px rgba(59,130,246,0.25);
+      margin-bottom: 24px;
+      animation: heroLogoIn 0.8s ease both;
+    }
+    .hero-badge { animation: fadeUp 0.5s 0.1s ease both; opacity: 0; }
+    .hero-title {
+      font-size: clamp(38px, 6.5vw, 72px);
+      font-weight: 900; color: #fff;
+      line-height: 1.08; letter-spacing: -1px;
+      margin-bottom: 10px;
+      animation: fadeUp 0.6s 0.2s ease both; opacity: 0;
+    }
+    .hero-title .accent { color: var(--blue); }
+    .hero-slogan {
+      font-size: clamp(16px, 2.5vw, 20px);
+      color: rgba(255,255,255,0.6);
+      margin-bottom: 38px; line-height: 1.6;
+      animation: fadeUp 0.6s 0.3s ease both; opacity: 0;
+    }
+    .hero-actions {
+      display: flex; flex-wrap: wrap; gap: 12px; justify-content: center;
+      animation: fadeUp 0.6s 0.4s ease both; opacity: 0;
+    }
+    .hero-scroll {
+      position: absolute; bottom: 32px; left: 50%; transform: translateX(-50%);
+      display: flex; flex-direction: column; align-items: center; gap: 6px;
+      animation: scrollBounce 2.2s ease-in-out infinite;
+    }
+    .hero-scroll-lbl { color: rgba(255,255,255,0.3); font-size: 10px; letter-spacing: 2px; text-transform: uppercase; }
+    .hero-scroll-arr {
+      width: 20px; height: 20px;
+      border-right: 2px solid rgba(255,255,255,0.25);
+      border-bottom: 2px solid rgba(255,255,255,0.25);
+      transform: rotate(45deg); margin-top: -6px;
+    }
+
+    /* Stats bar */
+    .stats-bar {
+      background: var(--dark3);
+      border-top: 1px solid rgba(255,255,255,0.06);
+      border-bottom: 1px solid rgba(255,255,255,0.06);
+      padding: 22px 20px;
+    }
+    .stats-inner {
+      max-width: 860px; margin: 0 auto;
+      display: flex; justify-content: space-around; flex-wrap: wrap; gap: 16px;
+    }
+    .stat { text-align: center; }
+    .stat-num { font-size: 30px; font-weight: 900; color: var(--blue); display: block; }
+    .stat-lbl  { font-size: 12px; color: rgba(255,255,255,0.45); font-weight: 600; letter-spacing: 0.5px; }
+
+    /* ══════════════════════════════════════════════════
+       SERVICIOS
+    ══════════════════════════════════════════════════ */
+    #servicios { padding: 96px 20px; background: var(--light); }
+    .servicios-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+      gap: 20px; max-width: 1100px; margin: 0 auto;
+    }
+    .serv-card {
+      background: #fff; border-radius: var(--radius);
+      padding: 28px 22px; text-align: center;
+      box-shadow: var(--shadow); border: 1px solid var(--border);
+      transition: all 0.25s; position: relative; overflow: hidden;
+    }
+    .serv-card::after {
+      content: ""; position: absolute;
+      top: 0; left: 0; right: 0; height: 3px;
+      background: var(--blue); transform: scaleX(0); transform-origin: left;
+      transition: transform 0.3s;
+    }
+    .serv-card:hover { transform: translateY(-6px); box-shadow: var(--shadowL); }
+    .serv-card:hover::after { transform: scaleX(1); }
+    .serv-icon {
+      width: 66px; height: 66px; border-radius: 18px;
+      display: flex; align-items: center; justify-content: center;
+      font-size: 32px; margin: 0 auto 18px;
+    }
+    .serv-card h3 { font-size: 16px; font-weight: 800; color: var(--dark); margin-bottom: 8px; }
+    .serv-card p  { font-size: 13px; color: var(--muted); line-height: 1.65; }
+
+    /* ══════════════════════════════════════════════════
+       POR QUÉ ELEGIRNOS
+    ══════════════════════════════════════════════════ */
+    #por-que {
+      padding: 96px 20px;
+      background: linear-gradient(135deg, var(--dark) 0%, #1a3357 100%);
+    }
+    #por-que .section-title   { color: #fff; }
+    #por-que .section-subtitle{ color: rgba(255,255,255,0.5); }
+    .porq-grid {
+      display: grid; grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+      gap: 20px; max-width: 960px; margin: 0 auto;
+    }
+    .porq-card {
+      background: rgba(255,255,255,0.05);
+      border: 1px solid rgba(255,255,255,0.09);
+      border-radius: var(--radius);
+      padding: 32px 24px; text-align: center;
+      transition: all 0.25s;
+    }
+    .porq-card:hover { background: rgba(255,255,255,0.09); transform: translateY(-4px); }
+    .porq-icon { font-size: 44px; display: block; margin-bottom: 18px; }
+    .porq-card h3 { font-size: 17px; font-weight: 800; color: #fff; margin-bottom: 10px; }
+    .porq-card p  { font-size: 13px; color: rgba(255,255,255,0.52); line-height: 1.7; }
+
+    /* ══════════════════════════════════════════════════
+       CONSULTA DE VEHÍCULO
+    ══════════════════════════════════════════════════ */
+    #consulta { padding: 96px 20px; background: #fff; }
+    .consulta-wrap { max-width: 680px; margin: 0 auto; }
+    .consulta-form { display: flex; gap: 12px; margin-bottom: 24px; }
+    .consulta-input {
+      flex: 1; padding: 16px 20px;
+      font-size: 22px; font-weight: 700;
+      letter-spacing: 5px; text-transform: uppercase;
+      border: 2px solid var(--border); border-radius: 12px;
+      outline: none; text-align: center;
+      transition: border-color 0.2s; font-family: inherit;
+    }
+    .consulta-input:focus { border-color: var(--blue); }
+    .consulta-btn {
+      padding: 16px 26px;
+      background: var(--blue); color: #fff;
+      border: none; border-radius: 12px;
+      font-size: 15px; font-weight: 700;
+      white-space: nowrap; transition: all 0.2s;
+      display: flex; align-items: center; gap: 8px;
+    }
+    .consulta-btn:hover { background: var(--blue2); transform: translateY(-2px); }
+    .consulta-btn:disabled { opacity: 0.6; cursor: not-allowed; transform: none; }
+
+    .resultado-card {
+      border-radius: var(--radius); border: 1px solid var(--border);
+      overflow: hidden; animation: fadeUp 0.35s ease both;
+      box-shadow: var(--shadow);
+    }
+    .resultado-header {
+      padding: 20px 24px; color: #fff;
+      display: flex; justify-content: space-between;
+      align-items: flex-start; flex-wrap: wrap; gap: 12px;
+    }
+    .resultado-veh h3 { font-size: 20px; font-weight: 900; }
+    .resultado-veh p  { font-size: 14px; opacity: 0.75; margin-top: 4px; }
+    .resultado-placa {
+      background: rgba(255,255,255,0.15);
+      padding: 8px 16px; border-radius: 8px;
+      font-family: monospace; font-size: 18px;
+      font-weight: 900; letter-spacing: 2px;
+    }
+    .resultado-body { padding: 22px 24px; background: #fff; }
+    .estado-badge {
+      display: inline-flex; align-items: center; gap: 8px;
+      padding: 10px 18px; border-radius: 10px;
+      font-weight: 800; font-size: 15px; margin-bottom: 14px;
+    }
+    .resultado-info-grid {
+      display: grid; grid-template-columns: repeat(auto-fit, minmax(170px, 1fr));
+      gap: 10px; margin-top: 14px;
+    }
+    .info-item { background: var(--light); border-radius: 10px; padding: 12px 14px; }
+    .info-item label { display: block; font-size: 10px; font-weight: 700; color: var(--muted); text-transform: uppercase; letter-spacing: 0.5px; margin-bottom: 4px; }
+    .info-item span  { font-size: 14px; font-weight: 700; color: var(--dark); }
+    .consulta-error {
+      background: #fef2f2; border: 1px solid #fca5a5;
+      border-radius: 12px; padding: 16px 20px;
+      color: #dc2626; font-size: 14px; font-weight: 600;
+      display: flex; gap: 10px; align-items: flex-start;
+      animation: fadeUp 0.3s ease both;
+    }
+
+    /* Timeline */
+    .estado-timeline {
+      display: flex; align-items: flex-start;
+      justify-content: space-between; margin-bottom: 20px;
+      position: relative;
+    }
+    .estado-timeline::before {
+      content: ""; position: absolute;
+      top: 17px; left: 0; right: 0; height: 2px;
+      background: var(--border); z-index: 0;
+    }
+    .tl-step {
+      display: flex; flex-direction: column;
+      align-items: center; gap: 6px;
+      position: relative; z-index: 1; flex: 1;
+    }
+    .tl-dot {
+      width: 34px; height: 34px; border-radius: 50%;
+      border: 2px solid var(--border); background: #fff;
+      display: flex; align-items: center; justify-content: center;
+      font-size: 14px; transition: all 0.2s;
+    }
+    .tl-dot.done   { background: #10b981; border-color: #10b981; color: #fff; }
+    .tl-dot.active { background: var(--blue); border-color: var(--blue); color: #fff; box-shadow: 0 0 0 4px rgba(59,130,246,0.2); }
+    .tl-lbl { font-size: 10px; font-weight: 700; color: var(--muted); text-transform: uppercase; text-align: center; }
+
+    /* ══════════════════════════════════════════════════
+       CAFETERÍA
+    ══════════════════════════════════════════════════ */
+    #cafeteria { padding: 96px 20px; background: var(--light); }
+    .cafe-tabs {
+      display: flex; gap: 8px; justify-content: center;
+      flex-wrap: wrap; margin-bottom: 36px;
+    }
+    .cafe-tab {
+      padding: 8px 18px; border-radius: 20px;
+      border: 1.5px solid var(--border); background: #fff;
+      font-size: 13px; font-weight: 600; color: var(--muted);
+      cursor: pointer; transition: all 0.2s;
+    }
+    .cafe-tab.active,
+    .cafe-tab:hover { background: var(--orange); color: #fff; border-color: var(--orange); }
+    .cafe-grid {
+      display: grid; grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
+      gap: 20px; max-width: 1100px; margin: 0 auto;
+    }
+    .cafe-card {
+      background: #fff; border-radius: var(--radius); overflow: hidden;
+      box-shadow: var(--shadow); border: 1px solid var(--border);
+      transition: all 0.25s; animation: fadeUp 0.4s ease both;
+    }
+    .cafe-card:hover { transform: translateY(-5px); box-shadow: var(--shadowL); }
+    .cafe-img-wrap { width: 100%; aspect-ratio: 1/1; overflow: hidden; background: var(--dark2); }
+    .cafe-img { width: 100%; height: 100%; object-fit: cover; display: block; transition: transform 0.4s; }
+    .cafe-card:hover .cafe-img { transform: scale(1.06); }
+    .cafe-placeholder {
+      width: 100%; aspect-ratio: 1/1;
+      background: linear-gradient(135deg, #1e293b, #0f172a);
+      display: flex; align-items: center; justify-content: center;
+      font-size: 36px;
+    }
+    .cafe-body { padding: 14px 16px 18px; }
+    .cafe-cat  { font-size: 10px; font-weight: 700; color: var(--orange); text-transform: uppercase; letter-spacing: 1px; margin-bottom: 4px; }
+    .cafe-name { font-size: 15px; font-weight: 700; color: var(--dark); margin-bottom: 6px; line-height: 1.3; }
+    .cafe-price{ font-size: 17px; font-weight: 900; color: var(--orange); }
+    .cafe-empty { text-align: center; padding: 60px 20px; color: var(--muted); }
+    .cafe-loading {
+      display: flex; align-items: center; justify-content: center; gap: 14px;
+      padding: 60px 20px; color: var(--muted);
+    }
+
+    /* ══════════════════════════════════════════════════
+       CONTACTO
+    ══════════════════════════════════════════════════ */
+    #contacto { padding: 96px 20px; background: var(--dark); }
+    #contacto .section-title   { color: #fff; }
+    #contacto .section-subtitle{ color: rgba(255,255,255,0.48); }
+    .contacto-grid {
+      display: grid; grid-template-columns: 1fr 1fr;
+      gap: 32px; max-width: 1000px; margin: 0 auto;
+    }
+    .contacto-info { display: flex; flex-direction: column; gap: 16px; }
+    .wa-block {
+      background: linear-gradient(135deg, #14532d, #16a34a);
+      border-radius: 14px; padding: 22px 20px;
+      display: flex; align-items: center; gap: 14px;
+      text-decoration: none; transition: all 0.2s;
+      box-shadow: 0 6px 24px rgba(22,163,74,0.28);
+    }
+    .wa-block:hover { transform: translateY(-3px); box-shadow: 0 10px 32px rgba(22,163,74,0.4); }
+    .wa-block-icon { font-size: 38px; }
+    .wa-block h4 { font-size: 11px; font-weight: 700; color: rgba(255,255,255,0.65); text-transform: uppercase; letter-spacing: 0.5px; margin-bottom: 4px; }
+    .wa-block strong { display: block; font-size: 18px; color: #fff; font-weight: 900; }
+    .cinfo-item {
+      display: flex; align-items: flex-start; gap: 14px;
+      background: rgba(255,255,255,0.05);
+      border: 1px solid rgba(255,255,255,0.08);
+      border-radius: 14px; padding: 18px 20px;
+      transition: background 0.2s;
+    }
+    .cinfo-item:hover { background: rgba(255,255,255,0.08); }
+    .cinfo-icon {
+      width: 44px; height: 44px; border-radius: 12px;
+      display: flex; align-items: center; justify-content: center;
+      font-size: 20px; flex-shrink: 0;
+    }
+    .cinfo-item h4 { font-size: 11px; font-weight: 700; color: rgba(255,255,255,0.4); text-transform: uppercase; letter-spacing: 0.5px; margin-bottom: 4px; }
+    .cinfo-item a, .cinfo-item p { font-size: 16px; font-weight: 700; color: #fff; margin: 0; }
+    .cinfo-item a:hover { color: var(--blue); }
+    .horario-row { display: flex; justify-content: space-between; font-size: 13px; padding: 2px 0; }
+    .horario-row span   { color: rgba(255,255,255,0.55); }
+    .horario-row strong { color: #fff; }
+    .contacto-map {
+      border-radius: var(--radius); overflow: hidden;
+      border: 1px solid rgba(255,255,255,0.1);
+      min-height: 380px;
+    }
+    .contacto-map iframe { width: 100%; height: 100%; min-height: 380px; border: none; display: block; }
+
+    /* ══════════════════════════════════════════════════
+       FOOTER
+    ══════════════════════════════════════════════════ */
+    footer {
+      background: #050d1a; padding: 52px 20px 28px;
+      color: rgba(255,255,255,0.45);
+      border-top: 1px solid rgba(255,255,255,0.05);
+    }
+    .footer-inner { max-width: 1100px; margin: 0 auto; }
+    .footer-top {
+      display: flex; justify-content: space-between;
+      align-items: flex-start; flex-wrap: wrap;
+      gap: 32px; margin-bottom: 44px;
+    }
+    .footer-brand { display: flex; align-items: center; gap: 12px; margin-bottom: 14px; }
+    .footer-brand img {
+      width: 44px; height: 44px; border-radius: 12px;
+      object-fit: contain; background: rgba(255,255,255,0.06);
+      padding: 4px; border: 1.5px solid rgba(59,130,246,0.25);
+    }
+    .footer-brand strong { display: block; font-size: 15px; font-weight: 900; color: #fff; }
+    .footer-brand span   { display: block; font-size: 12px; color: rgba(255,255,255,0.38); }
+    .footer-desc { font-size: 13px; max-width: 260px; line-height: 1.75; }
+    .f-col h5 { font-size: 11px; font-weight: 700; color: rgba(255,255,255,0.3); text-transform: uppercase; letter-spacing: 1.2px; margin-bottom: 14px; }
+    .f-col a  { display: block; font-size: 14px; color: rgba(255,255,255,0.52); margin-bottom: 8px; transition: color 0.15s; }
+    .f-col a:hover { color: #fff; }
+    .social-row { display: flex; gap: 10px; margin-top: 4px; }
+    .social-btn {
+      width: 40px; height: 40px; border-radius: 10px;
+      background: rgba(255,255,255,0.07); border: 1px solid rgba(255,255,255,0.1);
+      display: flex; align-items: center; justify-content: center;
+      font-size: 18px; text-decoration: none;
+      transition: all 0.2s;
+    }
+    .social-btn:hover { background: var(--blue); border-color: var(--blue); transform: translateY(-2px); }
+    .footer-bottom {
+      border-top: 1px solid rgba(255,255,255,0.06); padding-top: 24px;
+      display: flex; justify-content: space-between;
+      align-items: center; flex-wrap: wrap; gap: 10px; font-size: 13px;
+    }
+
+    /* WhatsApp flotante */
+    .wa-float {
+      position: fixed; bottom: 28px; right: 24px; z-index: 999;
+      display: flex; align-items: center; gap: 10px;
+      background: #16a34a; color: #fff; padding: 14px 22px;
+      border-radius: 50px; font-weight: 700; font-size: 14px;
+      text-decoration: none;
+      box-shadow: 0 6px 28px rgba(22,163,74,0.45);
+      transition: all 0.25s;
+      animation: waPulse 3s ease-in-out infinite;
+    }
+    .wa-float:hover { transform: translateY(-3px) scale(1.04); }
+    .wa-float-icon { font-size: 22px; }
+
+    /* ══════════════════════════════════════════════════
+       ANIMACIONES
+    ══════════════════════════════════════════════════ */
+    @keyframes fadeUp {
+      from { opacity: 0; transform: translateY(22px); }
+      to   { opacity: 1; transform: translateY(0); }
+    }
+    @keyframes heroLogoIn {
+      from { opacity: 0; transform: scale(0.75) translateY(-10px); }
+      to   { opacity: 1; transform: scale(1) translateY(0); }
+    }
+    @keyframes scrollBounce {
+      0%,100% { transform: translateX(-50%) translateY(0); }
+      50%      { transform: translateX(-50%) translateY(9px); }
+    }
+    @keyframes waPulse {
+      0%,100% { box-shadow: 0 6px 28px rgba(22,163,74,0.45); }
+      50%      { box-shadow: 0 6px 28px rgba(22,163,74,0.65), 0 0 0 10px rgba(22,163,74,0.1); }
+    }
+    @keyframes spin {
+      to { transform: rotate(360deg); }
+    }
+    .spinner    { width: 28px; height: 28px; border: 3px solid rgba(0,0,0,0.08); border-top-color: var(--blue);   border-radius: 50%; animation: spin 0.75s linear infinite; }
+    .spinner-sm { width: 18px; height: 18px; border: 2px solid rgba(255,255,255,0.3); border-top-color: #fff; border-radius: 50%; animation: spin 0.75s linear infinite; }
+
+    /* Reveal on scroll */
+    .reveal { opacity: 0; transform: translateY(24px); transition: opacity 0.6s ease, transform 0.6s ease; }
+    .reveal.visible { opacity: 1; transform: none; }
+
+    /* ══════════════════════════════════════════════════
+       RESPONSIVE
+    ══════════════════════════════════════════════════ */
+    @media (max-width: 768px) {
+      .nav-links,.nav-cta { display: none; }
+      .hamburger { display: flex; }
+      .consulta-form { flex-direction: column; }
+      .contacto-grid { grid-template-columns: 1fr; }
+      .contacto-map  { min-height: 260px; }
+      .contacto-map iframe { min-height: 260px; }
+      .footer-top    { flex-direction: column; gap: 24px; }
+      .footer-bottom { flex-direction: column; text-align: center; }
+      .hero-actions  { flex-direction: column; align-items: center; }
+      .hero-actions .btn { width: 100%; max-width: 320px; justify-content: center; }
+      .wa-float span.wa-float-txt { display: none; }
+      .wa-float { padding: 14px; }
+    }
+    @media (max-width: 480px) {
+      .servicios-grid, .cafe-grid, .porq-grid { grid-template-columns: 1fr 1fr; }
+      .resultado-info-grid { grid-template-columns: 1fr 1fr; }
+    }
+  </style>
+</head>
+<body>
+
+<!-- ══ NAVEGACIÓN ════════════════════════════════════════════════ -->
+<nav id="nav">
+  <div class="nav-inner">
+    <a class="nav-logo" href="#">
+      <img src="logo.png" alt="Logo" onerror="this.style.display='none'" />
+      <div class="nav-logo-text">
+        <strong>SÓLIDO AUTO</strong>
+        <span>SERVICIO &amp; CAFÉ</span>
+      </div>
+    </a>
+    <div class="nav-links">
+      <a href="#servicios">Servicios</a>
+      <a href="#consulta">Mi Vehículo</a>
+      <a href="#cafeteria">Cafetería</a>
+      <a href="#contacto">Contacto</a>
+    </div>
+    <a id="nav-wa" class="nav-cta" href="#" target="_blank" rel="noopener">
+      💬 WhatsApp
+    </a>
+    <button class="hamburger" id="hamburger" aria-label="Abrir menú">
+      <span></span><span></span><span></span>
+    </button>
+  </div>
+  <div class="nav-mobile" id="nav-mobile">
+    <a href="#servicios"  onclick="closeMob()">🔧 Servicios</a>
+    <a href="#consulta"   onclick="closeMob()">🚗 Mi Vehículo</a>
+    <a href="#cafeteria"  onclick="closeMob()">☕ Cafetería</a>
+    <a href="#contacto"   onclick="closeMob()">📍 Contacto</a>
+    <a id="nav-mob-wa" href="#" target="_blank" rel="noopener" onclick="closeMob()" style="color:#4ade80">💬 WhatsApp</a>
+  </div>
+</nav>
+
+<!-- ══ HERO ══════════════════════════════════════════════════════ -->
+<section id="hero">
+  <div class="hero-grid-bg"></div>
+  <div class="hero-glow-1"></div>
+  <div class="hero-glow-2"></div>
+
+  <img class="hero-logo" src="logo.png" alt="Sólido Auto Servicio"
+       onerror="this.style.display='none'" />
+
+  <div class="badge hero-badge">🏆 Santo Domingo, República Dominicana</div>
+
+  <h1 class="hero-title">
+    Sólido Auto<br/><span class="accent">Servicio</span>
+  </h1>
+  <p class="hero-slogan">
+    Tu vehículo en manos expertas.<br/>
+    Tecnología, transparencia y resultados reales.
+  </p>
+  <div class="hero-actions">
+    <button class="btn btn-primary"
+            onclick="document.getElementById('consulta').scrollIntoView({behavior:'smooth'})">
+      🚗 Consultar mi vehículo
+    </button>
+    <a id="hero-wa" class="btn btn-wa" href="#" target="_blank" rel="noopener">
+      💬 Escribir por WhatsApp
+    </a>
+  </div>
+
+  <div class="hero-scroll">
+    <span class="hero-scroll-lbl">Explorar</span>
+    <div class="hero-scroll-arr"></div>
+  </div>
+</section>
+
+<!-- Stats -->
+<div class="stats-bar">
+  <div class="stats-inner">
+    <div class="stat"><span class="stat-num">+500</span><span class="stat-lbl">Clientes atendidos</span></div>
+    <div class="stat"><span class="stat-num">+8</span><span class="stat-lbl">Años de experiencia</span></div>
+    <div class="stat"><span class="stat-num">100%</span><span class="stat-lbl">Diagnóstico digital</span></div>
+    <div class="stat"><span class="stat-num">⭐ 4.9</span><span class="stat-lbl">Satisfacción</span></div>
+  </div>
+</div>
+
+<!-- ══ SERVICIOS ═════════════════════════════════════════════════ -->
+<section id="servicios">
+  <div class="container">
+    <div class="badge reveal">Nuestros Servicios</div>
+    <h2 class="section-title reveal">Todo lo que tu vehículo necesita</h2>
+    <p class="section-subtitle reveal">
+      Equipos de diagnóstico de última generación y técnicos certificados para cada especialidad.
+    </p>
+    <div class="servicios-grid">
+      <div class="serv-card reveal">
+        <div class="serv-icon" style="background:linear-gradient(135deg,#dbeafe,#bfdbfe)">🔧</div>
+        <h3>Mecánica General</h3>
+        <p>Mantenimiento preventivo y correctivo. Motor, transmisión, frenos y suspensión.</p>
+      </div>
+      <div class="serv-card reveal">
+        <div class="serv-icon" style="background:linear-gradient(135deg,#ede9fe,#ddd6fe)">💻</div>
+        <h3>Diagnóstico Computarizado</h3>
+        <p>Lectura de códigos OBD-II y diagnóstico electrónico avanzado con equipos profesionales.</p>
+      </div>
+      <div class="serv-card reveal">
+        <div class="serv-icon" style="background:linear-gradient(135deg,#dcfce7,#bbf7d0)">⚖️</div>
+        <h3>Alineación y Balanceo</h3>
+        <p>Precisión milimétrica para mayor seguridad, durabilidad de neumáticos y mejor rendimiento.</p>
+      </div>
+      <div class="serv-card reveal">
+        <div class="serv-icon" style="background:linear-gradient(135deg,#cffafe,#a5f3fc)">❄️</div>
+        <h3>Aire Acondicionado</h3>
+        <p>Carga de refrigerante, reparación de compresor y limpieza completa del sistema A/C.</p>
+      </div>
+      <div class="serv-card reveal">
+        <div class="serv-icon" style="background:linear-gradient(135deg,#fef9c3,#fef08a)">⚡</div>
+        <h3>Electricidad Automotriz</h3>
+        <p>Batería, alternador, sistema de arranque y diagnóstico del cableado completo.</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ══ POR QUÉ ELEGIRNOS ═════════════════════════════════════════ -->
+<section id="por-que">
+  <div class="container">
+    <div class="badge reveal" style="background:rgba(59,130,246,0.15);color:#93c5fd;border-color:rgba(59,130,246,0.3)">
+      ¿Por qué elegirnos?
+    </div>
+    <h2 class="section-title reveal">Diferencia que se siente al volante</h2>
+    <p class="section-subtitle reveal">No somos un taller más. Somos tu aliado en el cuidado de tu inversión.</p>
+    <div class="porq-grid">
+      <div class="porq-card reveal">
+        <span class="porq-icon">⚡</span>
+        <h3>Rapidez</h3>
+        <p>Tiempos de entrega claros desde el inicio. Diagnóstico exprés y atención sin demoras innecesarias.</p>
+      </div>
+      <div class="porq-card reveal">
+        <span class="porq-icon">🔍</span>
+        <h3>Transparencia</h3>
+        <p>Ves el diagnóstico completo antes de autorizar. Sin sorpresas en la factura. Tu aprobación en cada paso.</p>
+      </div>
+      <div class="porq-card reveal">
+        <span class="porq-icon">🖥️</span>
+        <h3>Tecnología</h3>
+        <p>CRM propio, diagnóstico digital OBD-II y seguimiento en tiempo real desde tu celular con solo la placa.</p>
+      </div>
+      <div class="porq-card reveal">
+        <span class="porq-icon">🤝</span>
+        <h3>Atención al Cliente</h3>
+        <p>Comunicación directa por WhatsApp. Sin esperas ni burocracia. Te acompañamos todo el proceso.</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ══ CONSULTA DE VEHÍCULO ══════════════════════════════════════ -->
+<section id="consulta">
+  <div class="container">
+    <div class="badge reveal">Consulta en Tiempo Real</div>
+    <h2 class="section-title reveal">¿Cómo está tu vehículo?</h2>
+    <p class="section-subtitle reveal">
+      Ingresa el número de placa y ve el estado actual directamente desde nuestro sistema CRM.
+    </p>
+    <div class="consulta-wrap reveal">
+      <div class="consulta-form">
+        <input
+          id="placa-input"
+          class="consulta-input"
+          type="text"
+          placeholder="Ej: A123456"
+          maxlength="10"
+          autocomplete="off"
+          onkeydown="if(event.key==='Enter') buscar()"
+          oninput="this.value=this.value.toUpperCase().replace(/[^A-Z0-9\-]/g,'')"
+        />
+        <button class="consulta-btn" id="buscar-btn" onclick="buscar()">
+          <span id="btn-icon">🔍</span>
+          <span id="btn-txt">Consultar</span>
+        </button>
+      </div>
+      <div id="resultado"></div>
+    </div>
+  </div>
+</section>
+
+<!-- ══ CAFETERÍA ═════════════════════════════════════════════════ -->
+<section id="cafeteria">
+  <div class="container">
+    <div class="badge reveal" style="background:rgba(249,115,22,0.1);color:#f97316;border-color:rgba(249,115,22,0.25)">
+      ☕ Sólido Cafe Garage
+    </div>
+    <h2 class="section-title reveal">Nuestro Menú</h2>
+    <p class="section-subtitle reveal">
+      Mientras atendemos tu vehículo, disfruta de nuestro café y snacks. Precios y productos en tiempo real.
+    </p>
+    <div class="cafe-tabs" id="cafe-tabs">
+      <button class="cafe-tab active" data-cat="TODOS" onclick="filtrar('TODOS')">🍽️ Todo el Menú</button>
+    </div>
+    <div id="cafe-grid-wrap">
+      <div class="cafe-loading">
+        <div class="spinner"></div>
+        <span>Cargando menú...</span>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ══ CONTACTO ══════════════════════════════════════════════════ -->
+<section id="contacto">
+  <div class="container">
+    <div class="badge reveal" style="background:rgba(59,130,246,0.15);color:#93c5fd;border-color:rgba(59,130,246,0.3)">
+      Contáctanos
+    </div>
+    <h2 class="section-title reveal">Estamos para servirte</h2>
+    <p class="section-subtitle reveal">Visítanos, llámanos o escríbenos. Siempre hay alguien para atenderte.</p>
+    <div class="contacto-grid reveal">
+      <!-- Info -->
+      <div class="contacto-info">
+        <a id="wa-big" class="wa-block" href="#" target="_blank" rel="noopener">
+          <span class="wa-block-icon">💬</span>
+          <div>
+            <h4>WhatsApp directo</h4>
+            <strong id="wa-num-txt">+1 809-712-2027</strong>
+          </div>
+        </a>
+        <div class="cinfo-item">
+          <div class="cinfo-icon" style="background:rgba(59,130,246,0.12)">📞</div>
+          <div>
+            <h4>Teléfono</h4>
+            <a id="tel-link" href="tel:8097122027">809-712-2027</a>
+          </div>
+        </div>
+        <div class="cinfo-item">
+          <div class="cinfo-icon" style="background:rgba(249,115,22,0.12)">📍</div>
+          <div>
+            <h4>Ubicación</h4>
+            <p id="dir-txt">Santo Domingo, República Dominicana</p>
+          </div>
+        </div>
+        <div class="cinfo-item">
+          <div class="cinfo-icon" style="background:rgba(16,185,129,0.12)">🕐</div>
+          <div style="flex:1">
+            <h4>Horario de Atención</h4>
+            <div id="horario"></div>
+          </div>
+        </div>
+      </div>
+      <!-- Mapa -->
+      <div class="contacto-map">
+        <iframe id="mapa" src="" loading="lazy" allowfullscreen
+                referrerpolicy="no-referrer-when-downgrade"
+                title="Ubicación Sólido Auto Servicio"></iframe>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ══ FOOTER ════════════════════════════════════════════════════ -->
+<footer>
+  <div class="footer-inner">
+    <div class="footer-top">
+      <div>
+        <div class="footer-brand">
+          <img src="logo.png" alt="Logo" onerror="this.style.display='none'" />
+          <div>
+            <strong>SÓLIDO AUTO SERVICIO</strong>
+            <span>Taller Automotriz + Cafetería · RD</span>
+          </div>
+        </div>
+        <p class="footer-desc">Tu vehículo en manos expertas. Tecnología, transparencia y resultados desde Santo Domingo.</p>
+      </div>
+      <div class="f-col">
+        <h5>Navegación</h5>
+        <a href="#servicios">Servicios</a>
+        <a href="#consulta">Consultar Vehículo</a>
+        <a href="#cafeteria">Menú Cafetería</a>
+        <a href="#contacto">Contacto</a>
+      </div>
+      <div class="f-col">
+        <h5>Síguenos</h5>
+        <div class="social-row">
+          <a id="footer-wa" href="#" target="_blank" rel="noopener" class="social-btn" title="WhatsApp">💬</a>
+          <a href="https://www.facebook.com/" target="_blank" rel="noopener" class="social-btn" title="Facebook">📘</a>
+          <a href="https://www.instagram.com/" target="_blank" rel="noopener" class="social-btn" title="Instagram">📸</a>
+        </div>
+      </div>
+    </div>
+    <div class="footer-bottom">
+      <span>© <span id="yr"></span> Sólido Auto Servicio · Todos los derechos reservados.</span>
+      <span>Diseñado para la excelencia automotriz 🔧</span>
+    </div>
+  </div>
+</footer>
+
+<!-- ══ BOTÓN FLOTANTE WHATSAPP ═══════════════════════════════════ -->
+<a id="wa-float" class="wa-float" href="#" target="_blank" rel="noopener">
+  <span class="wa-float-icon">💬</span>
+  <span class="wa-float-txt">¿Necesitas ayuda?</span>
+</a>
+
+<!-- ══════════════════════════════════════════════════════════════
+     SCRIPTS
+════════════════════════════════════════════════════════════════ -->
+<script>
+"use strict";
+
+/* ─── Init ─────────────────────────────────────────────────────── */
+document.addEventListener("DOMContentLoaded", () => {
+  setupNav();
+  setupWA();
+  setupContacto();
+  setupReveal();
+  loadCafe();
+  document.getElementById("yr").textContent = new Date().getFullYear();
+});
+
+/* ─── WhatsApp ──────────────────────────────────────────────────── */
+function waUrl(msg) {
+  return `https://wa.me/${CONFIG.WHATSAPP}?text=${encodeURIComponent(msg || "Hola, me comunico desde la web de Sólido Auto Servicio 👋")}`;
+}
+function setupWA() {
+  const url = waUrl();
+  ["nav-wa","nav-mob-wa","hero-wa","wa-big","wa-float","footer-wa"]
+    .forEach(id => { const el = document.getElementById(id); if(el) el.href = url; });
+  const numEl = document.getElementById("wa-num-txt");
+  if (numEl) numEl.textContent = `+1 ${CONFIG.TELEFONO}`;
+}
+
+/* ─── Contacto ──────────────────────────────────────────────────── */
+function setupContacto() {
+  const tel = document.getElementById("tel-link");
+  if (tel) { tel.href = `tel:${CONFIG.TELEFONO.replace(/\D/g,"")}`; tel.textContent = CONFIG.TELEFONO; }
+  const dir = document.getElementById("dir-txt");
+  if (dir) dir.textContent = CONFIG.DIRECCION;
+  const map = document.getElementById("mapa");
+  if (map) map.src = CONFIG.MAPS_EMBED;
+  const hor = document.getElementById("horario");
+  if (hor) hor.innerHTML = CONFIG.HORARIO.map(h =>
+    `<div class="horario-row"><span>${h.dia}</span><strong style="color:${h.hora==="Cerrado"?"#f87171":"#fff"}">${h.hora}</strong></div>`
+  ).join("");
+}
+
+/* ─── Nav scroll + hamburger ───────────────────────────────────── */
+function setupNav() {
+  const nav = document.getElementById("nav");
+  const upd = () => nav.classList.toggle("scrolled", window.scrollY > 50);
+  window.addEventListener("scroll", upd, { passive: true });
+  upd();
+}
+document.getElementById("hamburger").addEventListener("click", () => {
+  document.getElementById("nav-mobile").classList.toggle("open");
+});
+function closeMob() {
+  document.getElementById("nav-mobile").classList.remove("open");
+}
+
+/* ─── Reveal on scroll ─────────────────────────────────────────── */
+function setupReveal() {
+  const obs = new IntersectionObserver(
+    entries => entries.forEach(e => { if(e.isIntersecting){ e.target.classList.add("visible"); obs.unobserve(e.target); }}),
+    { threshold: 0.12 }
+  );
+  document.querySelectorAll(".reveal").forEach(el => obs.observe(el));
+}
+
+/* ══════════════════════════════════════════════════════════════════
+   CONSULTA DE VEHÍCULO
+══════════════════════════════════════════════════════════════════ */
+const ESTADOS = {
+  RECIBIDO:    { color:"#6366f1", bg:"#eef2ff", icon:"📋", label:"Recibido",             idx:0 },
+  DIAGNOSTICO: { color:"#f59e0b", bg:"#fffbeb", icon:"🔬", label:"En Diagnóstico",       idx:1 },
+  REPARACION:  { color:"#3b82f6", bg:"#eff6ff", icon:"🔧", label:"En Reparación",        idx:2 },
+  EN_PROCESO:  { color:"#3b82f6", bg:"#eff6ff", icon:"🔧", label:"En Proceso",           idx:2 },
+  LISTO:       { color:"#10b981", bg:"#f0fdf4", icon:"✅", label:"Listo para Retirar",   idx:3 },
+  COMPLETADO:  { color:"#10b981", bg:"#f0fdf4", icon:"✅", label:"Completado",           idx:3 },
+  ENTREGADO:   { color:"#6b7280", bg:"#f9fafb", icon:"🏁", label:"Entregado",            idx:4 },
+  FACTURADO:   { color:"#6b7280", bg:"#f9fafb", icon:"🧾", label:"Facturado y Cerrado",  idx:4 },
+};
+const TL_STEPS = [
+  { icon:"📋", lbl:"Recibido" },
+  { icon:"🔬", lbl:"Diagnóstico" },
+  { icon:"🔧", lbl:"Reparación" },
+  { icon:"✅", lbl:"Listo" },
+  { icon:"🏁", lbl:"Entregado" },
+];
+
+async function buscar() {
+  const placa = document.getElementById("placa-input").value.trim().toUpperCase().replace(/\s/g,"");
+  const res   = document.getElementById("resultado");
+  const btn   = document.getElementById("buscar-btn");
+  const icon  = document.getElementById("btn-icon");
+  const txt   = document.getElementById("btn-txt");
+
+  if (!placa) { showErr("Ingresa un número de placa para continuar."); return; }
+
+  btn.disabled = true;
+  icon.innerHTML = '<span class="spinner-sm"></span>';
+  txt.textContent = "Buscando...";
+  res.innerHTML = "";
+
+  try {
+    const r    = await fetch(`${CONFIG.API_BASE}/vehiculo-historial/placa/${encodeURIComponent(placa)}`);
+    const data = await r.json();
+
+    if (!data.found || !data.historial?.length) {
+      showErr(`No encontramos registros para la placa <b>${placa}</b>.<br>Verifica el número o contáctanos directamente.`);
+      return;
+    }
+
+    const ult    = data.historial[0];
+    const estado = ESTADOS[ult.estado] || ESTADOS["ENTREGADO"];
+    const idx    = estado.idx;
+    const veh    = data.vehiculo || {};
+
+    const tl = TL_STEPS.map((s, i) => {
+      const cls = i < idx ? "done" : i === idx ? "active" : "";
+      return `<div class="tl-step"><div class="tl-dot ${cls}">${s.icon}</div><div class="tl-lbl">${s.lbl}</div></div>`;
+    }).join("");
+
+    const infoItems = [
+      ult.fecha_servicio ? `<div class="info-item"><label>Fecha</label><span>${new Date(ult.fecha_servicio).toLocaleDateString("es-DO",{year:"numeric",month:"short",day:"numeric"})}</span></div>` : "",
+      ult.tecnico_nombre ? `<div class="info-item"><label>Técnico</label><span>${ult.tecnico_nombre}</span></div>` : "",
+      ult.costo_total > 0 ? `<div class="info-item"><label>Total</label><span style="color:#16a34a">RD$ ${Number(ult.costo_total).toLocaleString("es-DO",{minimumFractionDigits:2})}</span></div>` : "",
+      data.historial.length > 1 ? `<div class="info-item"><label>Visitas al taller</label><span>${data.historial.length} registros</span></div>` : "",
+    ].filter(Boolean).join("");
+
+    res.innerHTML = `
+      <div class="resultado-card">
+        <div class="resultado-header" style="background:linear-gradient(135deg,${estado.color}cc,${estado.color})">
+          <div class="resultado-veh">
+            <h3>${veh.marca||"Vehículo"} ${veh.modelo||""}</h3>
+            <p>${[veh.ano,veh.color].filter(Boolean).join(" · ")||"Taller Sólido Auto"}</p>
+          </div>
+          <div class="resultado-placa">${placa}</div>
+        </div>
+        <div class="resultado-body">
+          <div class="estado-timeline">${tl}</div>
+          <div class="estado-badge" style="background:${estado.bg};color:${estado.color}">
+            <span style="font-size:20px">${estado.icon}</span> ${estado.label}
+          </div>
+          ${ult.tipo_servicio ? `<p style="font-size:14px;color:#555;margin-bottom:8px"><strong>Servicio:</strong> ${ult.tipo_servicio}</p>` : ""}
+          ${ult.trabajos_realizados ? `<div style="background:#f8fafc;border-radius:10px;padding:12px 14px;margin-bottom:10px;font-size:13px;color:#444;white-space:pre-wrap;line-height:1.7">${ult.trabajos_realizados}</div>` : ""}
+          ${infoItems ? `<div class="resultado-info-grid">${infoItems}</div>` : ""}
+          <div style="margin-top:16px;display:flex;gap:10px;flex-wrap:wrap">
+            <a href="${waUrl("Hola, consulto sobre mi vehículo placa "+placa)}" target="_blank" class="btn btn-wa" style="font-size:13px;padding:10px 18px">💬 Preguntar por WhatsApp</a>
+            <button onclick="document.getElementById('resultado').innerHTML='';document.getElementById('placa-input').value=''" style="padding:10px 18px;background:#f1f5f9;border:1.5px solid #e2e8f0;border-radius:10px;font-weight:700;font-size:13px;cursor:pointer;color:#555">🔄 Nueva consulta</button>
+          </div>
+        </div>
+      </div>`;
+  } catch {
+    showErr("Error de conexión. Verifica tu internet e inténtalo de nuevo.");
+  } finally {
+    btn.disabled = false;
+    icon.textContent = "🔍";
+    txt.textContent  = "Consultar";
+  }
+}
+
+function showErr(msg) {
+  document.getElementById("resultado").innerHTML = `
+    <div class="consulta-error">
+      <span style="font-size:22px;flex-shrink:0">⚠️</span>
+      <div>${msg}<br><br>
+        <a href="${waUrl()}" target="_blank" style="color:#1d4ed8;font-weight:700">
+          💬 Contáctanos por WhatsApp
+        </a>
+      </div>
+    </div>`;
+}
+
+/* ══════════════════════════════════════════════════════════════════
+   CAFETERÍA
+══════════════════════════════════════════════════════════════════ */
+let todosProds = [];
+let catActiva  = "TODOS";
+
+async function loadCafe() {
+  try {
+    const r    = await fetch(`${CONFIG.API_BASE}/cafeteria/productos`);
+    const data = await r.json();
+    todosProds = (Array.isArray(data) ? data : []).filter(p => p.stock > 0);
+    buildTabs();
+    renderGrid("TODOS");
+  } catch {
+    document.getElementById("cafe-grid-wrap").innerHTML = `
+      <div class="cafe-empty">
+        <p style="font-size:40px;margin-bottom:10px">☕</p>
+        <p style="font-weight:600;color:#64748b">Menú no disponible en este momento.</p>
+        <p style="margin-top:8px">
+          <a href="${waUrl("Hola, quisiera ver el menú de la cafetería")}" target="_blank"
+             style="color:#f97316;font-weight:700">Consultar por WhatsApp →</a>
+        </p>
+      </div>`;
+  }
+}
+
+function buildTabs() {
+  const cats  = [...new Set(todosProds.map(p => p.categoria||"General"))].sort();
+  const tabsEl = document.getElementById("cafe-tabs");
+  tabsEl.innerHTML =
+    `<button class="cafe-tab active" data-cat="TODOS" onclick="filtrar('TODOS')">🍽️ Todo el Menú</button>` +
+    cats.map(c => `<button class="cafe-tab" data-cat="${c}" onclick="filtrar('${c}')">${c}</button>`).join("");
+}
+
+function filtrar(cat) {
+  catActiva = cat;
+  document.querySelectorAll(".cafe-tab").forEach(b => b.classList.toggle("active", b.dataset.cat === cat));
+  renderGrid(cat);
+}
+
+function renderGrid(cat) {
+  const lista = cat === "TODOS" ? todosProds : todosProds.filter(p => (p.categoria||"General") === cat);
+  const wrap  = document.getElementById("cafe-grid-wrap");
+  if (!lista.length) {
+    wrap.innerHTML = `<div class="cafe-empty"><p style="font-size:36px;margin-bottom:8px">🍽️</p><p>No hay productos en esta categoría.</p></div>`;
+    return;
+  }
+  wrap.innerHTML = `<div class="cafe-grid">${lista.map(cardHTML).join("")}</div>`;
+}
+
+function cardHTML(p) {
+  const img = p.imagen
+    ? `<div class="cafe-img-wrap"><img class="cafe-img" src="${p.imagen}" alt="${p.nombre}" loading="lazy" onerror="this.parentElement.innerHTML='<div class=\\'cafe-placeholder\\'>☕</div>'"/></div>`
+    : `<div class="cafe-placeholder">☕</div>`;
+  return `
+    <div class="cafe-card">
+      ${img}
+      <div class="cafe-body">
+        <div class="cafe-cat">${p.categoria||"General"}</div>
+        <div class="cafe-name">${p.nombre}</div>
+        <div class="cafe-price">RD$ ${Number(p.precio).toLocaleString("es-DO",{minimumFractionDigits:2})}</div>
+      </div>
+    </div>`;
+}
+</script>
+</body>
+</html>
