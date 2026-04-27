@@ -1,0 +1,1362 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1" />
+  <meta name="description" content="Conoce a Sólido Auto Servicio — Misión, Visión, Valores y nuestros servicios automotrices en Santo Domingo." />
+  <meta name="theme-color" content="#0f172a" />
+  <title>Nosotros — Sólido Auto Servicio</title>
+
+  <style>
+    /* ── Reset & Variables ──────────────────────────────────────── */
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+    :root {
+      --blue:    #3b82f6;
+      --blue2:   #1d4ed8;
+      --blue3:   #60a5fa;
+      --orange:  #f97316;
+      --orange2: #ea580c;
+      --dark:    #0f172a;
+      --dark2:   #1e293b;
+      --dark3:   #111827;
+      --dark4:   #0a1120;
+      --glass:   rgba(30,41,59,0.7);
+      --glass2:  rgba(15,23,42,0.85);
+      --glow:    rgba(59,130,246,0.15);
+      --glow2:   rgba(249,115,22,0.12);
+      --white:   #ffffff;
+      --muted:   #94a3b8;
+      --muted2:  #64748b;
+      --border:  rgba(148,163,184,0.12);
+      --border2: rgba(59,130,246,0.25);
+      --green:   #22c55e;
+      --radius:  16px;
+      --radius2: 24px;
+    }
+    html { scroll-behavior: smooth; }
+    body {
+      font-family: 'Segoe UI', system-ui, Arial, sans-serif;
+      background: var(--dark);
+      color: var(--white);
+      overflow-x: hidden;
+      line-height: 1.6;
+    }
+    a { text-decoration: none; color: inherit; }
+    img { max-width: 100%; }
+    button { cursor: pointer; font-family: inherit; border: none; }
+    ::-webkit-scrollbar { width: 5px; }
+    ::-webkit-scrollbar-thumb { background: var(--blue); border-radius: 3px; }
+
+    /* ── Utils ─────────────────────────────────────────────────── */
+    .container { max-width: 1160px; margin: 0 auto; padding: 0 24px; }
+    .badge {
+      display: inline-flex; align-items: center; gap: 6px;
+      background: rgba(59,130,246,0.1);
+      color: var(--blue3);
+      border: 1px solid rgba(59,130,246,0.3);
+      border-radius: 20px;
+      padding: 5px 16px;
+      font-size: 11px; font-weight: 700;
+      letter-spacing: 1.5px; text-transform: uppercase;
+      margin-bottom: 20px;
+    }
+    .sec-title {
+      font-size: clamp(28px, 4vw, 44px);
+      font-weight: 900;
+      line-height: 1.15;
+      margin-bottom: 14px;
+    }
+    .sec-sub {
+      font-size: 16px;
+      color: var(--muted);
+      line-height: 1.75;
+      max-width: 620px;
+    }
+    .glow-dot {
+      width: 6px; height: 6px;
+      border-radius: 50%;
+      background: var(--orange);
+      display: inline-block;
+      box-shadow: 0 0 8px var(--orange);
+    }
+
+    /* ── Grid BG ────────────────────────────────────────────────── */
+    .grid-bg {
+      position: absolute; inset: 0; pointer-events: none;
+      background-image:
+        linear-gradient(rgba(59,130,246,0.04) 1px, transparent 1px),
+        linear-gradient(90deg, rgba(59,130,246,0.04) 1px, transparent 1px);
+      background-size: 48px 48px;
+    }
+
+    /* ══════════════════════════════════════════════════════════════
+       NAV
+    ══════════════════════════════════════════════════════════════ */
+    #nav {
+      position: fixed; top: 0; left: 0; right: 0; z-index: 1000;
+      padding: 0 20px; transition: all 0.3s;
+    }
+    #nav.scrolled {
+      background: rgba(10,17,32,0.97);
+      backdrop-filter: blur(16px);
+      box-shadow: 0 2px 30px rgba(0,0,0,0.4), 0 1px 0 rgba(59,130,246,0.15);
+    }
+    .nav-inner {
+      max-width: 1160px; margin: 0 auto;
+      height: 68px; display: flex;
+      align-items: center; justify-content: space-between; gap: 20px;
+    }
+    .nav-logo { display: flex; align-items: center; gap: 10px; flex-shrink: 0; }
+    .nav-logo-icon {
+      width: 38px; height: 38px; border-radius: 10px;
+      background: linear-gradient(135deg,#1e3a5f,#2563eb);
+      display: flex; align-items: center; justify-content: center;
+      font-size: 18px; border: 1.5px solid rgba(59,130,246,0.4);
+      box-shadow: 0 4px 12px rgba(37,99,235,0.3);
+    }
+    .nav-logo-text strong { display: block; font-size: 14px; font-weight: 900; color: #fff; letter-spacing: 0.3px; }
+    .nav-logo-text span  { display: block; font-size: 10px; color: #93c5fd; letter-spacing: 1.5px; font-weight: 600; }
+    .nav-links { display: flex; align-items: center; gap: 2px; }
+    .nav-links a {
+      padding: 7px 13px; border-radius: 8px;
+      font-size: 13px; font-weight: 600; color: rgba(255,255,255,0.65);
+      transition: all 0.15s;
+    }
+    .nav-links a:hover, .nav-links a.active { color: #fff; background: rgba(255,255,255,0.07); }
+    .nav-links a.active { color: var(--blue3); }
+    .nav-cta {
+      display: flex; align-items: center; gap: 7px;
+      background: #16a34a; color: #fff;
+      padding: 8px 16px; border-radius: 10px;
+      font-size: 13px; font-weight: 700;
+      transition: all 0.2s; flex-shrink: 0;
+    }
+    .nav-cta:hover { background: #15803d; transform: translateY(-1px); }
+    .hamburger {
+      display: none; flex-direction: column; gap: 5px;
+      background: none; border: none; padding: 8px; cursor: pointer;
+    }
+    .hamburger span { display: block; width: 24px; height: 2px; background: #fff; border-radius: 2px; }
+    .nav-mobile {
+      display: none; flex-direction: column; gap: 4px;
+      background: rgba(10,17,32,0.98); padding: 14px 20px;
+      border-top: 1px solid rgba(255,255,255,0.06);
+    }
+    .nav-mobile.open { display: flex; }
+    .nav-mobile a {
+      padding: 11px 14px; border-radius: 10px;
+      font-size: 14px; font-weight: 600; color: rgba(255,255,255,0.8);
+      transition: background 0.15s;
+    }
+    .nav-mobile a:hover { background: rgba(255,255,255,0.07); }
+
+    /* ══════════════════════════════════════════════════════════════
+       HERO
+    ══════════════════════════════════════════════════════════════ */
+    #hero {
+      min-height: 100vh;
+      background: linear-gradient(135deg, #040c1a 0%, #0c1f3d 45%, #040c1a 100%);
+      display: flex; align-items: center;
+      position: relative; overflow: hidden;
+      padding-top: 80px;
+    }
+    .hero-orb {
+      position: absolute; border-radius: 50%; pointer-events: none; filter: blur(80px);
+    }
+    .hero-orb-1 { width: 600px; height: 600px; background: rgba(37,99,235,0.2); top: -100px; right: -100px; }
+    .hero-orb-2 { width: 400px; height: 400px; background: rgba(249,115,22,0.1); bottom: 0; left: -50px; }
+    .hero-orb-3 { width: 300px; height: 300px; background: rgba(59,130,246,0.08); top: 40%; left: 40%; }
+    .hero-content { position: relative; z-index: 2; padding: 80px 0; }
+    .hero-tag {
+      display: inline-flex; align-items: center; gap: 8px;
+      background: rgba(37,99,235,0.12); border: 1px solid rgba(59,130,246,0.3);
+      border-radius: 24px; padding: 6px 18px;
+      font-size: 11px; font-weight: 700; letter-spacing: 2px;
+      color: var(--blue3); text-transform: uppercase; margin-bottom: 28px;
+    }
+    .hero-tag .pulse {
+      width: 7px; height: 7px; border-radius: 50%; background: var(--blue3);
+      animation: pulse 2s infinite;
+    }
+    @keyframes pulse {
+      0%,100% { opacity: 1; transform: scale(1); box-shadow: 0 0 0 0 rgba(96,165,250,0.5); }
+      50% { opacity: 0.8; transform: scale(1.15); box-shadow: 0 0 0 6px rgba(96,165,250,0); }
+    }
+    .hero-h1 {
+      font-size: clamp(40px, 7vw, 80px);
+      font-weight: 900; line-height: 1.05; margin-bottom: 10px;
+      background: linear-gradient(135deg, #fff 30%, #93c5fd 70%, #60a5fa 100%);
+      -webkit-background-clip: text; -webkit-text-fill-color: transparent; background-clip: text;
+    }
+    .hero-h1 span {
+      background: linear-gradient(135deg, #f97316, #fb923c);
+      -webkit-background-clip: text; -webkit-text-fill-color: transparent; background-clip: text;
+    }
+    .hero-desc {
+      font-size: clamp(15px, 2vw, 18px);
+      color: var(--muted); max-width: 580px;
+      line-height: 1.8; margin: 20px 0 36px;
+    }
+    .hero-desc strong { color: #cbd5e1; }
+    .hero-stats {
+      display: flex; gap: 36px; flex-wrap: wrap; margin-top: 44px;
+      padding-top: 44px; border-top: 1px solid rgba(255,255,255,0.07);
+    }
+    .hero-stat strong { display: block; font-size: 30px; font-weight: 900; color: var(--blue3); }
+    .hero-stat span   { font-size: 13px; color: var(--muted2); font-weight: 600; }
+    .hero-img-col {
+      display: flex; align-items: center; justify-content: center;
+    }
+    /* Image placeholder for hero */
+    .img-placeholder {
+      border: 2px dashed rgba(59,130,246,0.3);
+      border-radius: var(--radius2);
+      background: rgba(30,41,59,0.4);
+      display: flex; flex-direction: column;
+      align-items: center; justify-content: center; gap: 12px;
+      color: var(--muted2); font-size: 13px; font-weight: 600;
+      position: relative; overflow: hidden;
+      transition: border-color 0.2s;
+    }
+    .img-placeholder::before {
+      content: '';
+      position: absolute; inset: 0;
+      background: linear-gradient(135deg, rgba(37,99,235,0.05), rgba(249,115,22,0.03));
+    }
+    .img-placeholder .cam { font-size: 32px; opacity: 0.4; }
+    .img-placeholder .label { font-size: 11px; letter-spacing: 1px; text-transform: uppercase; opacity: 0.5; }
+    /* To replace placeholder: remove the div and add <img src="tu-imagen.jpg" alt="..." style="width:100%;height:100%;object-fit:cover;border-radius:24px"> */
+
+    .hero-ph { width: 100%; aspect-ratio: 4/3; max-width: 520px; }
+    @media (max-width: 768px) { .hero-ph { display: none; } }
+
+    /* ══════════════════════════════════════════════════════════════
+       SECTION BASE
+    ══════════════════════════════════════════════════════════════ */
+    section { padding: 96px 0; }
+    section.alt { background: rgba(10,17,32,0.6); }
+    .section-head { margin-bottom: 64px; }
+
+    /* ══════════════════════════════════════════════════════════════
+       MISIÓN / VISIÓN
+    ══════════════════════════════════════════════════════════════ */
+    #mision-vision {
+      background: linear-gradient(180deg, var(--dark4) 0%, var(--dark) 100%);
+    }
+    .mv-grid {
+      display: grid; grid-template-columns: 1fr 1fr; gap: 28px;
+      margin-top: 16px;
+    }
+    .mv-card {
+      background: var(--glass);
+      border: 1px solid var(--border);
+      border-radius: var(--radius2);
+      padding: 40px 36px;
+      position: relative; overflow: hidden;
+      backdrop-filter: blur(12px);
+      transition: transform 0.3s, box-shadow 0.3s;
+    }
+    .mv-card:hover { transform: translateY(-4px); box-shadow: 0 20px 60px rgba(0,0,0,0.3); }
+    .mv-card::before {
+      content: '';
+      position: absolute; top: 0; left: 0; right: 0; height: 3px;
+      border-radius: 24px 24px 0 0;
+    }
+    .mv-card.mision::before { background: linear-gradient(90deg, var(--blue), var(--blue3)); }
+    .mv-card.vision::before { background: linear-gradient(90deg, var(--orange), var(--orange2)); }
+    .mv-icon {
+      width: 56px; height: 56px; border-radius: 16px;
+      display: flex; align-items: center; justify-content: center;
+      font-size: 26px; margin-bottom: 20px;
+    }
+    .mv-card.mision .mv-icon { background: rgba(59,130,246,0.12); border: 1px solid rgba(59,130,246,0.25); }
+    .mv-card.vision  .mv-icon { background: rgba(249,115,22,0.12);  border: 1px solid rgba(249,115,22,0.25); }
+    .mv-card h3 { font-size: 22px; font-weight: 800; margin-bottom: 16px; }
+    .mv-card.mision h3 { color: var(--blue3); }
+    .mv-card.vision  h3 { color: #fb923c; }
+    .mv-card p { font-size: 15px; color: var(--muted); line-height: 1.8; margin-bottom: 14px; }
+    .mv-card ul { list-style: none; display: flex; flex-direction: column; gap: 10px; }
+    .mv-card ul li {
+      font-size: 14px; color: var(--muted); line-height: 1.6;
+      padding-left: 18px; position: relative;
+    }
+    .mv-card ul li::before { content: '›'; position: absolute; left: 0; color: #fb923c; font-weight: 900; }
+    /* Image placeholder inside card */
+    .mv-img-ph { width: 100%; height: 180px; border-radius: 14px; margin-bottom: 20px; }
+
+    /* ══════════════════════════════════════════════════════════════
+       ACRÓNIMO SÓLIDO
+    ══════════════════════════════════════════════════════════════ */
+    #acronimo {
+      background: linear-gradient(180deg, var(--dark) 0%, #060e1e 100%);
+      position: relative; overflow: hidden;
+    }
+    #acronimo .grid-bg { opacity: 0.6; }
+    .acronimo-grid {
+      display: grid; grid-template-columns: repeat(3, 1fr); gap: 20px;
+    }
+    .acr-card {
+      background: var(--glass);
+      border: 1px solid var(--border);
+      border-radius: var(--radius2);
+      padding: 32px 28px;
+      position: relative; overflow: hidden;
+      transition: all 0.3s;
+      cursor: default;
+    }
+    .acr-card:hover {
+      border-color: rgba(59,130,246,0.35);
+      transform: translateY(-3px);
+      box-shadow: 0 16px 48px rgba(0,0,0,0.35), 0 0 40px rgba(59,130,246,0.06);
+    }
+    .acr-letter {
+      font-size: 64px; font-weight: 900; line-height: 1;
+      margin-bottom: 12px;
+      background: linear-gradient(135deg, var(--blue3), var(--blue));
+      -webkit-background-clip: text; -webkit-text-fill-color: transparent; background-clip: text;
+      display: block;
+    }
+    .acr-card:nth-child(even) .acr-letter {
+      background: linear-gradient(135deg, #fb923c, var(--orange));
+      -webkit-background-clip: text; -webkit-text-fill-color: transparent;
+    }
+    .acr-word { font-size: 16px; font-weight: 800; color: #fff; margin-bottom: 10px; letter-spacing: 0.5px; }
+    .acr-text { font-size: 13px; color: var(--muted); line-height: 1.75; }
+    .acr-num {
+      position: absolute; bottom: 16px; right: 20px;
+      font-size: 60px; font-weight: 900; color: rgba(255,255,255,0.03);
+      line-height: 1; pointer-events: none;
+    }
+
+    /* ══════════════════════════════════════════════════════════════
+       VALORES
+    ══════════════════════════════════════════════════════════════ */
+    #valores { background: rgba(10,17,32,0.5); }
+    .valores-grid {
+      display: flex; flex-wrap: wrap; gap: 12px;
+      justify-content: center;
+    }
+    .val-chip {
+      display: flex; align-items: center; gap: 10px;
+      background: rgba(30,41,59,0.8);
+      border: 1px solid rgba(148,163,184,0.1);
+      border-radius: 50px;
+      padding: 12px 22px;
+      font-size: 14px; font-weight: 700;
+      transition: all 0.2s;
+      cursor: default;
+    }
+    .val-chip:hover {
+      border-color: rgba(59,130,246,0.4);
+      background: rgba(37,99,235,0.1);
+      transform: translateY(-2px);
+      box-shadow: 0 8px 24px rgba(0,0,0,0.25);
+    }
+    .val-chip .icon { font-size: 18px; }
+
+    /* ══════════════════════════════════════════════════════════════
+       OBJETIVOS
+    ══════════════════════════════════════════════════════════════ */
+    #objetivos {
+      background: linear-gradient(180deg, #060e1e 0%, var(--dark) 100%);
+    }
+    .obj-grid {
+      display: grid; grid-template-columns: repeat(2, 1fr); gap: 16px;
+    }
+    .obj-item {
+      display: flex; gap: 18px; align-items: flex-start;
+      background: var(--glass);
+      border: 1px solid var(--border);
+      border-radius: var(--radius);
+      padding: 24px 24px;
+      transition: all 0.25s;
+    }
+    .obj-item:hover { border-color: var(--border2); transform: translateY(-2px); }
+    .obj-num {
+      width: 40px; height: 40px; border-radius: 12px; flex-shrink: 0;
+      background: linear-gradient(135deg,#1e3a5f,#2563eb);
+      display: flex; align-items: center; justify-content: center;
+      font-size: 15px; font-weight: 900; color: var(--blue3);
+      border: 1px solid rgba(59,130,246,0.3);
+    }
+    .obj-text { font-size: 14px; color: #cbd5e1; line-height: 1.7; padding-top: 8px; }
+
+    /* ══════════════════════════════════════════════════════════════
+       PROCEDIMIENTO
+    ══════════════════════════════════════════════════════════════ */
+    #procedimiento {
+      background: linear-gradient(180deg, var(--dark) 0%, #040c1a 100%);
+      position: relative; overflow: hidden;
+    }
+    .proc-timeline { position: relative; max-width: 860px; margin: 0 auto; }
+    .proc-line {
+      position: absolute; left: 28px; top: 0; bottom: 0; width: 2px;
+      background: linear-gradient(180deg, var(--blue) 0%, var(--orange) 100%);
+      opacity: 0.3;
+    }
+    .proc-step {
+      display: flex; gap: 28px; align-items: flex-start;
+      padding: 0 0 36px 0;
+      position: relative;
+    }
+    .proc-step:last-child { padding-bottom: 0; }
+    .proc-dot {
+      width: 58px; height: 58px; border-radius: 50%; flex-shrink: 0;
+      background: linear-gradient(135deg, #1e3a5f, #1d4ed8);
+      border: 2px solid rgba(59,130,246,0.4);
+      display: flex; align-items: center; justify-content: center;
+      font-size: 20px; position: relative; z-index: 2;
+      box-shadow: 0 0 20px rgba(37,99,235,0.25);
+      transition: all 0.3s;
+    }
+    .proc-step:hover .proc-dot {
+      box-shadow: 0 0 32px rgba(37,99,235,0.5);
+      border-color: var(--blue3);
+      transform: scale(1.08);
+    }
+    .proc-body {
+      background: var(--glass);
+      border: 1px solid var(--border);
+      border-radius: var(--radius);
+      padding: 22px 26px; flex: 1;
+      transition: all 0.25s;
+    }
+    .proc-step:hover .proc-body { border-color: var(--border2); }
+    .proc-step-num { font-size: 11px; font-weight: 700; color: var(--blue); letter-spacing: 1.5px; text-transform: uppercase; margin-bottom: 4px; }
+    .proc-body h4 { font-size: 17px; font-weight: 800; color: #fff; margin-bottom: 10px; }
+    .proc-body ul { list-style: none; display: flex; flex-direction: column; gap: 6px; }
+    .proc-body ul li {
+      font-size: 13px; color: var(--muted); padding-left: 16px; position: relative; line-height: 1.6;
+    }
+    .proc-body ul li::before { content: '•'; position: absolute; left: 0; color: var(--blue); }
+    .proc-extra {
+      margin-top: 48px;
+      background: rgba(37,99,235,0.06);
+      border: 1px solid rgba(59,130,246,0.2);
+      border-radius: var(--radius);
+      padding: 24px 28px; max-width: 860px; margin-left: auto; margin-right: auto;
+    }
+    .proc-extra h4 { font-size: 14px; font-weight: 800; color: var(--blue3); margin-bottom: 14px; text-transform: uppercase; letter-spacing: 1px; }
+    .proc-extra ul { list-style: none; display: flex; flex-direction: column; gap: 8px; }
+    .proc-extra ul li { font-size: 13px; color: var(--muted); padding-left: 18px; position: relative; line-height: 1.6; }
+    .proc-extra ul li::before { content: '→'; position: absolute; left: 0; color: var(--blue); font-size: 11px; top: 1px; }
+
+    /* ══════════════════════════════════════════════════════════════
+       SERVICIOS (ACORDEÓN)
+    ══════════════════════════════════════════════════════════════ */
+    #servicios {
+      background: linear-gradient(180deg, #040c1a 0%, var(--dark) 100%);
+    }
+    .srv-grid {
+      display: flex; flex-direction: column; gap: 12px;
+    }
+    .srv-item {
+      background: rgba(20,32,54,0.8);
+      border: 1px solid var(--border);
+      border-radius: var(--radius);
+      overflow: hidden;
+      transition: border-color 0.25s;
+    }
+    .srv-item.open {
+      border-color: rgba(59,130,246,0.35);
+      box-shadow: 0 8px 32px rgba(0,0,0,0.3), 0 0 40px rgba(37,99,235,0.06);
+    }
+    .srv-header {
+      display: flex; align-items: center; gap: 18px;
+      padding: 22px 26px; cursor: pointer;
+      user-select: none; background: none;
+      width: 100%; text-align: left; color: #fff;
+      border-radius: var(--radius);
+      transition: background 0.2s;
+    }
+    .srv-header:hover { background: rgba(59,130,246,0.04); }
+    .srv-icon-wrap {
+      width: 48px; height: 48px; border-radius: 14px; flex-shrink: 0;
+      display: flex; align-items: center; justify-content: center;
+      font-size: 22px;
+      background: rgba(30,41,59,0.8);
+      border: 1px solid rgba(148,163,184,0.1);
+      transition: all 0.3s;
+    }
+    .srv-item.open .srv-icon-wrap {
+      background: rgba(37,99,235,0.15);
+      border-color: rgba(59,130,246,0.35);
+      box-shadow: 0 4px 16px rgba(37,99,235,0.2);
+    }
+    .srv-title-block { flex: 1; }
+    .srv-title { font-size: 17px; font-weight: 800; color: #f1f5f9; }
+    .srv-subtitle { font-size: 13px; color: var(--muted2); margin-top: 2px; }
+    .srv-arrow {
+      width: 32px; height: 32px; border-radius: 8px; flex-shrink: 0;
+      display: flex; align-items: center; justify-content: center;
+      background: rgba(255,255,255,0.04); border: 1px solid rgba(255,255,255,0.07);
+      color: var(--muted); font-size: 14px;
+      transition: all 0.3s;
+    }
+    .srv-item.open .srv-arrow {
+      background: rgba(37,99,235,0.15); border-color: rgba(59,130,246,0.3);
+      color: var(--blue3); transform: rotate(180deg);
+    }
+    .srv-body {
+      display: none; padding: 0 26px 28px 92px;
+      border-top: 1px solid rgba(255,255,255,0.05);
+      animation: fadeIn 0.25s ease;
+    }
+    .srv-item.open .srv-body { display: block; }
+    @keyframes fadeIn { from { opacity: 0; transform: translateY(-6px); } to { opacity: 1; transform: translateY(0); } }
+
+    .srv-body p { font-size: 14px; color: #94a3b8; line-height: 1.8; margin-bottom: 18px; margin-top: 18px; }
+    .srv-body h5 { font-size: 12px; font-weight: 700; color: var(--blue); text-transform: uppercase; letter-spacing: 1px; margin-bottom: 10px; }
+    .srv-body ul { list-style: none; display: flex; flex-direction: column; gap: 8px; margin-bottom: 18px; }
+    .srv-body ul li {
+      font-size: 13px; color: var(--muted); line-height: 1.65;
+      padding-left: 20px; position: relative;
+    }
+    .srv-body ul li::before {
+      content: ''; position: absolute; left: 0; top: 7px;
+      width: 8px; height: 8px; border-radius: 50%;
+      background: var(--blue); opacity: 0.6;
+    }
+    .srv-body .sub-grid {
+      display: grid; grid-template-columns: repeat(2, 1fr); gap: 10px; margin-bottom: 18px;
+    }
+    .sub-tag {
+      background: rgba(37,99,235,0.08);
+      border: 1px solid rgba(59,130,246,0.2);
+      border-radius: 10px;
+      padding: 10px 14px;
+      font-size: 13px; color: #cbd5e1; font-weight: 600;
+      display: flex; align-items: center; gap: 8px;
+    }
+    /* Service image placeholder */
+    .srv-img-ph { width: 100%; height: 200px; border-radius: 14px; margin-top: 8px; }
+
+    /* ══════════════════════════════════════════════════════════════
+       CTA STRIP
+    ══════════════════════════════════════════════════════════════ */
+    #cta {
+      background: linear-gradient(135deg, #0c1f3d 0%, #060e1e 50%, #0c1f3d 100%);
+      padding: 80px 0; text-align: center; position: relative; overflow: hidden;
+    }
+    #cta .grid-bg { opacity: 0.4; }
+    .cta-glow {
+      position: absolute; width: 500px; height: 300px; border-radius: 50%;
+      background: rgba(37,99,235,0.12); filter: blur(80px);
+      top: 50%; left: 50%; transform: translate(-50%,-50%); pointer-events: none;
+    }
+    #cta h2 { font-size: clamp(26px,4vw,42px); font-weight: 900; margin-bottom: 14px; position: relative; z-index: 1; }
+    #cta p  { font-size: 16px; color: var(--muted); margin-bottom: 36px; position: relative; z-index: 1; }
+    .cta-btns { display: flex; gap: 16px; justify-content: center; flex-wrap: wrap; position: relative; z-index: 1; }
+    .btn-primary {
+      display: inline-flex; align-items: center; gap: 8px;
+      background: var(--blue); color: #fff;
+      padding: 14px 28px; border-radius: 12px;
+      font-weight: 700; font-size: 15px; border: none;
+      box-shadow: 0 4px 20px rgba(59,130,246,0.35);
+      transition: all 0.2s; cursor: pointer;
+    }
+    .btn-primary:hover { background: var(--blue2); transform: translateY(-2px); box-shadow: 0 8px 28px rgba(59,130,246,0.45); }
+    .btn-wa {
+      display: inline-flex; align-items: center; gap: 8px;
+      background: #16a34a; color: #fff;
+      padding: 14px 28px; border-radius: 12px;
+      font-weight: 700; font-size: 15px; border: none;
+      box-shadow: 0 4px 20px rgba(22,163,74,0.35);
+      transition: all 0.2s; cursor: pointer;
+    }
+    .btn-wa:hover { background: #15803d; transform: translateY(-2px); }
+
+    /* ══════════════════════════════════════════════════════════════
+       FOOTER
+    ══════════════════════════════════════════════════════════════ */
+    footer {
+      background: var(--dark4);
+      border-top: 1px solid rgba(255,255,255,0.06);
+      padding: 44px 0 28px;
+    }
+    .footer-inner {
+      display: flex; align-items: center; justify-content: space-between;
+      gap: 20px; flex-wrap: wrap; margin-bottom: 28px;
+    }
+    .footer-brand strong { font-size: 16px; font-weight: 900; color: #fff; }
+    .footer-brand span   { display: block; font-size: 11px; color: var(--muted2); letter-spacing: 1.5px; margin-top: 2px; }
+    .footer-links { display: flex; gap: 8px; flex-wrap: wrap; }
+    .footer-links a {
+      font-size: 13px; color: var(--muted); padding: 6px 12px;
+      border-radius: 8px; transition: all 0.15s;
+    }
+    .footer-links a:hover { color: #fff; background: rgba(255,255,255,0.06); }
+    .footer-copy {
+      font-size: 12px; color: var(--muted2); text-align: center;
+      padding-top: 20px; border-top: 1px solid rgba(255,255,255,0.05);
+    }
+
+    /* ══════════════════════════════════════════════════════════════
+       FLOATING WA
+    ══════════════════════════════════════════════════════════════ */
+    #wa-fab {
+      position: fixed; bottom: 28px; right: 28px; z-index: 999;
+      width: 58px; height: 58px; border-radius: 50%;
+      background: #16a34a; color: #fff; font-size: 26px;
+      display: flex; align-items: center; justify-content: center;
+      box-shadow: 0 6px 24px rgba(22,163,74,0.45);
+      transition: all 0.2s; text-decoration: none;
+      animation: waBounce 3s ease-in-out infinite;
+    }
+    #wa-fab:hover { transform: scale(1.1); box-shadow: 0 8px 32px rgba(22,163,74,0.6); }
+    @keyframes waBounce {
+      0%,100% { transform: translateY(0); }
+      50% { transform: translateY(-4px); }
+    }
+
+    /* ══════════════════════════════════════════════════════════════
+       REVEAL ANIMATIONS
+    ══════════════════════════════════════════════════════════════ */
+    .reveal { opacity: 0; transform: translateY(24px); transition: opacity 0.6s ease, transform 0.6s ease; }
+    .reveal.visible { opacity: 1; transform: translateY(0); }
+    .reveal-left  { opacity: 0; transform: translateX(-28px); transition: opacity 0.6s ease, transform 0.6s ease; }
+    .reveal-right { opacity: 0; transform: translateX(28px);  transition: opacity 0.6s ease, transform 0.6s ease; }
+    .reveal-left.visible, .reveal-right.visible { opacity: 1; transform: translateX(0); }
+    .delay-1 { transition-delay: 0.1s; }
+    .delay-2 { transition-delay: 0.2s; }
+    .delay-3 { transition-delay: 0.3s; }
+    .delay-4 { transition-delay: 0.4s; }
+    .delay-5 { transition-delay: 0.5s; }
+
+    /* ══════════════════════════════════════════════════════════════
+       RESPONSIVE
+    ══════════════════════════════════════════════════════════════ */
+    @media (max-width: 900px) {
+      .mv-grid { grid-template-columns: 1fr; }
+      .acronimo-grid { grid-template-columns: repeat(2, 1fr); }
+      .obj-grid { grid-template-columns: 1fr; }
+      .srv-body { padding-left: 26px; }
+      .sub-grid { grid-template-columns: 1fr; }
+    }
+    @media (max-width: 640px) {
+      section { padding: 64px 0; }
+      .acronimo-grid { grid-template-columns: 1fr; }
+      .nav-links, .nav-cta { display: none; }
+      .hamburger { display: flex; }
+      .hero-h1 { font-size: clamp(32px,10vw,52px); }
+      .hero-stats { gap: 24px; }
+      .proc-body { padding: 16px 18px; }
+      .proc-step { gap: 16px; }
+      .proc-dot { width: 46px; height: 46px; font-size: 16px; }
+      .proc-line { left: 22px; }
+      .srv-header { padding: 18px 18px; }
+      .srv-icon-wrap { width: 40px; height: 40px; font-size: 18px; border-radius: 10px; }
+      .footer-inner { flex-direction: column; align-items: flex-start; }
+    }
+  </style>
+</head>
+<body>
+
+<!-- ══ NAV ══════════════════════════════════════════════════════════ -->
+<nav id="nav">
+  <div class="nav-inner">
+    <a href="index.html" class="nav-logo">
+      <div class="nav-logo-icon">🔧</div>
+      <div class="nav-logo-text">
+        <strong>SÓLIDO AUTO</strong>
+        <span>SERVICIO &amp; CAFÉ</span>
+      </div>
+    </a>
+    <div class="nav-links">
+      <a href="index.html#servicios">Servicios</a>
+      <a href="index.html#consulta">Mi Vehículo</a>
+      <a href="index.html#cafeteria">Cafetería</a>
+      <a href="nosotros.html" class="active">Nosotros</a>
+      <a href="index.html#contacto">Contacto</a>
+    </div>
+    <a id="nav-wa" class="nav-cta" href="https://wa.me/18097122027" target="_blank" rel="noopener">
+      💬 WhatsApp
+    </a>
+    <button class="hamburger" id="hamburger" aria-label="Abrir menú">
+      <span></span><span></span><span></span>
+    </button>
+  </div>
+  <div class="nav-mobile" id="nav-mobile">
+    <a href="index.html#servicios"  onclick="closeMob()">🔧 Servicios</a>
+    <a href="index.html#consulta"   onclick="closeMob()">🚗 Mi Vehículo</a>
+    <a href="index.html#cafeteria"  onclick="closeMob()">☕ Cafetería</a>
+    <a href="nosotros.html"         onclick="closeMob()" style="color:#93c5fd">🏢 Nosotros</a>
+    <a href="index.html#contacto"   onclick="closeMob()">📍 Contacto</a>
+    <a href="https://wa.me/18097122027" target="_blank" rel="noopener" onclick="closeMob()" style="color:#4ade80">💬 WhatsApp</a>
+  </div>
+</nav>
+
+<!-- ══ HERO ═════════════════════════════════════════════════════════ -->
+<section id="hero">
+  <div class="grid-bg"></div>
+  <div class="hero-orb hero-orb-1"></div>
+  <div class="hero-orb hero-orb-2"></div>
+  <div class="hero-orb hero-orb-3"></div>
+  <div class="container">
+    <div style="display:grid;grid-template-columns:1fr auto;gap:48px;align-items:center;">
+      <div class="hero-content">
+        <div class="hero-tag"><span class="pulse"></span> Quiénes Somos</div>
+        <h1 class="hero-h1">Más que un taller,<br><span>una Experiencia</span></h1>
+        <p class="hero-desc">
+          Somos una empresa de <strong>mantenimiento automotriz</strong> dedicada a la conservación de vehículos.
+          Brindamos mantenimientos de calidad de <strong>clase mundial</strong> con un equipo de profesionales
+          guiados a la mejora continua.
+        </p>
+        <p class="hero-desc" style="margin-top:-10px;">
+          Nuestro objetivo es brindar a los clientes un <strong>servicio de calidad</strong> que los convierta en parte
+          de nuestra familia automotriz.
+        </p>
+        <div class="hero-stats">
+          <div class="hero-stat"><strong>+500</strong><span>Clientes atendidos</span></div>
+          <div class="hero-stat"><strong>9</strong><span>Servicios especializados</span></div>
+          <div class="hero-stat"><strong>100%</strong><span>Compromiso de calidad</span></div>
+        </div>
+      </div>
+      <div class="hero-img-col">
+        <!--
+          IMAGEN HERO:
+          Para agregar imagen, reemplaza este div con:
+          <img src="foto-taller.jpg" alt="Sólido Auto Servicio" style="width:480px;border-radius:24px;box-shadow:0 24px 80px rgba(0,0,0,0.5)">
+        -->
+        <div class="img-placeholder hero-ph">
+          <span class="cam">📷</span>
+          <span class="label">Foto del taller / equipo</span>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ══ MISIÓN / VISIÓN ════════════════════════════════════════════════ -->
+<section id="mision-vision">
+  <div class="container">
+    <div class="section-head">
+      <div class="badge reveal">🎯 Propósito</div>
+      <h2 class="sec-title reveal delay-1">Nuestra <span style="color:var(--blue3)">Identidad</span></h2>
+      <p class="sec-sub reveal delay-2">Los principios que guían cada acción y decisión dentro de nuestro taller.</p>
+    </div>
+    <div class="mv-grid">
+      <!-- MISIÓN -->
+      <div class="mv-card mision reveal-left">
+        <!--
+          IMAGEN MISIÓN:
+          Descomenta y ajusta para agregar imagen:
+          <img src="mision.jpg" alt="Nuestra Misión" style="width:100%;height:180px;object-fit:cover;border-radius:14px;margin-bottom:20px">
+        -->
+        <!-- <div class="img-placeholder mv-img-ph"><span class="cam">📷</span><span class="label">Foto misión</span></div> -->
+        <div class="mv-icon">🎯</div>
+        <h3>Misión</h3>
+        <p>Estandarizar los protocolos para la intervención automotriz, agilizando procesos y procedimientos con los más altos estándares.</p>
+        <ul>
+          <li>Brindar un espacio acogedor donde los clientes puedan compartir con sus familiares mientras esperan.</li>
+          <li>Contar con un área especial para niños, para una espera confortable y agradable.</li>
+          <li>Equipos modernos y la última tecnología para minimizar tiempos muertos.</li>
+          <li>Espacio integral: pintura, electricidad, aceite, capacitación, venta de piezas, alineación y balanceo.</li>
+        </ul>
+      </div>
+      <!-- VISIÓN -->
+      <div class="mv-card vision reveal-right">
+        <!-- <div class="img-placeholder mv-img-ph"><span class="cam">📷</span><span class="label">Foto visión</span></div> -->
+        <div class="mv-icon">🔭</div>
+        <h3>Visión</h3>
+        <p>Ser un taller automotriz reconocido por su excelencia en el servicio, su institucionalidad y su capacidad de adaptación a las nuevas tecnologías del sector, destacándonos por organización interna, limpieza y rapidez en la atención.</p>
+        <ul>
+          <li>Convertirnos en referente de confianza y profesionalismo en nuestra comunidad.</li>
+          <li>Tener sucursales en otras partes del país para seguir brindando todos nuestros servicios.</li>
+          <li>Crear una marca que demuestre el compromiso de ser los mejores.</li>
+          <li>Generar beneficios económicos que permitan la estabilidad y crecimiento del negocio.</li>
+        </ul>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ══ ACRÓNIMO SÓLIDO ════════════════════════════════════════════════ -->
+<section id="acronimo">
+  <div class="grid-bg"></div>
+  <div class="container" style="position:relative;z-index:1;">
+    <div class="section-head">
+      <div class="badge reveal">✦ Nuestro ADN</div>
+      <h2 class="sec-title reveal delay-1">El significado de <span style="color:var(--orange)">SÓLIDO</span></h2>
+      <p class="sec-sub reveal delay-2">Cada letra de nuestro nombre representa un pilar fundamental de nuestra filosofía de trabajo.</p>
+    </div>
+    <div class="acronimo-grid">
+
+      <div class="acr-card reveal delay-1">
+        <span class="acr-letter">S</span>
+        <div class="acr-word">Servicio</div>
+        <p class="acr-text">Atención personalizada, honesta y eficiente. Cada cliente recibe orientación clara sobre el estado de su vehículo, reparaciones necesarias y costos. Resolvemos problemas de forma rápida y segura garantizando una experiencia que genera tranquilidad y fidelidad.</p>
+        <div class="acr-num">S</div>
+      </div>
+
+      <div class="acr-card reveal delay-2">
+        <span class="acr-letter">O</span>
+        <div class="acr-word">Organización</div>
+        <p class="acr-text">Contamos con áreas definidas para recepción, diagnóstico, reparación y almacenamiento. Cada orden de trabajo se registra y da seguimiento, evitando confusiones y retrasos. Esta estructura nos permite trabajar con mayor precisión y ofrecer tiempos de entrega más confiables.</p>
+        <div class="acr-num">O</div>
+      </div>
+
+      <div class="acr-card reveal delay-3">
+        <span class="acr-letter">L</span>
+        <div class="acr-word">Limpieza</div>
+        <p class="acr-text">Instalaciones limpias y ordenadas tanto en áreas de trabajo como en atención al cliente. Las herramientas se limpian y guardan correctamente, los derrames se atienden de inmediato y los vehículos se entregan higiénicos. La limpieza refleja nuestro profesionalismo.</p>
+        <div class="acr-num">L</div>
+      </div>
+
+      <div class="acr-card reveal delay-1">
+        <span class="acr-letter">I</span>
+        <div class="acr-word">Institucionalidad</div>
+        <p class="acr-text">Operamos bajo normas internas claras y protocolos técnicos estandarizados. Cumplimos con políticas de seguridad laboral, uso adecuado de equipos, manejo responsable de residuos y procedimientos de atención al cliente. Garantizamos consistencia, legalidad y calidad.</p>
+        <div class="acr-num">I</div>
+      </div>
+
+      <div class="acr-card reveal delay-2">
+        <span class="acr-letter">D</span>
+        <div class="acr-word">Dinamismo</div>
+        <p class="acr-text">Equipo en constante actualización técnica sobre nuevas tecnologías automotrices. Respondemos con rapidez a las necesidades del cliente, adaptándonos a distintos tipos de vehículos. El dinamismo se refleja en nuestra capacidad de resolver problemas de forma ágil.</p>
+        <div class="acr-num">D</div>
+      </div>
+
+      <div class="acr-card reveal delay-3">
+        <span class="acr-letter">O</span>
+        <div class="acr-word">Orden</div>
+        <p class="acr-text">Las herramientas están debidamente clasificadas, los repuestos etiquetados y los espacios delimitados. Cada vehículo sigue una secuencia lógica de diagnóstico, reparación y verificación final. El orden reduce errores, mejora la seguridad y aumenta la eficiencia.</p>
+        <div class="acr-num">O</div>
+      </div>
+
+    </div>
+  </div>
+</section>
+
+<!-- ══ VALORES ═══════════════════════════════════════════════════════ -->
+<section id="valores">
+  <div class="container">
+    <div class="section-head" style="text-align:center;">
+      <div class="badge reveal">💎 Valores</div>
+      <h2 class="sec-title reveal delay-1">Valores <span style="color:var(--blue3)">Institucionales</span></h2>
+      <p class="sec-sub reveal delay-2" style="margin:0 auto;">Los principios que definen quiénes somos y cómo actuamos en cada interacción con nuestros clientes.</p>
+    </div>
+    <div class="valores-grid reveal">
+      <div class="val-chip"><span class="icon">🛡️</span> Responsabilidad</div>
+      <div class="val-chip"><span class="icon">💡</span> Innovación</div>
+      <div class="val-chip"><span class="icon">📐</span> Organización y Disciplina</div>
+      <div class="val-chip"><span class="icon">🔍</span> Transparencia</div>
+      <div class="val-chip"><span class="icon">🤝</span> Orientación al Cliente</div>
+      <div class="val-chip"><span class="icon">✅</span> Honestidad</div>
+      <div class="val-chip"><span class="icon">👥</span> Trabajo en Equipo</div>
+      <div class="val-chip"><span class="icon">🌟</span> Respeto</div>
+      <div class="val-chip"><span class="icon">🎓</span> Profesionalismo</div>
+      <div class="val-chip"><span class="icon">📈</span> Enfoque en el Crecimiento</div>
+      <div class="val-chip"><span class="icon">🔒</span> Seguridad</div>
+    </div>
+  </div>
+</section>
+
+<!-- ══ OBJETIVOS ══════════════════════════════════════════════════════ -->
+<section id="objetivos">
+  <div class="container">
+    <div class="section-head">
+      <div class="badge reveal">🎯 Objetivos</div>
+      <h2 class="sec-title reveal delay-1">Objetivos <span style="color:var(--blue3)">Específicos</span></h2>
+      <p class="sec-sub reveal delay-2">Las metas concretas que orientan nuestras operaciones diarias y nuestro crecimiento como empresa.</p>
+    </div>
+    <div class="obj-grid">
+      <div class="obj-item reveal delay-1">
+        <div class="obj-num">1</div>
+        <p class="obj-text">Garantizar la calidad del servicio, mediante la aplicación de procedimientos técnicos adecuados y el uso de repuestos certificados.</p>
+      </div>
+      <div class="obj-item reveal delay-2">
+        <div class="obj-num">2</div>
+        <p class="obj-text">Optimizar los tiempos de atención, reduciendo los períodos de espera y mejorando la programación de los trabajos.</p>
+      </div>
+      <div class="obj-item reveal delay-1">
+        <div class="obj-num">3</div>
+        <p class="obj-text">Fortalecer la confianza del cliente, ofreciendo diagnósticos precisos, presupuestos transparentes y atención personalizada.</p>
+      </div>
+      <div class="obj-item reveal delay-2">
+        <div class="obj-num">4</div>
+        <p class="obj-text">Incrementar la rentabilidad del negocio, controlando costos operativos y aumentando el volumen de servicios prestados.</p>
+      </div>
+      <div class="obj-item reveal delay-1">
+        <div class="obj-num">5</div>
+        <p class="obj-text">Promover la capacitación continua del personal, manteniendo al equipo técnico actualizado frente a las nuevas tecnologías automotrices.</p>
+      </div>
+      <div class="obj-item reveal delay-2">
+        <div class="obj-num">6</div>
+        <p class="obj-text">Cumplir con las normas de seguridad e higiene, protegiendo al personal, a los clientes y a las instalaciones del taller.</p>
+      </div>
+      <div class="obj-item reveal" style="grid-column:1/-1">
+        <div class="obj-num">7</div>
+        <p class="obj-text">Consolidar la presencia del taller en el mercado local, mediante estrategias de promoción y fidelización de clientes.</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ══ PROCEDIMIENTO ══════════════════════════════════════════════════ -->
+<section id="procedimiento">
+  <div class="container">
+    <div class="section-head">
+      <div class="badge reveal">⚙️ Proceso</div>
+      <h2 class="sec-title reveal delay-1">Procedimiento de <span style="color:var(--blue3)">Verificación y Diagnóstico</span></h2>
+      <p class="sec-sub reveal delay-2">Un proceso estandarizado de 9 pasos que garantiza calidad, transparencia con el cliente y eficiencia operativa en cada intervención.</p>
+    </div>
+
+    <div class="proc-timeline">
+      <div class="proc-line"></div>
+
+      <div class="proc-step reveal">
+        <div class="proc-dot">📋</div>
+        <div class="proc-body">
+          <div class="proc-step-num">Paso 01</div>
+          <h4>Recepción del Vehículo</h4>
+          <ul>
+            <li>Registro de datos del cliente, vehículo y motivo de la visita.</li>
+            <li>Verificación exterior e interior con hoja de chequeo para registrar condiciones y defectos.</li>
+            <li>Generación de orden de trabajo inicial y asignación a técnico calificado.</li>
+          </ul>
+        </div>
+      </div>
+
+      <div class="proc-step reveal">
+        <div class="proc-dot">🔍</div>
+        <div class="proc-body">
+          <div class="proc-step-num">Paso 02</div>
+          <h4>Evaluación y Diagnóstico</h4>
+          <ul>
+            <li>El técnico traslada el vehículo al área correspondiente.</li>
+            <li>Inspección visual y técnica con herramientas de diagnóstico especializadas.</li>
+            <li>Identificación de fallas mecánicas, eléctricas o electrónicas y documentación detallada.</li>
+          </ul>
+        </div>
+      </div>
+
+      <div class="proc-step reveal">
+        <div class="proc-dot">📊</div>
+        <div class="proc-body">
+          <div class="proc-step-num">Paso 03</div>
+          <h4>Reporte de Hallazgos</h4>
+          <ul>
+            <li>El técnico informa resultados al Administrador o recepción.</li>
+            <li>Se elabora informe técnico con fallas detectadas y recomendaciones.</li>
+            <li>El cliente es notificado sobre el estado del vehículo de manera clara y transparente.</li>
+          </ul>
+        </div>
+      </div>
+
+      <div class="proc-step reveal">
+        <div class="proc-dot">💰</div>
+        <div class="proc-body">
+          <div class="proc-step-num">Paso 04</div>
+          <h4>Elaboración de Cotización</h4>
+          <ul>
+            <li>Cotización detallada que incluye mano de obra, repuestos y tiempos estimados.</li>
+            <li>Consulta con proveedores externos de ser necesario.</li>
+            <li>Presentación al cliente con información económica completa para su aprobación.</li>
+          </ul>
+        </div>
+      </div>
+
+      <div class="proc-step reveal">
+        <div class="proc-dot">✅</div>
+        <div class="proc-body">
+          <div class="proc-step-num">Paso 05</div>
+          <h4>Aprobación del Cliente</h4>
+          <ul>
+            <li>Ningún trabajo se inicia sin autorización previa del cliente.</li>
+            <li>La aprobación puede ser verbal o escrita, según las políticas del taller.</li>
+          </ul>
+        </div>
+      </div>
+
+      <div class="proc-step reveal">
+        <div class="proc-dot">🔧</div>
+        <div class="proc-body">
+          <div class="proc-step-num">Paso 06</div>
+          <h4>Ejecución del Servicio</h4>
+          <ul>
+            <li>Reparaciones y mantenimientos realizados por técnico asignado.</li>
+            <li>Se siguen los procedimientos técnicos y estándares de calidad establecidos.</li>
+            <li>Comunicación interna constante sobre el avance del trabajo.</li>
+          </ul>
+        </div>
+      </div>
+
+      <div class="proc-step reveal">
+        <div class="proc-dot">🔬</div>
+        <div class="proc-body">
+          <div class="proc-step-num">Paso 07</div>
+          <h4>Control de Calidad</h4>
+          <ul>
+            <li>Revisión exhaustiva para verificar que las reparaciones se ejecutaron correctamente.</li>
+            <li>Comprobación del funcionamiento del vehículo antes de la entrega.</li>
+          </ul>
+        </div>
+      </div>
+
+      <div class="proc-step reveal">
+        <div class="proc-dot">🚿</div>
+        <div class="proc-body">
+          <div class="proc-step-num">Paso 08</div>
+          <h4>Limpieza y Preparación de Entrega</h4>
+          <ul>
+            <li>El vehículo es trasladado al área de lavado.</li>
+            <li>Limpieza básica o detallada según el servicio ofrecido.</li>
+            <li>Preparación en condiciones óptimas para la entrega al cliente.</li>
+          </ul>
+        </div>
+      </div>
+
+      <div class="proc-step reveal">
+        <div class="proc-dot">🚗</div>
+        <div class="proc-body">
+          <div class="proc-step-num">Paso 09</div>
+          <h4>Entrega del Vehículo</h4>
+          <ul>
+            <li>Notificación al cliente de la finalización del servicio.</li>
+            <li>Explicación de trabajos realizados y recomendaciones futuras.</li>
+            <li>Facturación, cobro y firma de conformidad del servicio recibido.</li>
+          </ul>
+        </div>
+      </div>
+
+    </div>
+
+    <div class="proc-extra reveal">
+      <h4>📌 Mejora Continua</h4>
+      <ul>
+        <li>Mantener registro histórico de cada vehículo para futuros diagnósticos.</li>
+        <li>Implementar checklist de inspección para estandarizar evaluaciones.</li>
+        <li>Garantizar tiempos de respuesta adecuados para mejorar la experiencia del cliente.</li>
+        <li>Promover la comunicación constante con el cliente durante todo el proceso.</li>
+        <li>Aplicar normas de seguridad en cada etapa del servicio.</li>
+      </ul>
+    </div>
+
+  </div>
+</section>
+
+<!-- ══ SERVICIOS (ACORDEÓN) ═══════════════════════════════════════════ -->
+<section id="servicios">
+  <div class="container">
+    <div class="section-head">
+      <div class="badge reveal">🔩 Servicios</div>
+      <h2 class="sec-title reveal delay-1">Nuestros <span style="color:var(--orange)">Servicios</span></h2>
+      <p class="sec-sub reveal delay-2">Soluciones automotrices integrales con los más altos estándares de calidad. Haz clic en cada servicio para ver los detalles.</p>
+    </div>
+
+    <div class="srv-grid">
+
+      <!-- 1. Alineación y Balanceo -->
+      <div class="srv-item reveal" id="srv-1">
+        <button class="srv-header" onclick="toggleSrv('srv-1')">
+          <div class="srv-icon-wrap">⚖️</div>
+          <div class="srv-title-block">
+            <div class="srv-title">Alineación y Balanceo Automotriz</div>
+            <div class="srv-subtitle">Geometría de ruedas · Equipos de alta tecnología</div>
+          </div>
+          <div class="srv-arrow">▼</div>
+        </button>
+        <div class="srv-body">
+          <!--
+            IMAGEN SERVICIO:
+            Para agregar imagen, descomenta y ajusta:
+            <img src="alineacion.jpg" alt="Alineación y Balanceo" class="srv-img-ph" style="object-fit:cover">
+          -->
+          <!-- <div class="img-placeholder srv-img-ph"><span class="cam">📷</span><span class="label">Foto alineación</span></div> -->
+          <p>Servicio especializado orientado al ajuste preciso de la geometría de las ruedas, utilizando equipos de alta tecnología que cumplen con estándares internacionales, para garantizar estabilidad, control de la dirección, seguridad en la conducción y prolongar la vida útil de los neumáticos.</p>
+          <h5>Parámetros Técnicos</h5>
+          <div class="sub-grid">
+            <div class="sub-tag">⚙️ Ángulo de Caída (Camber)</div>
+            <div class="sub-tag">↪️ Ángulo de Avance (Caster)</div>
+            <div class="sub-tag">↔️ Convergencia / Divergencia (Toe)</div>
+            <div class="sub-tag">📐 Ángulo de Empuje (Thrust Angle)</div>
+            <div class="sub-tag">🔄 Centrado del Volante</div>
+          </div>
+          <ul>
+            <li>Verificación de inclinación de la rueda respecto a la vertical para evitar desgaste irregular.</li>
+            <li>Evaluación del ángulo del eje de dirección — influye en la estabilidad en línea recta.</li>
+            <li>Ajuste de orientación de ruedas hacia adentro o afuera, impacta en desgaste y estabilidad.</li>
+            <li>Verificación de la alineación del eje trasero para garantizar avance en línea recta.</li>
+            <li>Ajuste final del volante para conducción en línea perfecta.</li>
+          </ul>
+        </div>
+      </div>
+
+      <!-- 2. Cambio de Aceite -->
+      <div class="srv-item reveal" id="srv-2">
+        <button class="srv-header" onclick="toggleSrv('srv-2')">
+          <div class="srv-icon-wrap">🛢️</div>
+          <div class="srv-title-block">
+            <div class="srv-title">Cambio de Aceite</div>
+            <div class="srv-subtitle">Aceites de calidad · Protección óptima del motor</div>
+          </div>
+          <div class="srv-arrow">▼</div>
+        </button>
+        <div class="srv-body">
+          <!-- <div class="img-placeholder srv-img-ph"><span class="cam">📷</span><span class="label">Foto cambio de aceite</span></div> -->
+          <p>Brindamos este servicio con los mejores aceites de calidad más utilizados en el mercado, para brindar a los motores una protección óptima, buscando alargar su vida útil según los manuales del fabricante.</p>
+          <ul>
+            <li>Selección del aceite adecuado según especificaciones del fabricante del vehículo.</li>
+            <li>Inspección del filtro de aceite y reemplazo de ser necesario.</li>
+            <li>Verificación de niveles de fluidos complementarios durante el servicio.</li>
+            <li>Registro en el historial del vehículo para seguimiento preventivo.</li>
+          </ul>
+        </div>
+      </div>
+
+      <!-- 3. Cambio de Fluidos -->
+      <div class="srv-item reveal" id="srv-3">
+        <button class="srv-header" onclick="toggleSrv('srv-3')">
+          <div class="srv-icon-wrap">💧</div>
+          <div class="srv-title-block">
+            <div class="srv-title">Cambio de Fluidos del Motor</div>
+            <div class="srv-subtitle">Diagnóstico previo · Anticongelante · Líquido de frenos</div>
+          </div>
+          <div class="srv-arrow">▼</div>
+        </button>
+        <div class="srv-body">
+          <!-- <div class="img-placeholder srv-img-ph"><span class="cam">📷</span><span class="label">Foto cambio fluidos</span></div> -->
+          <p>Nuestros profesionales realizan un chequeo preliminar para determinar si es totalmente necesario un cambio de fluidos, garantizando que su vehículo opere con los niveles y calidades correctas.</p>
+          <div class="sub-grid">
+            <div class="sub-tag">🌡️ Cambio de Anticongelante</div>
+            <div class="sub-tag">🔴 Cambio de Líquido de Frenos</div>
+          </div>
+          <ul>
+            <li>Diagnóstico previo para verificar estado y necesidad de cambio.</li>
+            <li>Uso de fluidos certificados y compatibles con el vehículo.</li>
+            <li>Purga completa del sistema antes del rellenado para evitar contaminación.</li>
+          </ul>
+        </div>
+      </div>
+
+      <!-- 4. Mecánica en General -->
+      <div class="srv-item reveal" id="srv-4">
+        <button class="srv-header" onclick="toggleSrv('srv-4')">
+          <div class="srv-icon-wrap">🔧</div>
+          <div class="srv-title-block">
+            <div class="srv-title">Mecánica en General</div>
+            <div class="srv-subtitle">Motor · Frenos · Suspensión · Sistema de enfriamiento</div>
+          </div>
+          <div class="srv-arrow">▼</div>
+        </button>
+        <div class="srv-body">
+          <!-- <div class="img-placeholder srv-img-ph"><span class="cam">📷</span><span class="label">Foto mecánica</span></div> -->
+          <p>Realizamos un chequeo óptimo de todos los componentes del vehículo para determinar el correcto funcionamiento del mismo. Si encontramos algún hallazgo, es notificado al cliente con la finalidad de que se realicen las intervenciones pertinentes.</p>
+          <h5>Reparación y Mantenimiento de:</h5>
+          <div class="sub-grid">
+            <div class="sub-tag">⚙️ Motor</div>
+            <div class="sub-tag">🛑 Frenos</div>
+            <div class="sub-tag">🌀 Suspensión</div>
+            <div class="sub-tag">🔗 Embrague</div>
+            <div class="sub-tag">💨 Sistema de Escape</div>
+            <div class="sub-tag">❄️ Sistema de Enfriamiento</div>
+          </div>
+        </div>
+      </div>
+
+      <!-- 5. Venta de Repuestos -->
+      <div class="srv-item reveal" id="srv-5">
+        <button class="srv-header" onclick="toggleSrv('srv-5')">
+          <div class="srv-icon-wrap">🏪</div>
+          <div class="srv-title-block">
+            <div class="srv-title">Venta de Repuestos</div>
+            <div class="srv-subtitle">Stock disponible · Agilidad en la intervención</div>
+          </div>
+          <div class="srv-arrow">▼</div>
+        </button>
+        <div class="srv-body">
+          <!-- <div class="img-placeholder srv-img-ph"><span class="cam">📷</span><span class="label">Foto repuestos</span></div> -->
+          <p>Contamos con un espacio donde tenemos repuestos para los vehículos, a fin de ser más ágiles al momento de intervenir un vehículo y minimizar los tiempos de espera del cliente.</p>
+          <ul>
+            <li>Amplio inventario de piezas para los modelos más comunes del mercado.</li>
+            <li>Repuestos originales y alternativos de calidad certificada.</li>
+            <li>Coordinación con proveedores externos para piezas especiales.</li>
+            <li>Integración directa con la orden de trabajo para mayor eficiencia.</li>
+          </ul>
+        </div>
+      </div>
+
+      <!-- 6. Instalación de Música -->
+      <div class="srv-item reveal" id="srv-6">
+        <button class="srv-header" onclick="toggleSrv('srv-6')">
+          <div class="srv-icon-wrap">🎵</div>
+          <div class="srv-title-block">
+            <div class="srv-title">Instalación de Música Automotriz</div>
+            <div class="srv-subtitle">Audio profesional · Instalación especializada</div>
+          </div>
+          <div class="srv-arrow">▼</div>
+        </button>
+        <div class="srv-body">
+          <!-- <div class="img-placeholder srv-img-ph"><span class="cam">📷</span><span class="label">Foto instalación audio</span></div> -->
+          <p>Contamos con un espacio dedicado para la instalación de música automotriz, para aquellos amantes de la música que requieren este servicio. Nuestros técnicos garantizan una instalación segura, ordenada y de alta calidad.</p>
+          <ul>
+            <li>Instalación de sistemas de sonido completos y componentes individuales.</li>
+            <li>Cableado profesional sin afectar el sistema eléctrico original del vehículo.</li>
+            <li>Garantía de instalación y soporte post-servicio.</li>
+          </ul>
+        </div>
+      </div>
+
+      <!-- 7. Electricidad Automotriz -->
+      <div class="srv-item reveal" id="srv-7">
+        <button class="srv-header" onclick="toggleSrv('srv-7')">
+          <div class="srv-icon-wrap">⚡</div>
+          <div class="srv-title-block">
+            <div class="srv-title">Electricidad Automotriz</div>
+            <div class="srv-subtitle">Diagnóstico eléctrico · Sensores · Alternador · Arranque</div>
+          </div>
+          <div class="srv-arrow">▼</div>
+        </button>
+        <div class="srv-body">
+          <!-- <div class="img-placeholder srv-img-ph"><span class="cam">📷</span><span class="label">Foto electricidad</span></div> -->
+          <p>Contamos con excelentes profesionales en el ámbito eléctrico automotriz, a fin de garantizar una correcta intervención de los vehículos cuando ingresen a nuestras instalaciones.</p>
+          <h5>Diagnóstico y Reparación de:</h5>
+          <div class="sub-grid">
+            <div class="sub-tag">🔑 Sistema de Encendido</div>
+            <div class="sub-tag">⚡ Alternador</div>
+            <div class="sub-tag">🔋 Arranque</div>
+            <div class="sub-tag">🔋 Batería</div>
+            <div class="sub-tag">💡 Luces</div>
+            <div class="sub-tag">📡 Sensores Electrónicos</div>
+          </div>
+        </div>
+      </div>
+
+      <!-- 8. Lavado Automotriz -->
+      <div class="srv-item reveal" id="srv-8">
+        <button class="srv-header" onclick="toggleSrv('srv-8')">
+          <div class="srv-icon-wrap">🚿</div>
+          <div class="srv-title-block">
+            <div class="srv-title">Lavado Automotriz</div>
+            <div class="srv-subtitle">Limpieza · Encerado · Motor · Tapicería · Tratamientos</div>
+          </div>
+          <div class="srv-arrow">▼</div>
+        </button>
+        <div class="srv-body">
+          <!-- <div class="img-placeholder srv-img-ph"><span class="cam">📷</span><span class="label">Foto lavado</span></div> -->
+          <p>Establecimiento especializado en la limpieza, cuidado y conservación estética de vehículos. Diseñado para ofrecer un servicio eficiente, organizado y de alta calidad, manteniendo los vehículos en condiciones óptimas de higiene y presentación.</p>
+          <p>Nuestro personal está capacitado en técnicas adecuadas de lavado, uso correcto de herramientas y manejo responsable de químicos, asegurando el cuidado del vehículo y el respeto por el medio ambiente.</p>
+          <div class="sub-grid">
+            <div class="sub-tag">🚗 Lavado Exterior</div>
+            <div class="sub-tag">✨ Lavado Completo</div>
+            <div class="sub-tag">💎 Encerado</div>
+            <div class="sub-tag">⚙️ Limpieza de Motor</div>
+            <div class="sub-tag">🪑 Limpieza de Tapicería</div>
+            <div class="sub-tag">🛡️ Tratamientos Protectores</div>
+          </div>
+        </div>
+      </div>
+
+      <!-- 9. Capacitación -->
+      <div class="srv-item reveal" id="srv-9">
+        <button class="srv-header" onclick="toggleSrv('srv-9')">
+          <div class="srv-icon-wrap">🎓</div>
+          <div class="srv-title-block">
+            <div class="srv-title">Capacitación Automotriz</div>
+            <div class="srv-subtitle">Formación profesional · Cursos especializados</div>
+          </div>
+          <div class="srv-arrow">▼</div>
+        </button>
+        <div class="srv-body">
+          <!-- <div class="img-placeholder srv-img-ph"><span class="cam">📷</span><span class="label">Foto capacitación</span></div> -->
+          <p>Contamos con un espacio dedicado a la capacitación de nuestros profesionales, impulsando la mejora continua. También ofrecemos cursos especializados abiertos al público apasionado por el mundo automotriz.</p>
+          <h5>Cursos Disponibles:</h5>
+          <div class="sub-grid">
+            <div class="sub-tag">⚖️ Alineación y Balanceo</div>
+            <div class="sub-tag">🔧 Mecánica para Vehículos de Gasolina</div>
+            <div class="sub-tag">⚡ Electricidad Automotriz</div>
+            <div class="sub-tag">🎵 Música Automotriz</div>
+          </div>
+          <ul>
+            <li>Instructores certificados con experiencia en campo.</li>
+            <li>Prácticas con equipos reales en ambiente de taller.</li>
+            <li>Certificación al completar el curso.</li>
+          </ul>
+        </div>
+      </div>
+
+    </div>
+  </div>
+</section>
+
+<!-- ══ CTA ════════════════════════════════════════════════════════════ -->
+<section id="cta">
+  <div class="grid-bg"></div>
+  <div class="cta-glow"></div>
+  <div class="container" style="text-align:center;position:relative;z-index:1;">
+    <div class="badge" style="justify-content:center;">🚗 Empieza Hoy</div>
+    <h2 class="reveal">¿Listo para una experiencia <span style="color:var(--blue3)">diferente</span>?</h2>
+    <p class="reveal delay-1">Agenda tu cita o escríbenos por WhatsApp. Atendemos de lunes a sábado.</p>
+    <div class="cta-btns reveal delay-2">
+      <a href="index.html" class="btn-primary">← Volver al inicio</a>
+      <a href="https://wa.me/18097122027?text=Hola,%20me%20interesa%20un%20servicio%20automotriz" target="_blank" rel="noopener" class="btn-wa">💬 Escribir por WhatsApp</a>
+    </div>
+  </div>
+</section>
+
+<!-- ══ FOOTER ══════════════════════════════════════════════════════════ -->
+<footer>
+  <div class="container">
+    <div class="footer-inner">
+      <div class="footer-brand">
+        <strong>SÓLIDO AUTO SERVICIO</strong>
+        <span>MÁS QUE UN TALLER, UNA EXPERIENCIA</span>
+      </div>
+      <div class="footer-links">
+        <a href="index.html">Inicio</a>
+        <a href="index.html#servicios">Servicios</a>
+        <a href="index.html#consulta">Mi Vehículo</a>
+        <a href="index.html#cafeteria">Cafetería</a>
+        <a href="nosotros.html">Nosotros</a>
+        <a href="index.html#contacto">Contacto</a>
+      </div>
+    </div>
+    <div class="footer-copy">
+      © 2024 Sólido Auto Servicio · Santo Domingo, República Dominicana · 809-712-2027
+    </div>
+  </div>
+</footer>
+
+<!-- ══ WA FAB ══════════════════════════════════════════════════════════ -->
+<a id="wa-fab" href="https://wa.me/18097122027" target="_blank" rel="noopener" aria-label="WhatsApp">💬</a>
+
+<!-- ══ SCRIPTS ════════════════════════════════════════════════════════ -->
+<script>
+  /* ── Nav scroll ───────────────────────────────────────────────── */
+  const nav = document.getElementById('nav');
+  window.addEventListener('scroll', () => {
+    nav.classList.toggle('scrolled', window.scrollY > 20);
+  });
+  nav.classList.toggle('scrolled', window.scrollY > 20);
+
+  /* ── Hamburger ─────────────────────────────────────────────────── */
+  document.getElementById('hamburger').addEventListener('click', () => {
+    document.getElementById('nav-mobile').classList.toggle('open');
+  });
+  function closeMob() { document.getElementById('nav-mobile').classList.remove('open'); }
+
+  /* ── Accordion servicios ───────────────────────────────────────── */
+  function toggleSrv(id) {
+    const item = document.getElementById(id);
+    const wasOpen = item.classList.contains('open');
+    // Close all
+    document.querySelectorAll('.srv-item').forEach(el => el.classList.remove('open'));
+    // Toggle current
+    if (!wasOpen) item.classList.add('open');
+  }
+
+  /* ── Scroll reveal ─────────────────────────────────────────────── */
+  const revealEls = document.querySelectorAll('.reveal, .reveal-left, .reveal-right');
+  const observer = new IntersectionObserver((entries) => {
+    entries.forEach(entry => {
+      if (entry.isIntersecting) {
+        entry.target.classList.add('visible');
+        observer.unobserve(entry.target);
+      }
+    });
+  }, { threshold: 0.12, rootMargin: '0px 0px -40px 0px' });
+  revealEls.forEach(el => observer.observe(el));
+</script>
+</body>
+</html>
