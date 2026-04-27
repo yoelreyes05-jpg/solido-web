@@ -598,6 +598,191 @@
       .servicios-grid, .cafe-grid, .porq-grid { grid-template-columns: 1fr 1fr; }
       .resultado-info-grid { grid-template-columns: 1fr 1fr; }
     }
+
+    /* ══════════════════════════════════════════════════
+       RESULTADO DE CONSULTA — estilo app del cliente
+    ══════════════════════════════════════════════════ */
+    .cr-btn-volver {
+      margin-bottom: 14px;
+      padding: 10px 20px;
+      background: rgba(0,0,0,0.05);
+      border: 1.5px solid var(--border);
+      border-radius: 100px;
+      cursor: pointer;
+      font-weight: 600;
+      font-size: 13px;
+      color: var(--muted);
+      transition: background 0.15s;
+    }
+    .cr-btn-volver:hover { background: rgba(0,0,0,0.09); }
+
+    /* Tarjeta vehículo */
+    .cr-car-card {
+      background: linear-gradient(135deg, #0f1729 0%, #1e3a5f 100%);
+      border: 1px solid rgba(59,130,246,0.2);
+      border-radius: 20px;
+      padding: 22px;
+      margin-bottom: 12px;
+      position: relative;
+      overflow: hidden;
+    }
+    .cr-car-card::before {
+      content:''; position:absolute; right:-30px; top:-30px;
+      width:160px; height:160px; border-radius:50%;
+      background: radial-gradient(circle, rgba(59,130,246,0.18) 0%, transparent 70%);
+    }
+    .cr-car-main { display:flex; gap:16px; align-items:center; position:relative; }
+    .cr-car-emoji { font-size:48px; }
+    .cr-car-marca { font-size:22px; font-weight:900; color:#fff; }
+    .cr-car-meta  { font-size:13px; color:#64748b; margin-top:4px; }
+    .cr-placa-badge {
+      margin-top:10px; display:inline-block;
+      background: rgba(255,255,255,0.07);
+      border: 1px solid rgba(255,255,255,0.15);
+      padding: 7px 18px; border-radius:10px;
+      font-weight:900; font-size:18px;
+      letter-spacing:5px; color:#93c5fd;
+    }
+
+    /* Tarjeta de estado */
+    .cr-estado-card {
+      border-radius: 20px;
+      padding: 22px;
+      margin-bottom: 12px;
+      overflow: hidden;
+    }
+    .cr-estado-top {
+      font-size:10px; font-weight:700; letter-spacing:2px;
+      text-transform:uppercase; color:rgba(255,255,255,0.45);
+      margin-bottom:14px;
+    }
+    .cr-estado-row { display:flex; align-items:center; gap:14px; margin-bottom:20px; }
+    .cr-estado-emoji { font-size:44px; }
+    .cr-estado-name { font-size:20px; font-weight:900; color:#fff; }
+    .cr-estado-msg  { font-size:13px; color:rgba(255,255,255,0.6); margin-top:4px; line-height:1.6; }
+
+    /* Barra de progreso */
+    .cr-prog-wrap {
+      display:flex; justify-content:space-between; gap:4px;
+    }
+    .cr-prog-step { display:flex; flex-direction:column; align-items:center; flex:1; }
+    .cr-prog-dot {
+      width:28px; height:28px; border-radius:50%;
+      display:flex; align-items:center; justify-content:center;
+      font-size:11px; font-weight:800;
+    }
+    .cr-dot-done   { background:rgba(255,255,255,0.2); color:#fff; }
+    .cr-dot-active { background:#fff; color:#111; box-shadow:0 0 12px rgba(255,255,255,0.4); }
+    .cr-dot-future { background:rgba(255,255,255,0.07); color:rgba(255,255,255,0.25); }
+    .cr-prog-lbl { font-size:8px; margin-top:5px; text-align:center; font-weight:700; white-space:nowrap; }
+    .cr-lbl-on  { color:rgba(255,255,255,0.85); }
+    .cr-lbl-off { color:rgba(255,255,255,0.22); }
+
+    /* Tabs */
+    .cr-tabs {
+      display:grid; grid-template-columns:1fr 1fr 1fr;
+      gap:8px; margin-bottom:12px;
+    }
+    .cr-tab {
+      padding:12px 6px; border-radius:12px;
+      border:1.5px solid var(--border);
+      font-size:12px; font-weight:700; cursor:pointer;
+      transition:all 0.2s; background:#fff; color:var(--muted);
+    }
+    .cr-tab-active {
+      background:linear-gradient(135deg,#1d4ed8,#3b82f6);
+      color:#fff; border-color:transparent;
+      box-shadow:0 4px 14px rgba(59,130,246,0.3);
+    }
+
+    /* Tarjeta orden */
+    .cr-orden-card {
+      border-radius:16px; padding:18px; margin-bottom:10px;
+      background:#fff; border:1.5px solid var(--border);
+      border-left:4px solid;
+      box-shadow:0 2px 12px rgba(0,0,0,0.06);
+    }
+    .cr-orden-header { display:flex; justify-content:space-between; align-items:center; margin-bottom:8px; }
+    .cr-orden-id     { font-weight:800; font-size:15px; color:var(--dark); }
+    .cr-orden-badge  { padding:4px 12px; border-radius:100px; font-size:11px; font-weight:700; }
+    .cr-orden-desc   { font-size:13px; color:var(--muted); line-height:1.6; }
+    .cr-btn-wa-card  {
+      display:block; margin-top:12px; width:100%; padding:11px;
+      background:linear-gradient(135deg,#14532d,#16a34a);
+      color:#fff; border:none; border-radius:10px;
+      font-weight:700; font-size:13px; cursor:pointer;
+      text-align:center; text-decoration:none;
+      box-shadow:0 4px 12px rgba(22,163,74,0.25);
+    }
+
+    /* Diagnósticos */
+    .cr-diag-card {
+      border-radius:16px; padding:18px; margin-bottom:10px;
+      background:#fff; border:1.5px solid var(--border);
+      box-shadow:0 2px 12px rgba(0,0,0,0.06);
+    }
+    .cr-diag-tipo { font-weight:700; font-size:15px; color:var(--dark); margin-bottom:6px; }
+    .cr-diag-obs  { font-size:13px; color:var(--muted); line-height:1.6; }
+
+    /* Historial timeline */
+    .cr-hist-timeline { position:relative; padding-left:22px; }
+    .cr-hist-timeline::before {
+      content:''; position:absolute; left:7px; top:0; bottom:0;
+      width:2px; background:var(--border); border-radius:2px;
+    }
+    .cr-hist-item {
+      position:relative; margin-bottom:12px; cursor:pointer;
+      background:#fff; border:1.5px solid var(--border);
+      border-radius:16px; padding:16px;
+      transition:border-color 0.2s, transform 0.15s, box-shadow 0.2s;
+      box-shadow:0 2px 12px rgba(0,0,0,0.06);
+    }
+    .cr-hist-item:hover { border-color:#3b82f6; transform:translateX(2px); box-shadow:0 4px 20px rgba(59,130,246,0.12); }
+    .cr-hist-item::before {
+      content:''; position:absolute; left:-17px; top:18px;
+      width:12px; height:12px; border-radius:50%;
+      background:linear-gradient(135deg,#1d4ed8,#3b82f6);
+      box-shadow:0 0 6px rgba(59,130,246,0.5);
+    }
+    .cr-hist-servicio { font-weight:700; font-size:14px; color:var(--dark); margin-bottom:4px; }
+    .cr-hist-meta     { font-size:12px; color:var(--muted); margin-bottom:4px; }
+    .cr-hist-cost     { font-weight:900; font-size:17px; color:#16a34a; }
+    .cr-hist-badge    {
+      display:inline-block; padding:2px 10px; border-radius:100px;
+      font-size:11px; font-weight:700;
+      background:rgba(59,130,246,0.1); color:#3b82f6; margin-left:8px;
+    }
+
+    /* Detalle historial */
+    .cr-detalle-header {
+      background:linear-gradient(135deg,#0f1729,#1e3a5f);
+      border:1px solid rgba(59,130,246,0.2);
+      border-radius:18px; padding:20px; margin-bottom:12px;
+    }
+    .cr-det-card {
+      background:#fff; border:1.5px solid var(--border);
+      border-radius:16px; padding:18px; margin-bottom:10px;
+      box-shadow:0 2px 12px rgba(0,0,0,0.06);
+    }
+    .cr-det-title   { font-size:11px; font-weight:700; color:var(--muted); text-transform:uppercase; letter-spacing:1px; margin-bottom:12px; }
+    .cr-det-section { margin-bottom:10px; }
+    .cr-det-sub     { font-size:11px; font-weight:700; color:var(--muted); margin-bottom:4px; }
+    .cr-det-txt     { font-size:13px; color:var(--text); line-height:1.7; }
+    .cr-det-falla   {
+      background:#fffbeb; border:1.5px solid #fde68a;
+      border-radius:14px; padding:14px 16px; margin-bottom:10px;
+    }
+    .cr-det-falla-title { font-size:11px; font-weight:700; color:#92400e; text-transform:uppercase; letter-spacing:1px; margin-bottom:6px; }
+    .cr-det-falla-txt   { font-size:13px; color:#78350f; line-height:1.6; }
+    .cr-costos-grid { display:grid; grid-template-columns:1fr 1fr; gap:10px; margin-top:8px; }
+    .cr-costo-box   { background:var(--light); border-radius:10px; padding:12px; text-align:center; }
+    .cr-costo-lbl   { font-size:10px; color:var(--muted); text-transform:uppercase; letter-spacing:0.8px; margin-bottom:4px; }
+    .cr-costo-val   { font-weight:700; font-size:14px; color:var(--dark); }
+
+    @media (max-width:500px) {
+      .cr-tabs { grid-template-columns:1fr; }
+      .cr-tab  { padding:10px; font-size:13px; }
+    }
   </style>
 </head>
 <body>
@@ -960,29 +1145,31 @@ function setupReveal() {
 }
 
 /* ══════════════════════════════════════════════════════════════════
-   CONSULTA DE VEHÍCULO
+   CONSULTA DE VEHÍCULO — idéntico a la app del cliente
 ══════════════════════════════════════════════════════════════════ */
-const ESTADOS = {
-  RECIBIDO:    { color:"#6366f1", bg:"#eef2ff", icon:"📋", label:"Recibido en el taller",   idx:0 },
-  DIAGNOSTICO: { color:"#f59e0b", bg:"#fffbeb", icon:"🔬", label:"En Diagnóstico",          idx:1 },
-  REPARACION:  { color:"#3b82f6", bg:"#eff6ff", icon:"🔧", label:"En Reparación",           idx:2 },
-  EN_PROCESO:  { color:"#3b82f6", bg:"#eff6ff", icon:"🔧", label:"En Proceso",              idx:2 },
-  LISTO:       { color:"#10b981", bg:"#f0fdf4", icon:"✅", label:"¡Listo para Retirar!",    idx:3 },
-  COMPLETADO:  { color:"#10b981", bg:"#f0fdf4", icon:"✅", label:"Completado",              idx:3 },
-  ENTREGADO:   { color:"#6b7280", bg:"#f9fafb", icon:"🏁", label:"Entregado",               idx:4 },
-  FACTURADO:   { color:"#6b7280", bg:"#f9fafb", icon:"🧾", label:"Facturado y Cerrado",     idx:4 },
+const ESTADO_INFO = {
+  RECIBIDO:        { color:"#60a5fa", grad:"linear-gradient(135deg,#1e3a5f,#2563eb)",   emoji:"📋", paso:1, msg:"Tu vehículo fue recibido. Pronto será evaluado." },
+  DIAGNOSTICO:     { color:"#fbbf24", grad:"linear-gradient(135deg,#451a03,#d97706)",   emoji:"🔍", paso:2, msg:"Nuestro técnico está evaluando tu vehículo." },
+  REPARACION:      { color:"#f87171", grad:"linear-gradient(135deg,#450a0a,#dc2626)",   emoji:"🔧", paso:3, msg:"Tu vehículo está siendo reparado por nuestro equipo." },
+  EN_PROCESO:      { color:"#f87171", grad:"linear-gradient(135deg,#450a0a,#dc2626)",   emoji:"🔧", paso:3, msg:"Tu vehículo está siendo reparado por nuestro equipo." },
+  CONTROL_CALIDAD: { color:"#a78bfa", grad:"linear-gradient(135deg,#2e1065,#7c3aed)",   emoji:"✅", paso:4, msg:"Revisión final de calidad en proceso." },
+  LISTO:           { color:"#34d399", grad:"linear-gradient(135deg,#022c22,#059669)",   emoji:"🎉", paso:5, msg:"¡Tu vehículo está listo! Puedes pasar a recogerlo." },
+  COMPLETADO:      { color:"#34d399", grad:"linear-gradient(135deg,#022c22,#059669)",   emoji:"✅", paso:5, msg:"Servicio completado satisfactoriamente." },
+  ENTREGADO:       { color:"#94a3b8", grad:"linear-gradient(135deg,#1e293b,#475569)",   emoji:"🚗", paso:6, msg:"Vehículo entregado. ¡Gracias por tu confianza!" },
+  FACTURADO:       { color:"#94a3b8", grad:"linear-gradient(135deg,#1e293b,#475569)",   emoji:"🧾", paso:6, msg:"Servicio facturado y entregado." },
 };
-const TL_STEPS = [
-  { icon:"📋", lbl:"Recibido" },
-  { icon:"🔬", lbl:"Diagnóstico" },
-  { icon:"🔧", lbl:"Reparación" },
-  { icon:"✅", lbl:"Listo" },
-  { icon:"🏁", lbl:"Entregado" },
-];
+const PASOS       = ["RECIBIDO","DIAGNOSTICO","REPARACION","CONTROL_CALIDAD","LISTO","ENTREGADO"];
+const PASOS_LABEL = ["Recibido","Diagnóstico","Reparación","C. Calidad","Listo","Entregado"];
+
+// Estado global del resultado
+let _resultado = null;
+let _histPerm  = [];
+let _tabActual = "ordenes";
+let _histDetalle = null;
 
 async function buscar() {
   const placa = document.getElementById("placa-input").value.trim().toUpperCase().replace(/\s/g,"");
-  const res   = document.getElementById("resultado");
+  const resEl = document.getElementById("resultado");
   const btn   = document.getElementById("buscar-btn");
   const icon  = document.getElementById("btn-icon");
   const txt   = document.getElementById("btn-txt");
@@ -992,64 +1179,290 @@ async function buscar() {
   btn.disabled = true;
   icon.innerHTML = '<span class="spinner-sm"></span>';
   txt.textContent = "Buscando...";
-  res.innerHTML = "";
+  resEl.innerHTML = "";
+  _resultado = null; _histPerm = []; _tabActual = "ordenes"; _histDetalle = null;
 
   try {
-    const r    = await fetch(`${CONFIG.API_BASE}/vehiculo-historial/placa/${encodeURIComponent(placa)}`);
-    const data = await r.json();
+    // ── 4 llamadas paralelas igual que la app del cliente ────────
+    const [vRes, oRes, dRes, hRes] = await Promise.all([
+      fetch(`${CONFIG.API_BASE}/vehiculos`),
+      fetch(`${CONFIG.API_BASE}/ordenes`),
+      fetch(`${CONFIG.API_BASE}/diagnosticos`),
+      fetch(`${CONFIG.API_BASE}/vehiculo-historial/placa/${encodeURIComponent(placa)}`),
+    ]);
+    const vehiculos    = await vRes.json();
+    const ordenes      = await oRes.json();
+    const diagnosticos = await dRes.json();
+    const histData     = await hRes.json();
 
-    if (!data.found || !data.historial?.length) {
-      showErr(`No encontramos registros para la placa <b>${placa}</b>.<br>Verifica el número o contáctanos directamente.`);
+    const vehiculo = Array.isArray(vehiculos)
+      ? vehiculos.find(v => v.placa?.toUpperCase() === placa)
+      : null;
+
+    if (!vehiculo && !histData.found) {
+      showErr(`No encontramos registros para la placa <b>${placa}</b>.<br>Verifica el número o contáctanos.`);
       return;
     }
 
-    const ult    = data.historial[0];
-    const estado = ESTADOS[ult.estado] || ESTADOS["ENTREGADO"];
-    const idx    = estado.idx;
-    const veh    = data.vehiculo || {};
+    if (histData.found) _histPerm = histData.historial || [];
 
-    const tl = TL_STEPS.map((s, i) => {
-      const cls = i < idx ? "done" : i === idx ? "active" : "";
-      return `<div class="tl-step"><div class="tl-dot ${cls}">${s.icon}</div><div class="tl-lbl">${s.lbl}</div></div>`;
-    }).join("");
+    if (vehiculo) {
+      const ordenesVeh = Array.isArray(ordenes)
+        ? ordenes.filter(o => o.vehiculo_id === vehiculo.id || o.vehiculo_info?.includes(vehiculo.placa))
+                 .sort((a,b) => new Date(b.created_at) - new Date(a.created_at))
+        : [];
+      const diagsVeh = Array.isArray(diagnosticos)
+        ? diagnosticos.filter(d => d.vehiculo_id === vehiculo.id)
+                      .sort((a,b) => new Date(b.created_at) - new Date(a.created_at))
+        : [];
+      _resultado = { vehiculo, ordenes: ordenesVeh, diagnosticos: diagsVeh };
+    } else {
+      _resultado = { vehiculo: { ...histData.vehiculo, id: null }, ordenes: [], diagnosticos: [] };
+    }
 
-    const infoItems = [
-      ult.fecha_servicio ? `<div class="info-item"><label>Fecha</label><span>${new Date(ult.fecha_servicio).toLocaleDateString("es-DO",{year:"numeric",month:"short",day:"numeric"})}</span></div>` : "",
-      ult.tecnico_nombre ? `<div class="info-item"><label>Técnico</label><span>${ult.tecnico_nombre}</span></div>` : "",
-      ult.costo_total > 0 ? `<div class="info-item"><label>Total</label><span style="color:#16a34a">RD$ ${Number(ult.costo_total).toLocaleString("es-DO",{minimumFractionDigits:2})}</span></div>` : "",
-      data.historial.length > 1 ? `<div class="info-item"><label>Visitas al taller</label><span>${data.historial.length} registros</span></div>` : "",
-    ].filter(Boolean).join("");
-
-    res.innerHTML = `
-      <div class="resultado-card">
-        <div class="resultado-header" style="background:linear-gradient(135deg,${estado.color}cc,${estado.color})">
-          <div class="resultado-veh">
-            <h3>${veh.marca||"Vehículo"} ${veh.modelo||""}</h3>
-            <p>${[veh.ano,veh.color].filter(Boolean).join(" · ")||"Taller Sólido Auto"}</p>
-          </div>
-          <div class="resultado-placa">${placa}</div>
-        </div>
-        <div class="resultado-body">
-          <div class="estado-timeline">${tl}</div>
-          <div class="estado-badge" style="background:${estado.bg};color:${estado.color}">
-            <span style="font-size:20px">${estado.icon}</span> ${estado.label}
-          </div>
-          ${ult.tipo_servicio ? `<p style="font-size:14px;color:#555;margin-bottom:8px"><strong>Servicio:</strong> ${ult.tipo_servicio}</p>` : ""}
-          ${ult.trabajos_realizados ? `<div style="background:#f8fafc;border-radius:10px;padding:12px 14px;margin-bottom:10px;font-size:13px;color:#444;white-space:pre-wrap;line-height:1.7">${ult.trabajos_realizados}</div>` : ""}
-          ${infoItems ? `<div class="resultado-info-grid">${infoItems}</div>` : ""}
-          <div style="margin-top:16px;display:flex;gap:10px;flex-wrap:wrap">
-            <a href="${waUrl("Hola, consulto sobre mi vehículo placa "+placa)}" target="_blank" class="btn btn-wa" style="font-size:13px;padding:10px 18px">💬 Preguntar por WhatsApp</a>
-            <button onclick="document.getElementById('resultado').innerHTML='';document.getElementById('placa-input').value=''" style="padding:10px 18px;background:#f1f5f9;border:1.5px solid #e2e8f0;border-radius:10px;font-weight:700;font-size:13px;cursor:pointer;color:#555">🔄 Nueva consulta</button>
-          </div>
-        </div>
-      </div>`;
-  } catch {
+    renderResultado();
+  } catch(e) {
     showErr("Error de conexión. Verifica tu internet e inténtalo de nuevo.");
+    console.error(e);
   } finally {
     btn.disabled = false;
     icon.textContent = "🔍";
     txt.textContent  = "Consultar";
   }
+}
+
+function renderResultado() {
+  if (!_resultado) return;
+  const { vehiculo, ordenes, diagnosticos } = _resultado;
+  const ultimaOrden = ordenes[0] || null;
+  const estadoInfo  = ultimaOrden
+    ? (ESTADO_INFO[ultimaOrden.estado] || ESTADO_INFO.RECIBIDO)
+    : (_histPerm.length ? ESTADO_INFO.ENTREGADO : null);
+  const pasoActual  = estadoInfo ? estadoInfo.paso : 0;
+
+  // ── Barra de progreso ──────────────────────────────────────────
+  const progHTML = PASOS.map((paso, i) => {
+    const alcanzado = i < pasoActual - 1;
+    const actual    = i === pasoActual - 1;
+    return `<div class="cr-prog-step">
+      <div class="cr-prog-dot ${actual ? "cr-dot-active" : alcanzado ? "cr-dot-done" : "cr-dot-future"}">
+        ${alcanzado || actual ? "✓" : i + 1}
+      </div>
+      <div class="cr-prog-lbl ${alcanzado || actual ? "cr-lbl-on" : "cr-lbl-off"}">${PASOS_LABEL[i]}</div>
+    </div>`;
+  }).join("");
+
+  // ── Estado card ────────────────────────────────────────────────
+  const estadoHTML = estadoInfo ? `
+    <div class="cr-estado-card" style="background:${estadoInfo.grad}">
+      <div class="cr-estado-top">Estado Actual</div>
+      <div class="cr-estado-row">
+        <span class="cr-estado-emoji">${estadoInfo.emoji}</span>
+        <div>
+          <div class="cr-estado-name">${(ultimaOrden?.estado || "ENTREGADO").replace("_"," ")}</div>
+          <div class="cr-estado-msg">${estadoInfo.msg}</div>
+        </div>
+      </div>
+      <div class="cr-prog-wrap">${progHTML}</div>
+    </div>` : "";
+
+  // ── Tabs ───────────────────────────────────────────────────────
+  const tabs = [
+    { key:"ordenes",    label:`📋 Órdenes (${ordenes.length})` },
+    { key:"diagnosticos", label:`🔬 Diagnósticos (${diagnosticos.length})` },
+    { key:"historial",  label:`📚 Historial (${_histPerm.length})` },
+  ];
+  const tabsHTML = `<div class="cr-tabs">
+    ${tabs.map(t => `<button class="cr-tab ${_tabActual===t.key?"cr-tab-active":""}"
+      onclick="cambiarTab('${t.key}')">${t.label}</button>`).join("")}
+  </div>`;
+
+  const resEl = document.getElementById("resultado");
+  resEl.innerHTML = `
+    <button class="cr-btn-volver" onclick="limpiarResultado()">← Nueva consulta</button>
+
+    <!-- Tarjeta vehículo -->
+    <div class="cr-car-card">
+      <div class="cr-car-main">
+        <span class="cr-car-emoji">🚗</span>
+        <div>
+          <div class="cr-car-marca">${vehiculo.marca||""} ${vehiculo.modelo||""}</div>
+          <div class="cr-car-meta">
+            ${vehiculo.ano ? `Año ${vehiculo.ano}` : ""}
+            ${vehiculo.color ? ` · ${vehiculo.color}` : ""}
+          </div>
+          <div class="cr-placa-badge">${vehiculo.placa||""}</div>
+        </div>
+      </div>
+    </div>
+
+    ${estadoHTML}
+    ${tabsHTML}
+    <div id="cr-tab-content"></div>`;
+
+  renderTab();
+}
+
+function cambiarTab(key) {
+  _tabActual = key;
+  _histDetalle = null;
+  // Actualizar clases
+  document.querySelectorAll(".cr-tab").forEach(b => {
+    b.classList.toggle("cr-tab-active", b.textContent.includes(
+      key === "ordenes" ? "Órdenes" : key === "diagnosticos" ? "Diagnósticos" : "Historial"
+    ));
+  });
+  renderTab();
+}
+
+function renderTab() {
+  const cont = document.getElementById("cr-tab-content");
+  if (!cont) return;
+  const { ordenes, diagnosticos } = _resultado;
+
+  if (_tabActual === "ordenes") {
+    if (!ordenes.length) {
+      cont.innerHTML = crEmpty("📋","Sin órdenes registradas.");
+      return;
+    }
+    cont.innerHTML = ordenes.map(o => {
+      const info = ESTADO_INFO[o.estado] || ESTADO_INFO.RECIBIDO;
+      const placa = _resultado.vehiculo.placa;
+      return `<div class="cr-orden-card" style="border-left-color:${info.color}">
+        <div class="cr-orden-header">
+          <span class="cr-orden-id">Orden #${o.id}</span>
+          <span class="cr-orden-badge" style="background:${info.color}22;color:${info.color}">
+            ${o.estado.replace("_"," ")}
+          </span>
+        </div>
+        <div class="cr-orden-desc">${o.descripcion||"Servicio en proceso"}</div>
+        <a href="${waUrl("Hola, consulto sobre mi vehículo ("+placa+"), orden #"+o.id)}"
+           target="_blank" class="cr-btn-wa-card">💬 Consultar por WhatsApp</a>
+      </div>`;
+    }).join("");
+    return;
+  }
+
+  if (_tabActual === "diagnosticos") {
+    if (!diagnosticos.length) {
+      cont.innerHTML = crEmpty("🔬","Sin diagnósticos registrados.");
+      return;
+    }
+    cont.innerHTML = diagnosticos.map(d => `
+      <div class="cr-diag-card">
+        <div class="cr-diag-tipo">${d.tipo_servicio||"Diagnóstico"}</div>
+        <div class="cr-diag-obs">${d.observaciones||d.fallas_identificadas||"Sin observaciones registradas."}</div>
+      </div>`).join("");
+    return;
+  }
+
+  if (_tabActual === "historial") {
+    if (_histDetalle) {
+      renderHistDetalle();
+      return;
+    }
+    if (!_histPerm.length) {
+      cont.innerHTML = crEmpty("📚","Sin historial permanente.","El historial se genera automáticamente cuando se completa un servicio.");
+      return;
+    }
+    cont.innerHTML = `
+      <div style="font-size:12px;color:#64748b;margin-bottom:14px;font-weight:600">
+        ${_histPerm.length} servicio${_histPerm.length!==1?"s":""} registrado${_histPerm.length!==1?"s":""}
+      </div>
+      <div class="cr-hist-timeline">
+        ${_histPerm.map((h,idx) => `
+          <div class="cr-hist-item" onclick="verDetalleHist(${idx})">
+            <div class="cr-hist-servicio">${h.tipo_servicio||"Servicio"}</div>
+            <div class="cr-hist-meta">
+              ${h.fecha_servicio ? new Date(h.fecha_servicio).toLocaleDateString("es-DO",{year:"numeric",month:"short",day:"numeric"}) : "—"}
+              ${h.tecnico_nombre ? ` · ${h.tecnico_nombre}` : ""}
+              ${idx===0 ? '<span class="cr-hist-badge">Más reciente</span>' : ""}
+            </div>
+            <div style="display:flex;justify-content:space-between;align-items:center;margin-top:6px">
+              ${h.costo_total>0 ? `<span class="cr-hist-cost">RD$ ${Number(h.costo_total).toLocaleString("es-DO",{minimumFractionDigits:2})}</span>` : "<span></span>"}
+              <span style="font-size:11px;color:#64748b;font-weight:600">Ver detalle →</span>
+            </div>
+          </div>`).join("")}
+      </div>`;
+  }
+}
+
+function verDetalleHist(idx) {
+  _histDetalle = _histPerm[idx];
+  renderHistDetalle();
+}
+
+function renderHistDetalle() {
+  const h = _histDetalle;
+  const cont = document.getElementById("cr-tab-content");
+  cont.innerHTML = `
+    <button class="cr-btn-volver" style="width:100%;margin-bottom:14px" onclick="_histDetalle=null;renderTab()">
+      ← Volver al historial
+    </button>
+
+    <div class="cr-detalle-header">
+      <div style="font-size:10px;color:#64748b;font-weight:700;letter-spacing:1.5px;text-transform:uppercase;margin-bottom:6px">
+        ${h.fecha_servicio ? new Date(h.fecha_servicio).toLocaleDateString("es-DO",{year:"numeric",month:"long",day:"numeric"}) : "—"}
+      </div>
+      <div style="font-size:20px;font-weight:900;color:#fff">${h.tipo_servicio||"Servicio"}</div>
+      ${h.tecnico_nombre ? `<div style="font-size:13px;color:#94a3b8;margin-top:4px">👨‍🔧 ${h.tecnico_nombre}</div>` : ""}
+    </div>
+
+    ${(h.inspeccion_mecanica||h.inspeccion_electrica||h.inspeccion_electronica) ? `
+    <div class="cr-det-card">
+      <div class="cr-det-title">🔍 Inspección Técnica</div>
+      ${h.inspeccion_mecanica ? `<div class="cr-det-section"><div class="cr-det-sub">🔧 Mecánica</div><div class="cr-det-txt">${h.inspeccion_mecanica}</div></div>` : ""}
+      ${h.inspeccion_electrica ? `<div class="cr-det-section"><div class="cr-det-sub">⚡ Eléctrica</div><div class="cr-det-txt">${h.inspeccion_electrica}</div></div>` : ""}
+      ${h.inspeccion_electronica ? `<div class="cr-det-section"><div class="cr-det-sub">💻 Scanner</div><div class="cr-det-txt">${h.inspeccion_electronica}</div></div>` : ""}
+    </div>` : ""}
+
+    ${(h.codigos_falla||h.fallas_identificadas) ? `
+    <div class="cr-det-falla">
+      <div class="cr-det-falla-title">⚠️ Fallas Identificadas</div>
+      ${h.codigos_falla ? `<div class="cr-det-falla-txt" style="margin-bottom:4px">Códigos: ${h.codigos_falla}</div>` : ""}
+      ${h.fallas_identificadas ? `<div class="cr-det-falla-txt">${h.fallas_identificadas}</div>` : ""}
+    </div>` : ""}
+
+    ${h.trabajos_realizados ? `
+    <div class="cr-det-card">
+      <div class="cr-det-title">🛠️ Trabajos Realizados</div>
+      <div class="cr-det-txt" style="white-space:pre-wrap">${h.trabajos_realizados}</div>
+    </div>` : ""}
+
+    ${h.observaciones ? `
+    <div class="cr-det-card">
+      <div class="cr-det-title">📝 Observaciones</div>
+      <div class="cr-det-txt">${h.observaciones}</div>
+    </div>` : ""}
+
+    ${h.costo_total>0 ? `
+    <div class="cr-det-card">
+      <div class="cr-det-title">💰 Costos del Servicio</div>
+      <div class="cr-costos-grid">
+        <div class="cr-costo-box"><div class="cr-costo-lbl">Mano de Obra</div>
+          <div class="cr-costo-val">RD$ ${Number(h.costo_mano_obra||0).toLocaleString("es-DO",{minimumFractionDigits:2})}</div></div>
+        <div class="cr-costo-box"><div class="cr-costo-lbl">Repuestos</div>
+          <div class="cr-costo-val">RD$ ${Number(h.costo_repuestos||0).toLocaleString("es-DO",{minimumFractionDigits:2})}</div></div>
+      </div>
+      <div style="text-align:center;margin-top:14px;font-size:22px;font-weight:900;color:#34d399">
+        Total: RD$ ${Number(h.costo_total).toLocaleString("es-DO",{minimumFractionDigits:2})}
+      </div>
+      ${h.ncf ? `<div style="font-size:11px;color:#64748b;text-align:center;margin-top:6px">🧾 NCF: ${h.ncf}</div>` : ""}
+    </div>` : ""}`;
+}
+
+function crEmpty(icon, msg, sub) {
+  return `<div style="text-align:center;padding:32px 20px;color:#64748b">
+    <div style="font-size:36px;margin-bottom:10px">${icon}</div>
+    <div style="font-weight:600;font-size:15px">${msg}</div>
+    ${sub ? `<div style="font-size:12px;color:#94a3b8;margin-top:6px">${sub}</div>` : ""}
+  </div>`;
+}
+
+function limpiarResultado() {
+  _resultado = null; _histPerm = []; _histDetalle = null;
+  document.getElementById("resultado").innerHTML = "";
+  document.getElementById("placa-input").value = "";
 }
 
 function showErr(msg) {
