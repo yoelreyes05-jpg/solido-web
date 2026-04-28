@@ -1558,13 +1558,15 @@ function cardHTML(p){
 }
 
 /* ══ REPUESTOS ══════════════════════════════════════════════════ */
+// Usa el endpoint /inventario (ya desplegado) — campos: name, price, stock, code
 let todosRep=[],catRepActiva="TODOS";
 
 async function loadRep(){
   try{
-    const r=await fetch(`${CONFIG.API_BASE}/repuestos`);
+    const r=await fetch(`${CONFIG.API_BASE}/inventario`);
     const data=await r.json();
-    todosRep=(Array.isArray(data)?data:[]).filter(p=>p.activo!==false&&p.stock>0);
+    // Solo mostrar items con stock disponible
+    todosRep=(Array.isArray(data)?data:[]).filter(p=>Number(p.stock)>0);
     buildCatsRep();
     renderRep();
   }catch{
@@ -1573,7 +1575,12 @@ async function loadRep(){
 }
 
 function buildCatsRep(){
-  const cats=[...new Set(todosRep.map(p=>p.categoria||"General"))].sort();
+  // inventario no tiene campo categoría — usamos el prefijo del código si existe
+  const cats=[...new Set(todosRep.map(p=>{
+    if(!p.code) return null;
+    const pref=p.code.split("-")[0];
+    return pref||null;
+  }).filter(Boolean))].sort();
   document.getElementById("rep-cats").innerHTML=
     `<button class="rep-cat active" data-cat="TODOS" onclick="setCatRep('TODOS')">🔩 Todos</button>`+
     cats.map(c=>`<button class="rep-cat" data-cat="${c}" onclick="setCatRep('${c}')">${c}</button>`).join("");
@@ -1592,8 +1599,9 @@ function filtrarRep(){
 function renderRep(){
   const q=(document.getElementById("rep-search")?.value||"").trim().toLowerCase();
   const lista=todosRep.filter(p=>{
-    const matchCat=catRepActiva==="TODOS"||(p.categoria||"General")===catRepActiva;
-    const matchQ=!q||p.nombre.toLowerCase().includes(q)||(p.descripcion||"").toLowerCase().includes(q);
+    const codePref=p.code?p.code.split("-")[0]:"";
+    const matchCat=catRepActiva==="TODOS"||codePref===catRepActiva;
+    const matchQ=!q||p.name.toLowerCase().includes(q)||(p.code||"").toLowerCase().includes(q);
     return matchCat&&matchQ;
   });
   const wrap=document.getElementById("rep-grid-wrap");
@@ -1605,20 +1613,19 @@ function renderRep(){
 }
 
 function repCardHTML(p){
-  const img=p.imagen
-    ?`<div class="rep-img-wrap"><img class="rep-img" src="${p.imagen}" alt="${p.nombre}" loading="lazy" onerror="this.parentElement.innerHTML='<div class=\\'rep-placeholder\\'>🔩</div>'"/></div>`
-    :`<div class="rep-placeholder">🔩</div>`;
+  // Campos de tabla inventario: name, price, stock, code
+  const img=`<div class="rep-placeholder">🔩</div>`;
   const stockClass=p.stock<=3?"low":"ok";
   const stockLabel=p.stock<=3?`⚠️ Stock: ${p.stock}`:`✅ Disp.: ${p.stock}`;
-  const waMsg=encodeURIComponent(`Hola, me interesa el repuesto: ${p.nombre} (RD$ ${Number(p.precio).toFixed(2)}). ¿Está disponible?`);
+  const waMsg=encodeURIComponent(`Hola, me interesa el repuesto: ${p.name} (RD$ ${Number(p.price).toFixed(2)}). ¿Está disponible?`);
   return`<div class="rep-card" onclick="window.open('https://wa.me/${CONFIG.WHATSAPP}?text=${waMsg}','_blank')" style="cursor:pointer" title="Consultar por WhatsApp">
     ${img}
     <div class="rep-body">
-      <div class="rep-cat-badge">${p.categoria||"General"}</div>
-      <div class="rep-name">${p.nombre}</div>
-      ${p.descripcion?`<div class="rep-desc">${p.descripcion}</div>`:""}
+      ${p.code?`<div class="rep-cat-badge">Ref: ${p.code}</div>`:`<div class="rep-cat-badge">Repuesto</div>`}
+      <div class="rep-name">${p.name}</div>
+      ${p.code?`<div class="rep-desc">Código: ${p.code}</div>`:""}
       <div class="rep-footer">
-        <div class="rep-price">RD$ ${Number(p.precio).toLocaleString("es-DO",{minimumFractionDigits:2})}</div>
+        <div class="rep-price">RD$ ${Number(p.price).toLocaleString("es-DO",{minimumFractionDigits:2})}</div>
         <span class="rep-stock ${stockClass}">${stockLabel}</span>
       </div>
     </div>
