@@ -398,6 +398,42 @@ button{cursor:pointer;font-family:inherit;border:none}
 .cafe-price{font-size:17px;font-weight:900;color:var(--green)}
 .cafe-empty{text-align:center;padding:48px 20px;color:var(--muted2)}
 
+/* ══ REPUESTOS PANEL ════════════════════════════════════════════ */
+#panel-repuestos{background:linear-gradient(180deg,#060a18 0%,var(--dark) 100%)}
+.rep-search-wrap{display:flex;gap:10px;margin:20px 0 16px;flex-wrap:wrap;align-items:center}
+.rep-search{background:rgba(30,41,59,.7);border:1px solid var(--border);color:#f1f5f9;
+  padding:10px 16px;border-radius:10px;font-size:14px;flex:1;min-width:200px;outline:none;
+  transition:.2s;font-family:inherit}
+.rep-search:focus{border-color:rgba(220,38,38,.4);box-shadow:0 0 0 3px rgba(220,38,38,.1)}
+.rep-cats{display:flex;gap:6px;flex-wrap:wrap;margin-bottom:18px}
+.rep-cat{background:rgba(30,41,59,.7);border:1px solid var(--border);color:var(--muted2);
+  padding:6px 16px;border-radius:100px;font-size:12px;font-weight:700;cursor:pointer;transition:.2s}
+.rep-cat.active,.rep-cat:hover{background:#dc2626;color:#fff;border-color:#dc2626}
+.rep-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(220px,1fr));gap:16px}
+.rep-card{background:rgba(20,30,50,.85);border:1px solid var(--border);
+  border-radius:var(--radius);overflow:hidden;transition:.3s;display:flex;flex-direction:column}
+.rep-card:hover{transform:translateY(-4px);border-color:rgba(220,38,38,.35);
+  box-shadow:0 12px 32px rgba(0,0,0,.4)}
+.rep-img-wrap{width:100%;aspect-ratio:1/1;overflow:hidden;background:var(--dark2);flex-shrink:0}
+.rep-img{width:100%;height:100%;object-fit:cover;display:block;transition:transform .4s}
+.rep-card:hover .rep-img{transform:scale(1.06)}
+.rep-placeholder{width:100%;aspect-ratio:1/1;display:flex;align-items:center;
+  justify-content:center;font-size:42px;background:rgba(30,41,59,.8);color:var(--muted2)}
+.rep-body{padding:14px;flex:1;display:flex;flex-direction:column;gap:6px}
+.rep-cat-badge{font-size:10px;font-weight:700;color:#f87171;text-transform:uppercase;letter-spacing:1px}
+.rep-name{font-size:15px;font-weight:800;color:#f1f5f9;line-height:1.3}
+.rep-desc{font-size:12px;color:var(--muted);line-height:1.55;flex:1}
+.rep-footer{display:flex;align-items:center;justify-content:space-between;margin-top:6px}
+.rep-price{font-size:18px;font-weight:900;color:#34d399}
+.rep-stock{font-size:11px;font-weight:700;padding:3px 9px;border-radius:8px}
+.rep-stock.ok{background:rgba(34,197,94,.12);color:#4ade80;border:1px solid rgba(34,197,94,.2)}
+.rep-stock.low{background:rgba(245,158,11,.12);color:#fbbf24;border:1px solid rgba(245,158,11,.2)}
+.rep-empty{text-align:center;padding:56px 20px;color:var(--muted2)}
+.rep-wa-cta{display:inline-flex;align-items:center;gap:8px;background:#16a34a;color:#fff;
+  padding:11px 22px;border-radius:10px;font-weight:700;font-size:14px;margin-top:16px;
+  border:none;cursor:pointer;transition:.2s}
+.rep-wa-cta:hover{background:#15803d;transform:translateY(-1px)}
+
 /* ══ NOSOTROS PANEL ═════════════════════════════════════════════ */
 #panel-nosotros{background:linear-gradient(180deg,#040c1a 0%,var(--dark) 100%)}
 .mv-grid{display:grid;grid-template-columns:1fr 1fr;gap:20px;margin-top:28px}
@@ -540,6 +576,7 @@ footer{background:var(--dark4);border-top:1px solid rgba(255,255,255,.06);paddin
       <button class="ptab" data-portal="servicios"     onclick="showPortal('servicios')">SERVICIOS</button>
       <button class="ptab" data-portal="procedimiento" onclick="showPortal('procedimiento')">PROCEDIMIENTO</button>
       <button class="ptab" data-portal="cafeteria"     onclick="showPortal('cafeteria')">CAFETERÍA</button>
+      <button class="ptab" data-portal="repuestos"     onclick="showPortal('repuestos')">REPUESTOS</button>
       <button class="ptab" data-portal="nosotros"      onclick="showPortal('nosotros')">NOSOTROS</button>
     </div>
     <div class="nav-right">
@@ -1046,6 +1083,32 @@ footer{background:var(--dark4);border-top:1px solid rgba(255,255,255,.06);paddin
 </section>
 
 <!-- ══════════════════════════════════════════════════════════════
+     PANEL: REPUESTOS
+══════════════════════════════════════════════════════════════════ -->
+<section id="panel-repuestos" class="panel">
+  <div class="panel-section">
+    <div class="container">
+      <div class="badge-pill" style="margin-bottom:16px">🔩 Repuestos</div>
+      <h2 class="panel-title">Venta de <span style="color:#f87171">Repuestos</span></h2>
+      <p class="panel-sub">Inventario actualizado en tiempo real. Repuestos genuinos y de calidad para todo tipo de vehículo. Consúltanos por WhatsApp para disponibilidad y precios.</p>
+
+      <div class="rep-search-wrap">
+        <input class="rep-search" id="rep-search" placeholder="🔍 Buscar repuesto..." oninput="filtrarRep()" />
+      </div>
+      <div class="rep-cats" id="rep-cats">
+        <button class="rep-cat active" data-cat="TODOS" onclick="setCatRep('TODOS')">🔩 Todos</button>
+      </div>
+      <div id="rep-grid-wrap">
+        <div class="rep-empty">
+          <div style="font-size:44px;margin-bottom:14px">🔩</div>
+          <div style="font-size:15px;font-weight:600;color:var(--muted)">Cargando inventario...</div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ══════════════════════════════════════════════════════════════
      PANEL: NOSOTROS
 ══════════════════════════════════════════════════════════════════ -->
 <section id="panel-nosotros" class="panel">
@@ -1185,6 +1248,7 @@ footer{background:var(--dark4);border-top:1px solid rgba(255,255,255,.06);paddin
         <a href="#" onclick="showPortal('servicios');return false">Servicios</a>
         <a href="#" onclick="showPortal('procedimiento');return false">Procedimiento</a>
         <a href="#" onclick="showPortal('cafeteria');return false">Cafetería</a>
+        <a href="#" onclick="showPortal('repuestos');return false">Repuestos</a>
         <a href="#" onclick="showPortal('nosotros');return false">Nosotros</a>
         <a href="nosotros.html">Ver página completa ↗</a>
       </div>
@@ -1209,6 +1273,7 @@ const PORTAL_SUBS = {
   servicios:     [],
   procedimiento: [],
   cafeteria:     [],
+  repuestos:     [],
   nosotros: [
     {id:"ns-quienes",  label:"Quiénes somos"},
     {id:"ns-valores",  label:"Valores y Objetivos"},
@@ -1248,6 +1313,11 @@ function showPortal(id) {
   if (id === "cafeteria" && !window._cafeLoaded) {
     window._cafeLoaded = true;
     loadCafe();
+  }
+  // Load repuestos on first visit
+  if (id === "repuestos" && !window._repLoaded) {
+    window._repLoaded = true;
+    loadRep();
   }
 }
 
@@ -1485,6 +1555,74 @@ function cardHTML(p){
     ?`<div class="cafe-img-wrap"><img class="cafe-img" src="${p.imagen}" alt="${p.nombre}" loading="lazy" onerror="this.parentElement.innerHTML='<div class=\\'cafe-placeholder\\'>☕</div>'"/></div>`
     :`<div class="cafe-placeholder">☕</div>`;
   return`<div class="cafe-card">${img}<div class="cafe-body"><div class="cafe-cat">${p.categoria||"General"}</div><div class="cafe-name">${p.nombre}</div><div class="cafe-price">RD$ ${Number(p.precio).toLocaleString("es-DO",{minimumFractionDigits:2})}</div></div></div>`;
+}
+
+/* ══ REPUESTOS ══════════════════════════════════════════════════ */
+let todosRep=[],catRepActiva="TODOS";
+
+async function loadRep(){
+  try{
+    const r=await fetch(`${CONFIG.API_BASE}/repuestos`);
+    const data=await r.json();
+    todosRep=(Array.isArray(data)?data:[]).filter(p=>p.activo!==false&&p.stock>0);
+    buildCatsRep();
+    renderRep();
+  }catch{
+    document.getElementById("rep-grid-wrap").innerHTML=`<div class="rep-empty"><div style="font-size:40px;margin-bottom:12px">🔩</div><p style="font-weight:600;color:var(--muted)">Inventario no disponible en este momento.</p><p style="margin-top:10px"><a href="${waUrl('Hola, quisiera consultar disponibilidad de repuestos')}" target="_blank" style="color:#f87171;font-weight:700">Consultar por WhatsApp →</a></p></div>`;
+  }
+}
+
+function buildCatsRep(){
+  const cats=[...new Set(todosRep.map(p=>p.categoria||"General"))].sort();
+  document.getElementById("rep-cats").innerHTML=
+    `<button class="rep-cat active" data-cat="TODOS" onclick="setCatRep('TODOS')">🔩 Todos</button>`+
+    cats.map(c=>`<button class="rep-cat" data-cat="${c}" onclick="setCatRep('${c}')">${c}</button>`).join("");
+}
+
+function setCatRep(cat){
+  catRepActiva=cat;
+  document.querySelectorAll(".rep-cat").forEach(b=>b.classList.toggle("active",b.dataset.cat===cat));
+  renderRep();
+}
+
+function filtrarRep(){
+  renderRep();
+}
+
+function renderRep(){
+  const q=(document.getElementById("rep-search")?.value||"").trim().toLowerCase();
+  const lista=todosRep.filter(p=>{
+    const matchCat=catRepActiva==="TODOS"||(p.categoria||"General")===catRepActiva;
+    const matchQ=!q||p.nombre.toLowerCase().includes(q)||(p.descripcion||"").toLowerCase().includes(q);
+    return matchCat&&matchQ;
+  });
+  const wrap=document.getElementById("rep-grid-wrap");
+  if(!lista.length){
+    wrap.innerHTML=`<div class="rep-empty"><div style="font-size:40px;margin-bottom:12px">🔩</div><p style="color:var(--muted)">No hay repuestos en esta categoría.</p><a href="${waUrl('Hola, quisiera consultar disponibilidad de repuestos')}" target="_blank" class="rep-wa-cta">💬 Consultar por WhatsApp</a></div>`;
+    return;
+  }
+  wrap.innerHTML=`<div class="rep-grid">${lista.map(repCardHTML).join("")}</div>`;
+}
+
+function repCardHTML(p){
+  const img=p.imagen
+    ?`<div class="rep-img-wrap"><img class="rep-img" src="${p.imagen}" alt="${p.nombre}" loading="lazy" onerror="this.parentElement.innerHTML='<div class=\\'rep-placeholder\\'>🔩</div>'"/></div>`
+    :`<div class="rep-placeholder">🔩</div>`;
+  const stockClass=p.stock<=3?"low":"ok";
+  const stockLabel=p.stock<=3?`⚠️ Stock: ${p.stock}`:`✅ Disp.: ${p.stock}`;
+  const waMsg=encodeURIComponent(`Hola, me interesa el repuesto: ${p.nombre} (RD$ ${Number(p.precio).toFixed(2)}). ¿Está disponible?`);
+  return`<div class="rep-card" onclick="window.open('https://wa.me/${CONFIG.WHATSAPP}?text=${waMsg}','_blank')" style="cursor:pointer" title="Consultar por WhatsApp">
+    ${img}
+    <div class="rep-body">
+      <div class="rep-cat-badge">${p.categoria||"General"}</div>
+      <div class="rep-name">${p.nombre}</div>
+      ${p.descripcion?`<div class="rep-desc">${p.descripcion}</div>`:""}
+      <div class="rep-footer">
+        <div class="rep-price">RD$ ${Number(p.precio).toLocaleString("es-DO",{minimumFractionDigits:2})}</div>
+        <span class="rep-stock ${stockClass}">${stockLabel}</span>
+      </div>
+    </div>
+  </div>`;
 }
 
 /* ══ SERVICIOS ACCORDION ════════════════════════════════════════ */
