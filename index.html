@@ -3,1545 +3,1493 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1" />
-  <meta name="description" content="Sólido Auto Servicio — Taller automotriz profesional en Santo Domingo. Mecánica, diagnóstico, electricidad y cafetería. Consulta el estado de tu vehículo en tiempo real." />
+  <meta name="description" content="Sólido Auto Servicio — Taller automotriz profesional en Santo Domingo." />
   <meta name="theme-color" content="#0f172a" />
-  <title>Sólido Auto Servicio — Mas que un taller, una Experiencia</title>
+  <title>Sólido Auto Servicio — Más que un taller, una Experiencia</title>
 
-  <!-- ═══════════════════════════════════════════════
-       CONFIGURACIÓN — Cambia solo esta sección
-  ═══════════════════════════════════════════════ -->
   <script>
     const CONFIG = {
-      API_BASE:   "https://crm-automotriz-3wde-production.up.railway.app",  // ← Tu URL de Railway
-      WHATSAPP:   "18097122027",
-      TELEFONO:   "809-712-2027",
-      DIRECCION:  "Santo Domingo, República Dominicana",
-      MAPS_EMBED: "https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d241847.98695484637!2d-70.06791265!3d18.47390185!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x8eaf89f1097c1af7%3A0x76ac80c5803c58e7!2sSanto%20Domingo!5e0!3m2!1ses!2sdo!4v1713983000000",
-      HORARIO: [
-        { dia: "Lunes – Viernes", hora: "8:00 AM – 6:00 PM" },
-        { dia: "Sábados",         hora: "8:00 AM – 4:00 PM" },
-        { dia: "Domingos",        hora: "9:00 AM – 2:00 PM" },
+      API_BASE:  "https://crm-automotriz-3wde-production.up.railway.app",
+      WHATSAPP:  "18097122027",
+      TELEFONO:  "809-712-2027",
+      DIRECCION: "Santo Domingo, República Dominicana",
+      MAPS_EMBED:"https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d241847.98695484637!2d-70.06791265!3d18.47390185!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x8eaf89f1097c1af7%3A0x76ac80c5803c58e7!2sSanto%20Domingo!5e0!3m2!1ses!2sdo!4v1713983000000",
+      HORARIO:[
+        {dia:"Lunes – Viernes",hora:"8:00 AM – 6:00 PM"},
+        {dia:"Sábados",hora:"8:00 AM – 4:00 PM"},
+        {dia:"Domingos",hora:"9:00 AM – 2:00 PM"},
       ],
     };
   </script>
 
   <style>
-    /* ── Reset & Variables ─────────────────────────── */
-    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
-    :root {
-      --blue:    #3b82f6;
-      --blue2:   #1d4ed8;
-      --orange:  #f97316;
-      --dark:    #0f172a;
-      --dark2:   #1e293b;
-      --dark3:   #111827;
-      --gray:    #374151;
-      --light:   #f8fafc;
-      --white:   #ffffff;
-      --text:    #1e293b;
-      --muted:   #64748b;
-      --border:  #e2e8f0;
-      --green:   #16a34a;
-      --radius:  16px;
-      --shadow:  0 4px 32px rgba(0,0,0,0.10);
-      --shadowL: 0 8px 48px rgba(0,0,0,0.16);
-    }
-    html { scroll-behavior: smooth; }
-    body {
-      font-family: 'Segoe UI', system-ui, Arial, sans-serif;
-      color: var(--text);
-      background: var(--white);
-      overflow-x: hidden;
-    }
-    a { text-decoration: none; color: inherit; }
-    img { max-width: 100%; }
-    button { cursor: pointer; font-family: inherit; }
-    ::-webkit-scrollbar { width: 6px; }
-    ::-webkit-scrollbar-thumb { background: var(--blue); border-radius: 3px; }
+/* ══ Reset & Variables ══════════════════════════════════════════ */
+*,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
+:root{
+  --blue:#3b82f6;--blue2:#1d4ed8;--blue3:#60a5fa;
+  --orange:#f97316;--orange2:#ea580c;
+  --dark:#0f172a;--dark2:#1e293b;--dark3:#111827;--dark4:#070e1c;
+  --glass:rgba(30,41,59,0.75);--glass2:rgba(15,23,42,0.9);
+  --muted:#94a3b8;--muted2:#64748b;
+  --border:rgba(148,163,184,0.1);--borderB:rgba(59,130,246,0.28);
+  --green:#22c55e;--radius:14px;--radius2:20px;
+}
+html{scroll-behavior:smooth}
+body{font-family:'Segoe UI',system-ui,Arial,sans-serif;background:var(--dark4);color:#f1f5f9;overflow-x:hidden;line-height:1.6}
+a{text-decoration:none;color:inherit}
+button{cursor:pointer;font-family:inherit;border:none}
+::-webkit-scrollbar{width:5px}
+::-webkit-scrollbar-thumb{background:var(--blue);border-radius:3px}
 
-    /* ── Utilidades ─────────────────────────────────── */
-    .container { max-width: 1180px; margin: 0 auto; padding: 0 20px; }
-    .section-title {
-      font-size: clamp(26px, 4vw, 40px);
-      font-weight: 900;
-      color: var(--dark);
-      text-align: center;
-      margin-bottom: 10px;
-      line-height: 1.2;
-    }
-    .section-subtitle {
-      font-size: 16px;
-      color: var(--muted);
-      text-align: center;
-      max-width: 560px;
-      margin: 0 auto 48px;
-      line-height: 1.7;
-    }
-    .badge {
-      display: inline-block;
-      background: rgba(59,130,246,0.1);
-      color: var(--blue);
-      border: 1px solid rgba(59,130,246,0.25);
-      border-radius: 20px;
-      padding: 4px 14px;
-      font-size: 12px;
-      font-weight: 700;
-      letter-spacing: 1px;
-      text-transform: uppercase;
-      margin-bottom: 16px;
-    }
-    .btn {
-      display: inline-flex;
-      align-items: center;
-      gap: 8px;
-      padding: 14px 28px;
-      border-radius: 12px;
-      font-weight: 700;
-      font-size: 15px;
-      border: none;
-      transition: all 0.2s;
-      cursor: pointer;
-    }
-    .btn-primary { background: var(--blue); color: #fff; box-shadow: 0 4px 20px rgba(59,130,246,0.35); }
-    .btn-primary:hover { background: var(--blue2); transform: translateY(-2px); box-shadow: 0 8px 28px rgba(59,130,246,0.45); }
-    .btn-wa { background: #16a34a; color: #fff; box-shadow: 0 4px 20px rgba(22,163,74,0.35); }
-    .btn-wa:hover { background: #15803d; transform: translateY(-2px); }
+/* ══ Utilities ══════════════════════════════════════════════════ */
+.container{max-width:1160px;margin:0 auto;padding:0 24px}
+.grid-bg{position:absolute;inset:0;pointer-events:none;
+  background-image:linear-gradient(rgba(59,130,246,0.04) 1px,transparent 1px),
+    linear-gradient(90deg,rgba(59,130,246,0.04) 1px,transparent 1px);
+  background-size:48px 48px}
+.badge-pill{display:inline-flex;align-items:center;gap:6px;
+  background:rgba(59,130,246,0.1);color:var(--blue3);
+  border:1px solid rgba(59,130,246,0.28);border-radius:20px;
+  padding:4px 14px;font-size:11px;font-weight:700;letter-spacing:1.5px;text-transform:uppercase}
+.gcard{background:var(--glass);border:1px solid var(--border);border-radius:var(--radius2);backdrop-filter:blur(10px)}
 
-    /* ══════════════════════════════════════════════════
-       NAV
-    ══════════════════════════════════════════════════ */
-    #nav {
-      position: fixed; top: 0; left: 0; right: 0;
-      z-index: 1000; padding: 0 20px;
-      transition: all 0.3s;
-    }
-    #nav.scrolled {
-      background: rgba(15,23,42,0.96);
-      backdrop-filter: blur(12px);
-      box-shadow: 0 2px 24px rgba(0,0,0,0.3);
-    }
-    .nav-inner {
-      max-width: 1180px; margin: 0 auto;
-      height: 68px; display: flex;
-      align-items: center; justify-content: space-between; gap: 20px;
-    }
-    .nav-logo { display: flex; align-items: center; gap: 10px; flex-shrink: 0; }
-    .nav-logo img {
-      width: 40px; height: 40px; border-radius: 10px;
-      object-fit: contain; background: rgba(255,255,255,0.08);
-      padding: 3px; border: 1.5px solid rgba(59,130,246,0.3);
-    }
-    .nav-logo-text { color: #fff; }
-    .nav-logo-text strong { display: block; font-size: 14px; font-weight: 900; letter-spacing: 0.5px; }
-    .nav-logo-text span  { display: block; font-size: 10px; font-weight: 600; color: #93c5fd; letter-spacing: 1.5px; }
-    .nav-links { display: flex; align-items: center; gap: 4px; }
-    .nav-links a {
-      padding: 8px 14px; border-radius: 8px;
-      font-size: 13px; font-weight: 600; color: rgba(255,255,255,0.75);
-      transition: all 0.15s;
-    }
-    .nav-links a:hover { color: #fff; background: rgba(255,255,255,0.08); }
-    .nav-cta {
-      display: flex; align-items: center; gap: 8px;
-      background: #16a34a; color: #fff;
-      padding: 8px 16px; border-radius: 10px;
-      font-size: 13px; font-weight: 700;
-      transition: all 0.2s; flex-shrink: 0;
-    }
-    .nav-cta:hover { background: #15803d; transform: translateY(-1px); }
-    .hamburger {
-      display: none; flex-direction: column; gap: 5px;
-      background: none; border: none; padding: 8px; cursor: pointer;
-    }
-    .hamburger span { display: block; width: 24px; height: 2px; background: #fff; border-radius: 2px; transition: all 0.2s; }
-    .nav-mobile {
-      display: none; flex-direction: column; gap: 4px;
-      background: rgba(15,23,42,0.98);
-      padding: 16px 20px;
-      border-top: 1px solid rgba(255,255,255,0.07);
-    }
-    .nav-mobile.open { display: flex; }
-    .nav-mobile a {
-      padding: 12px 14px; border-radius: 10px;
-      font-size: 15px; font-weight: 600; color: rgba(255,255,255,0.8);
-      transition: background 0.15s;
-    }
-    .nav-mobile a:hover { color: #fff; background: rgba(255,255,255,0.07); }
+/* ══ TOP BAR ════════════════════════════════════════════════════ */
+#top-bar{
+  background:var(--dark3);border-bottom:1px solid rgba(255,255,255,0.05);
+  padding:7px 24px;display:flex;align-items:center;justify-content:space-between;
+  font-size:12px;color:var(--muted2)
+}
+#top-bar span{display:flex;align-items:center;gap:16px}
+.topbar-wa{
+  background:#16a34a;color:#fff;padding:4px 12px;border-radius:20px;
+  font-size:11px;font-weight:700;cursor:pointer;transition:.2s
+}
+.topbar-wa:hover{background:#15803d}
 
-    /* ══════════════════════════════════════════════════
-       HERO
-    ══════════════════════════════════════════════════ */
-    #hero {
-      min-height: 100vh;
-      background: linear-gradient(135deg, #0f172a 0%, #1e3a5f 50%, #0f172a 100%);
-      display: flex; flex-direction: column;
-      align-items: center; justify-content: center;
-      position: relative; overflow: hidden;
-      padding: 120px 20px 80px; text-align: center;
-    }
-    .hero-grid-bg {
-      position: absolute; inset: 0;
-      background-image:
-        linear-gradient(rgba(59,130,246,0.04) 1px, transparent 1px),
-        linear-gradient(90deg, rgba(59,130,246,0.04) 1px, transparent 1px);
-      background-size: 48px 48px; pointer-events: none;
-    }
-    .hero-glow-1 {
-      position: absolute; top: -200px; right: -200px;
-      width: 600px; height: 600px; border-radius: 50%;
-      background: radial-gradient(circle, rgba(59,130,246,0.12) 0%, transparent 70%);
-      pointer-events: none;
-    }
-    .hero-glow-2 {
-      position: absolute; bottom: -150px; left: -150px;
-      width: 500px; height: 500px; border-radius: 50%;
-      background: radial-gradient(circle, rgba(249,115,22,0.08) 0%, transparent 70%);
-      pointer-events: none;
-    }
-    .hero-logo {
-      width: 100px; height: 100px; border-radius: 26px;
-      object-fit: contain; background: rgba(255,255,255,0.07);
-      padding: 10px; border: 2px solid rgba(59,130,246,0.3);
-      box-shadow: 0 8px 40px rgba(59,130,246,0.25);
-      margin-bottom: 24px;
-      animation: heroLogoIn 0.8s ease both;
-    }
-    .hero-badge { animation: fadeUp 0.5s 0.1s ease both; opacity: 0; }
-    .hero-title {
-      font-size: clamp(38px, 6.5vw, 72px);
-      font-weight: 900; color: #fff;
-      line-height: 1.08; letter-spacing: -1px;
-      margin-bottom: 10px;
-      animation: fadeUp 0.6s 0.2s ease both; opacity: 0;
-    }
-    .hero-title .accent { color: var(--blue); }
-    .hero-slogan {
-      font-size: clamp(16px, 2.5vw, 20px);
-      color: rgba(255,255,255,0.6);
-      margin-bottom: 38px; line-height: 1.6;
-      animation: fadeUp 0.6s 0.3s ease both; opacity: 0;
-    }
-    .hero-actions {
-      display: flex; flex-wrap: wrap; gap: 12px; justify-content: center;
-      animation: fadeUp 0.6s 0.4s ease both; opacity: 0;
-    }
-    .hero-scroll {
-      position: absolute; bottom: 32px; left: 50%; transform: translateX(-50%);
-      display: flex; flex-direction: column; align-items: center; gap: 6px;
-      animation: scrollBounce 2.2s ease-in-out infinite;
-    }
-    .hero-scroll-lbl { color: rgba(255,255,255,0.3); font-size: 10px; letter-spacing: 2px; text-transform: uppercase; }
-    .hero-scroll-arr {
-      width: 20px; height: 20px;
-      border-right: 2px solid rgba(255,255,255,0.25);
-      border-bottom: 2px solid rgba(255,255,255,0.25);
-      transform: rotate(45deg); margin-top: -6px;
-    }
+/* ══ NAV ════════════════════════════════════════════════════════ */
+#nav{position:sticky;top:0;z-index:1000;background:var(--glass2);backdrop-filter:blur(16px);
+  border-bottom:1px solid rgba(59,130,246,0.12);box-shadow:0 2px 24px rgba(0,0,0,0.35)}
+.nav-row1{display:flex;align-items:center;height:64px;padding:0 24px;gap:8px;max-width:1300px;margin:0 auto}
+.nav-logo{display:flex;align-items:center;gap:10px;flex-shrink:0;margin-right:12px}
+.nav-logo-icon{width:36px;height:36px;border-radius:10px;
+  background:linear-gradient(135deg,#1e3a5f,#2563eb);
+  display:flex;align-items:center;justify-content:center;font-size:18px;
+  border:1.5px solid rgba(59,130,246,0.4);box-shadow:0 4px 12px rgba(37,99,235,0.3)}
+.nav-logo-text strong{display:block;font-size:13px;font-weight:900;color:#fff;letter-spacing:.3px}
+.nav-logo-text span{display:block;font-size:9px;color:#93c5fd;letter-spacing:1.5px;font-weight:600}
 
-    /* Stats bar */
-    .stats-bar {
-      background: var(--dark3);
-      border-top: 1px solid rgba(255,255,255,0.06);
-      border-bottom: 1px solid rgba(255,255,255,0.06);
-      padding: 22px 20px;
-    }
-    .stats-inner {
-      max-width: 860px; margin: 0 auto;
-      display: flex; justify-content: space-around; flex-wrap: wrap; gap: 16px;
-    }
-    .stat { text-align: center; }
-    .stat-num { font-size: 30px; font-weight: 900; color: var(--blue); display: block; }
-    .stat-lbl  { font-size: 12px; color: rgba(255,255,255,0.45); font-weight: 600; letter-spacing: 0.5px; }
+/* Portal tabs */
+.portal-tabs{display:flex;align-items:center;gap:2px;flex:1}
+.ptab{
+  padding:8px 14px;border-radius:8px;background:none;
+  font-size:12px;font-weight:700;color:rgba(255,255,255,0.55);
+  letter-spacing:.6px;transition:all .15s;white-space:nowrap;border:none;
+}
+.ptab:hover{color:#fff;background:rgba(255,255,255,0.07)}
+.ptab.active{color:var(--blue3);background:rgba(59,130,246,0.1);border-bottom:2px solid var(--blue3)}
+.nav-right{display:flex;align-items:center;gap:8px;flex-shrink:0}
+.nav-wa-btn{
+  display:flex;align-items:center;gap:6px;background:#16a34a;color:#fff;
+  padding:8px 16px;border-radius:10px;font-size:13px;font-weight:700;transition:.2s
+}
+.nav-wa-btn:hover{background:#15803d;transform:translateY(-1px)}
+.hamburger{display:none;flex-direction:column;gap:5px;background:none;border:none;padding:8px;cursor:pointer}
+.hamburger span{display:block;width:22px;height:2px;background:#fff;border-radius:2px}
 
-    /* ══════════════════════════════════════════════════
-       SERVICIOS
-    ══════════════════════════════════════════════════ */
-    #servicios { padding: 96px 20px; background: var(--light); }
-    .servicios-grid {
-      display: grid;
-      grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
-      gap: 20px; max-width: 1100px; margin: 0 auto;
-    }
-    .serv-card {
-      background: #fff; border-radius: var(--radius);
-      padding: 28px 22px; text-align: center;
-      box-shadow: var(--shadow); border: 1px solid var(--border);
-      transition: all 0.25s; position: relative; overflow: hidden;
-    }
-    .serv-card::after {
-      content: ""; position: absolute;
-      top: 0; left: 0; right: 0; height: 3px;
-      background: var(--blue); transform: scaleX(0); transform-origin: left;
-      transition: transform 0.3s;
-    }
-    .serv-card:hover { transform: translateY(-6px); box-shadow: var(--shadowL); }
-    .serv-card:hover::after { transform: scaleX(1); }
-    .serv-icon {
-      width: 66px; height: 66px; border-radius: 18px;
-      display: flex; align-items: center; justify-content: center;
-      font-size: 32px; margin: 0 auto 18px;
-    }
-    .serv-card h3 { font-size: 16px; font-weight: 800; color: var(--dark); margin-bottom: 8px; }
-    .serv-card p  { font-size: 13px; color: var(--muted); line-height: 1.65; }
+/* Sub-nav row */
+#sub-nav{
+  display:none;border-top:1px solid rgba(255,255,255,0.06);
+  background:rgba(10,17,32,0.9);padding:0 24px;overflow-x:auto;
+}
+#sub-nav.visible{display:flex}
+.stab{
+  padding:10px 16px;font-size:11px;font-weight:700;color:var(--muted2);
+  letter-spacing:.5px;white-space:nowrap;border-bottom:2px solid transparent;
+  background:none;transition:all .15s;cursor:pointer;border-top:none;border-left:none;border-right:none
+}
+.stab:hover{color:#fff}
+.stab.active{color:var(--orange);border-bottom-color:var(--orange)}
 
-    /* ══════════════════════════════════════════════════
-       POR QUÉ ELEGIRNOS
-    ══════════════════════════════════════════════════ */
-    #por-que {
-      padding: 96px 20px;
-      background: linear-gradient(135deg, var(--dark) 0%, #1a3357 100%);
-    }
-    #por-que .section-title   { color: #fff; }
-    #por-que .section-subtitle{ color: rgba(255,255,255,0.5); }
-    .porq-grid {
-      display: grid; grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
-      gap: 20px; max-width: 960px; margin: 0 auto;
-    }
-    .porq-card {
-      background: rgba(255,255,255,0.05);
-      border: 1px solid rgba(255,255,255,0.09);
-      border-radius: var(--radius);
-      padding: 32px 24px; text-align: center;
-      transition: all 0.25s;
-    }
-    .porq-card:hover { background: rgba(255,255,255,0.09); transform: translateY(-4px); }
-    .porq-icon { font-size: 44px; display: block; margin-bottom: 18px; }
-    .porq-card h3 { font-size: 17px; font-weight: 800; color: #fff; margin-bottom: 10px; }
-    .porq-card p  { font-size: 13px; color: rgba(255,255,255,0.52); line-height: 1.7; }
+/* Mobile nav */
+#nav-mobile{display:none;flex-direction:column;gap:4px;
+  background:rgba(7,14,28,.98);padding:14px 20px;
+  border-top:1px solid rgba(255,255,255,0.06)}
+#nav-mobile.open{display:flex}
+#nav-mobile a{padding:11px 14px;border-radius:10px;font-size:14px;font-weight:600;
+  color:rgba(255,255,255,0.8);transition:background .15s;display:block}
+#nav-mobile a:hover{background:rgba(255,255,255,0.07)}
 
-    /* ══════════════════════════════════════════════════
-       CONSULTA DE VEHÍCULO
-    ══════════════════════════════════════════════════ */
-    #consulta { padding: 96px 20px; background: #fff; }
-    .consulta-wrap { max-width: 680px; margin: 0 auto; }
-    .consulta-form { display: flex; gap: 12px; margin-bottom: 24px; }
-    .consulta-input {
-      flex: 1; padding: 16px 20px;
-      font-size: 22px; font-weight: 700;
-      letter-spacing: 5px; text-transform: uppercase;
-      border: 2px solid var(--border); border-radius: 12px;
-      outline: none; text-align: center;
-      transition: border-color 0.2s; font-family: inherit;
-    }
-    .consulta-input:focus { border-color: var(--blue); }
-    .consulta-btn {
-      padding: 16px 26px;
-      background: var(--blue); color: #fff;
-      border: none; border-radius: 12px;
-      font-size: 15px; font-weight: 700;
-      white-space: nowrap; transition: all 0.2s;
-      display: flex; align-items: center; gap: 8px;
-    }
-    .consulta-btn:hover { background: var(--blue2); transform: translateY(-2px); }
-    .consulta-btn:disabled { opacity: 0.6; cursor: not-allowed; transform: none; }
+/* ══ PANELS ═════════════════════════════════════════════════════ */
+.panel{display:none;min-height:calc(100vh - 64px);animation:fadeUp .28s ease}
+.panel.active{display:block}
+@keyframes fadeUp{from{opacity:0;transform:translateY(10px)}to{opacity:1;transform:translateY(0)}}
+.sub-section{display:none}
+.sub-section.active{display:block;animation:fadeUp .22s ease}
 
-    .resultado-card {
-      border-radius: var(--radius); border: 1px solid var(--border);
-      overflow: hidden; animation: fadeUp 0.35s ease both;
-      box-shadow: var(--shadow);
-    }
-    .resultado-header {
-      padding: 20px 24px; color: #fff;
-      display: flex; justify-content: space-between;
-      align-items: flex-start; flex-wrap: wrap; gap: 12px;
-    }
-    .resultado-veh h3 { font-size: 20px; font-weight: 900; }
-    .resultado-veh p  { font-size: 14px; opacity: 0.75; margin-top: 4px; }
-    .resultado-placa {
-      background: rgba(255,255,255,0.15);
-      padding: 8px 16px; border-radius: 8px;
-      font-family: monospace; font-size: 18px;
-      font-weight: 900; letter-spacing: 2px;
-    }
-    .resultado-body { padding: 22px 24px; background: #fff; }
-    .estado-badge {
-      display: inline-flex; align-items: center; gap: 8px;
-      padding: 10px 18px; border-radius: 10px;
-      font-weight: 800; font-size: 15px; margin-bottom: 14px;
-    }
-    .resultado-info-grid {
-      display: grid; grid-template-columns: repeat(auto-fit, minmax(170px, 1fr));
-      gap: 10px; margin-top: 14px;
-    }
-    .info-item { background: var(--light); border-radius: 10px; padding: 12px 14px; }
-    .info-item label { display: block; font-size: 10px; font-weight: 700; color: var(--muted); text-transform: uppercase; letter-spacing: 0.5px; margin-bottom: 4px; }
-    .info-item span  { font-size: 14px; font-weight: 700; color: var(--dark); }
-    .consulta-error {
-      background: #fef2f2; border: 1px solid #fca5a5;
-      border-radius: 12px; padding: 16px 20px;
-      color: #dc2626; font-size: 14px; font-weight: 600;
-      display: flex; gap: 10px; align-items: flex-start;
-      animation: fadeUp 0.3s ease both;
-    }
+/* ══ HOME PANEL ═════════════════════════════════════════════════ */
+#panel-home{
+  background:linear-gradient(160deg,#040c1a 0%,#0c1f3d 40%,#040c1a 100%);
+  min-height:calc(100vh - 104px);position:relative;overflow:hidden;
+  display:flex;flex-direction:column;justify-content:center;
+}
+.home-orb{position:absolute;border-radius:50%;pointer-events:none;filter:blur(80px)}
+.home-orb-1{width:600px;height:600px;background:rgba(37,99,235,.18);top:-120px;right:-80px}
+.home-orb-2{width:400px;height:400px;background:rgba(249,115,22,.09);bottom:0;left:-60px}
+.hero-inner{position:relative;z-index:2;padding:80px 0 60px}
+.hero-tag{display:inline-flex;align-items:center;gap:8px;
+  background:rgba(37,99,235,.12);border:1px solid rgba(59,130,246,.3);
+  border-radius:24px;padding:6px 18px;font-size:11px;font-weight:700;
+  letter-spacing:2px;color:var(--blue3);text-transform:uppercase;margin-bottom:28px}
+.pulse-dot{width:7px;height:7px;border-radius:50%;background:var(--blue3);
+  animation:pulse 2s infinite}
+@keyframes pulse{0%,100%{box-shadow:0 0 0 0 rgba(96,165,250,.5)}50%{box-shadow:0 0 0 6px rgba(96,165,250,0)}}
+.hero-h1{font-size:clamp(40px,7vw,78px);font-weight:900;line-height:1.06;
+  background:linear-gradient(135deg,#fff 30%,#93c5fd 70%,#60a5fa 100%);
+  -webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text;
+  margin-bottom:10px}
+.hero-h1 em{font-style:normal;
+  background:linear-gradient(135deg,#f97316,#fb923c);
+  -webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text}
+.hero-desc{font-size:clamp(15px,2vw,18px);color:var(--muted);max-width:560px;
+  line-height:1.8;margin:18px 0 36px}
+.hero-desc strong{color:#cbd5e1}
+.hero-stats{display:flex;gap:40px;flex-wrap:wrap;padding-top:36px;
+  border-top:1px solid rgba(255,255,255,.07)}
+.hero-stat strong{display:block;font-size:32px;font-weight:900;color:var(--blue3)}
+.hero-stat span{font-size:13px;color:var(--muted2);font-weight:600}
 
-    /* Timeline */
-    .estado-timeline {
-      display: flex; align-items: flex-start;
-      justify-content: space-between; margin-bottom: 20px;
-      position: relative;
-    }
-    .estado-timeline::before {
-      content: ""; position: absolute;
-      top: 17px; left: 0; right: 0; height: 2px;
-      background: var(--border); z-index: 0;
-    }
-    .tl-step {
-      display: flex; flex-direction: column;
-      align-items: center; gap: 6px;
-      position: relative; z-index: 1; flex: 1;
-    }
-    .tl-dot {
-      width: 34px; height: 34px; border-radius: 50%;
-      border: 2px solid var(--border); background: #fff;
-      display: flex; align-items: center; justify-content: center;
-      font-size: 14px; transition: all 0.2s;
-    }
-    .tl-dot.done   { background: #10b981; border-color: #10b981; color: #fff; }
-    .tl-dot.active { background: var(--blue); border-color: var(--blue); color: #fff; box-shadow: 0 0 0 4px rgba(59,130,246,0.2); }
-    .tl-lbl { font-size: 10px; font-weight: 700; color: var(--muted); text-transform: uppercase; text-align: center; }
+/* Portal access cards */
+.portal-cards{display:grid;grid-template-columns:repeat(5,1fr);gap:14px;margin-top:56px}
+.pcard{
+  background:rgba(30,41,59,.7);border:1px solid var(--border);
+  border-radius:var(--radius);padding:22px 18px;cursor:pointer;
+  transition:all .25s;text-align:center;position:relative;overflow:hidden
+}
+.pcard::before{content:'';position:absolute;top:0;left:0;right:0;height:3px;opacity:0;transition:.25s}
+.pcard:nth-child(1)::before{background:linear-gradient(90deg,#3b82f6,#60a5fa)}
+.pcard:nth-child(2)::before{background:linear-gradient(90deg,#f97316,#fb923c)}
+.pcard:nth-child(3)::before{background:linear-gradient(90deg,#a78bfa,#7c3aed)}
+.pcard:nth-child(4)::before{background:linear-gradient(90deg,#34d399,#059669)}
+.pcard:nth-child(5)::before{background:linear-gradient(90deg,#60a5fa,#3b82f6)}
+.pcard:hover{border-color:rgba(59,130,246,.35);transform:translateY(-4px);
+  box-shadow:0 16px 40px rgba(0,0,0,.35)}
+.pcard:hover::before{opacity:1}
+.pcard-icon{font-size:30px;margin-bottom:12px;display:block}
+.pcard-name{font-size:11px;font-weight:800;letter-spacing:1px;color:#cbd5e1;text-transform:uppercase}
+.pcard-desc{font-size:11px;color:var(--muted2);margin-top:5px;line-height:1.5}
 
-    /* ══════════════════════════════════════════════════
-       CAFETERÍA
-    ══════════════════════════════════════════════════ */
-    #cafeteria { padding: 96px 20px; background: var(--light); }
-    .cafe-tabs {
-      display: flex; gap: 8px; justify-content: center;
-      flex-wrap: wrap; margin-bottom: 36px;
-    }
-    .cafe-tab {
-      padding: 8px 18px; border-radius: 20px;
-      border: 1.5px solid var(--border); background: #fff;
-      font-size: 13px; font-weight: 600; color: var(--muted);
-      cursor: pointer; transition: all 0.2s;
-    }
-    .cafe-tab.active,
-    .cafe-tab:hover { background: var(--orange); color: #fff; border-color: var(--orange); }
-    .cafe-grid {
-      display: grid; grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
-      gap: 20px; max-width: 1100px; margin: 0 auto;
-    }
-    .cafe-card {
-      background: #fff; border-radius: var(--radius); overflow: hidden;
-      box-shadow: var(--shadow); border: 1px solid var(--border);
-      transition: all 0.25s; animation: fadeUp 0.4s ease both;
-    }
-    .cafe-card:hover { transform: translateY(-5px); box-shadow: var(--shadowL); }
-    .cafe-img-wrap { width: 100%; aspect-ratio: 1/1; overflow: hidden; background: var(--dark2); }
-    .cafe-img { width: 100%; height: 100%; object-fit: cover; display: block; transition: transform 0.4s; }
-    .cafe-card:hover .cafe-img { transform: scale(1.06); }
-    .cafe-placeholder {
-      width: 100%; aspect-ratio: 1/1;
-      background: linear-gradient(135deg, #1e293b, #0f172a);
-      display: flex; align-items: center; justify-content: center;
-      font-size: 36px;
-    }
-    .cafe-body { padding: 14px 16px 18px; }
-    .cafe-cat  { font-size: 10px; font-weight: 700; color: var(--orange); text-transform: uppercase; letter-spacing: 1px; margin-bottom: 4px; }
-    .cafe-name { font-size: 15px; font-weight: 700; color: var(--dark); margin-bottom: 6px; line-height: 1.3; }
-    .cafe-price{ font-size: 17px; font-weight: 900; color: var(--orange); }
-    .cafe-empty { text-align: center; padding: 60px 20px; color: var(--muted); }
-    .cafe-loading {
-      display: flex; align-items: center; justify-content: center; gap: 14px;
-      padding: 60px 20px; color: var(--muted);
-    }
+/* ══ CLIENTES PANEL ═════════════════════════════════════════════ */
+#panel-clientes{background:linear-gradient(180deg,#060e1e 0%,var(--dark) 100%)}
+.panel-hero{padding:48px 0 24px;position:relative;overflow:hidden}
+.panel-hero .grid-bg{opacity:.5}
+.panel-title{font-size:clamp(28px,4vw,44px);font-weight:900;line-height:1.15;margin-bottom:10px}
+.panel-sub{font-size:15px;color:var(--muted);max-width:560px;line-height:1.75}
+.consulta-box{background:rgba(30,41,59,.8);border:1px solid var(--border);
+  border-radius:var(--radius2);padding:32px;margin:32px 0}
+.consulta-label{font-size:14px;font-weight:700;color:var(--blue3);margin-bottom:12px;
+  text-transform:uppercase;letter-spacing:1px}
+.consulta-row{display:flex;gap:12px}
+.placa-input{
+  flex:1;background:rgba(15,23,42,.8);border:1px solid rgba(148,163,184,.2);
+  border-radius:12px;padding:14px 18px;font-size:18px;font-weight:800;
+  color:#fff;letter-spacing:2px;text-transform:uppercase;outline:none;transition:.2s
+}
+.placa-input:focus{border-color:var(--blue);box-shadow:0 0 0 3px rgba(59,130,246,.15)}
+.placa-input::placeholder{color:var(--muted2);font-weight:400;letter-spacing:0;font-size:14px}
+.buscar-btn{
+  background:linear-gradient(135deg,var(--blue),var(--blue2));color:#fff;
+  padding:14px 28px;border-radius:12px;font-weight:700;font-size:15px;
+  display:flex;align-items:center;gap:8px;transition:.2s;flex-shrink:0;
+  box-shadow:0 4px 20px rgba(59,130,246,.35)
+}
+.buscar-btn:hover{transform:translateY(-2px);box-shadow:0 8px 28px rgba(59,130,246,.45)}
+.buscar-btn:disabled{opacity:.6;cursor:not-allowed;transform:none}
+.spinner-sm{width:16px;height:16px;border:2.5px solid rgba(255,255,255,.3);
+  border-top-color:#fff;border-radius:50%;animation:spin .7s linear infinite;display:inline-block}
+@keyframes spin{to{transform:rotate(360deg)}}
+#resultado{margin-top:4px}
+.consulta-error{
+  background:rgba(239,68,68,.1);border:1px solid rgba(239,68,68,.25);
+  border-radius:14px;padding:20px 22px;display:flex;gap:14px;align-items:flex-start;
+  color:#fca5a5;font-size:14px;line-height:1.7
+}
 
-    /* ══════════════════════════════════════════════════
-       CONTACTO
-    ══════════════════════════════════════════════════ */
-    #contacto { padding: 96px 20px; background: var(--dark); }
-    #contacto .section-title   { color: #fff; }
-    #contacto .section-subtitle{ color: rgba(255,255,255,0.48); }
-    .contacto-grid {
-      display: grid; grid-template-columns: 1fr 1fr;
-      gap: 32px; max-width: 1000px; margin: 0 auto;
-    }
-    .contacto-info { display: flex; flex-direction: column; gap: 16px; }
-    .wa-block {
-      background: linear-gradient(135deg, #14532d, #16a34a);
-      border-radius: 14px; padding: 22px 20px;
-      display: flex; align-items: center; gap: 14px;
-      text-decoration: none; transition: all 0.2s;
-      box-shadow: 0 6px 24px rgba(22,163,74,0.28);
-    }
-    .wa-block:hover { transform: translateY(-3px); box-shadow: 0 10px 32px rgba(22,163,74,0.4); }
-    .wa-block-icon { font-size: 38px; }
-    .wa-block h4 { font-size: 11px; font-weight: 700; color: rgba(255,255,255,0.65); text-transform: uppercase; letter-spacing: 0.5px; margin-bottom: 4px; }
-    .wa-block strong { display: block; font-size: 18px; color: #fff; font-weight: 900; }
-    .cinfo-item {
-      display: flex; align-items: flex-start; gap: 14px;
-      background: rgba(255,255,255,0.05);
-      border: 1px solid rgba(255,255,255,0.08);
-      border-radius: 14px; padding: 18px 20px;
-      transition: background 0.2s;
-    }
-    .cinfo-item:hover { background: rgba(255,255,255,0.08); }
-    .cinfo-icon {
-      width: 44px; height: 44px; border-radius: 12px;
-      display: flex; align-items: center; justify-content: center;
-      font-size: 20px; flex-shrink: 0;
-    }
-    .cinfo-item h4 { font-size: 11px; font-weight: 700; color: rgba(255,255,255,0.4); text-transform: uppercase; letter-spacing: 0.5px; margin-bottom: 4px; }
-    .cinfo-item a, .cinfo-item p { font-size: 16px; font-weight: 700; color: #fff; margin: 0; }
-    .cinfo-item a:hover { color: var(--blue); }
-    .horario-row { display: flex; justify-content: space-between; font-size: 13px; padding: 2px 0; }
-    .horario-row span   { color: rgba(255,255,255,0.55); }
-    .horario-row strong { color: #fff; }
-    .contacto-map {
-      border-radius: var(--radius); overflow: hidden;
-      border: 1px solid rgba(255,255,255,0.1);
-      min-height: 380px;
-    }
-    .contacto-map iframe { width: 100%; height: 100%; min-height: 380px; border: none; display: block; }
+/* CR-* Vehicle result classes — dark theme */
+.cr-btn-volver{
+  background:rgba(255,255,255,.06);border:1px solid rgba(255,255,255,.1);
+  color:var(--muted);padding:8px 18px;border-radius:10px;font-size:13px;font-weight:600;
+  margin-bottom:16px;transition:.15s;cursor:pointer
+}
+.cr-btn-volver:hover{background:rgba(255,255,255,.1);color:#fff}
+.cr-car-card{
+  background:linear-gradient(135deg,#1e3a5f,#0f2040);
+  border:1px solid rgba(59,130,246,.25);border-radius:var(--radius);
+  padding:22px;margin-bottom:14px;position:relative;overflow:hidden
+}
+.cr-car-card::before{content:'';position:absolute;top:0;left:0;right:0;height:3px;
+  background:linear-gradient(90deg,var(--blue),var(--blue3))}
+.cr-car-main{display:flex;gap:16px;align-items:center}
+.cr-car-emoji{font-size:44px}
+.cr-car-marca{font-size:22px;font-weight:900;color:#fff}
+.cr-car-meta{font-size:13px;color:var(--muted);margin-top:4px}
+.cr-placa-badge{display:inline-block;background:rgba(59,130,246,.2);
+  border:1px solid rgba(59,130,246,.4);border-radius:8px;
+  padding:4px 14px;font-size:15px;font-weight:900;color:var(--blue3);
+  letter-spacing:2px;margin-top:8px}
+.cr-estado-card{border-radius:var(--radius);padding:22px;margin-bottom:14px}
+.cr-estado-top{font-size:10px;font-weight:700;color:rgba(255,255,255,.5);
+  text-transform:uppercase;letter-spacing:1.5px;margin-bottom:12px}
+.cr-estado-row{display:flex;align-items:center;gap:14px;margin-bottom:20px}
+.cr-estado-emoji{font-size:40px}
+.cr-estado-name{font-size:20px;font-weight:900;color:#fff}
+.cr-estado-msg{font-size:13px;color:rgba(255,255,255,.6);margin-top:4px;line-height:1.6}
+.cr-prog-wrap{display:flex;gap:4px;align-items:flex-start}
+.cr-prog-step{display:flex;flex-direction:column;align-items:center;flex:1}
+.cr-prog-dot{width:28px;height:28px;border-radius:50%;display:flex;align-items:center;
+  justify-content:center;font-size:11px;font-weight:700}
+.cr-dot-done{background:rgba(255,255,255,.2);color:#fff}
+.cr-dot-active{background:#fff;color:#111;box-shadow:0 0 12px rgba(255,255,255,.4)}
+.cr-dot-future{background:rgba(255,255,255,.07);color:rgba(255,255,255,.25)}
+.cr-prog-lbl{font-size:8px;margin-top:5px;text-align:center;font-weight:700;white-space:nowrap}
+.cr-lbl-on{color:rgba(255,255,255,.85)}
+.cr-lbl-off{color:rgba(255,255,255,.22)}
+.cr-tabs{display:grid;grid-template-columns:repeat(3,1fr);gap:8px;margin-bottom:14px}
+.cr-tab{padding:10px;border-radius:10px;font-size:13px;font-weight:700;
+  background:rgba(30,41,59,.8);border:1px solid var(--border);color:var(--muted);
+  transition:.15s;cursor:pointer;text-align:center}
+.cr-tab-active{background:rgba(59,130,246,.15);border-color:rgba(59,130,246,.4);color:var(--blue3)}
+.cr-orden-card{background:var(--glass);border:1px solid var(--border);border-left-width:3px;
+  border-radius:12px;padding:16px;margin-bottom:10px}
+.cr-orden-header{display:flex;justify-content:space-between;align-items:center;margin-bottom:8px}
+.cr-orden-id{font-weight:800;font-size:15px;color:#f1f5f9}
+.cr-orden-badge{padding:4px 12px;border-radius:100px;font-size:11px;font-weight:700}
+.cr-orden-desc{font-size:13px;color:var(--muted);line-height:1.6}
+.cr-btn-wa-card{display:inline-flex;align-items:center;gap:6px;margin-top:10px;
+  background:rgba(22,163,74,.15);border:1px solid rgba(22,163,74,.3);
+  color:#4ade80;padding:7px 14px;border-radius:8px;font-size:12px;font-weight:700;transition:.15s}
+.cr-btn-wa-card:hover{background:rgba(22,163,74,.25)}
+.cr-diag-card{background:var(--glass);border:1px solid var(--border);
+  border-radius:12px;padding:16px;margin-bottom:10px}
+.cr-diag-tipo{font-weight:700;font-size:15px;color:#f1f5f9;margin-bottom:6px}
+.cr-diag-obs{font-size:13px;color:var(--muted);line-height:1.6}
+.cr-hist-timeline{position:relative;padding-left:20px}
+.cr-hist-timeline::before{content:'';position:absolute;left:6px;top:0;bottom:0;
+  width:2px;background:linear-gradient(180deg,var(--blue),var(--orange));opacity:.25}
+.cr-hist-item{background:var(--glass);border:1px solid var(--border);border-radius:12px;
+  padding:16px;margin-bottom:10px;cursor:pointer;transition:.2s;position:relative}
+.cr-hist-item:hover{border-color:rgba(59,130,246,.35);transform:translateX(2px)}
+.cr-hist-item::before{content:'';position:absolute;left:-17px;top:20px;
+  width:10px;height:10px;border-radius:50%;background:var(--blue);
+  border:2px solid var(--dark);box-shadow:0 0 8px rgba(59,130,246,.5)}
+.cr-hist-servicio{font-weight:700;font-size:14px;color:#f1f5f9;margin-bottom:4px}
+.cr-hist-meta{font-size:12px;color:var(--muted);margin-bottom:4px}
+.cr-hist-cost{font-weight:900;font-size:17px;color:#34d399}
+.cr-hist-badge{display:inline-block;background:rgba(59,130,246,.15);color:var(--blue3);
+  border:1px solid rgba(59,130,246,.3);border-radius:8px;font-size:10px;
+  font-weight:700;padding:2px 8px;margin-left:8px}
+.cr-detalle-header{background:var(--glass);border:1px solid var(--border);
+  border-radius:12px;padding:20px;margin-bottom:12px}
+.cr-det-card{background:var(--glass);border:1px solid var(--border);
+  border-radius:12px;padding:16px;margin-bottom:10px}
+.cr-det-title{font-size:11px;font-weight:700;color:var(--muted);
+  text-transform:uppercase;letter-spacing:1px;margin-bottom:12px}
+.cr-det-section{margin-bottom:10px}
+.cr-det-sub{font-size:11px;font-weight:700;color:var(--muted2);margin-bottom:4px}
+.cr-det-txt{font-size:13px;color:#cbd5e1;line-height:1.7}
+.cr-det-falla{background:rgba(239,68,68,.08);border:1px solid rgba(239,68,68,.2);
+  border-radius:12px;padding:16px;margin-bottom:10px}
+.cr-det-falla-title{font-size:11px;font-weight:700;color:#fca5a5;
+  text-transform:uppercase;letter-spacing:1px;margin-bottom:6px}
+.cr-det-falla-txt{font-size:13px;color:#fecaca;line-height:1.6}
+.cr-costos-grid{display:grid;grid-template-columns:1fr 1fr;gap:10px;margin-top:8px}
+.cr-costo-box{background:rgba(30,41,59,.8);border-radius:10px;padding:12px;text-align:center}
+.cr-costo-lbl{font-size:10px;color:var(--muted);text-transform:uppercase;letter-spacing:.8px;margin-bottom:4px}
+.cr-costo-val{font-weight:700;font-size:14px;color:#f1f5f9}
 
-    /* ══════════════════════════════════════════════════
-       FOOTER
-    ══════════════════════════════════════════════════ */
-    footer {
-      background: #050d1a; padding: 52px 20px 28px;
-      color: rgba(255,255,255,0.45);
-      border-top: 1px solid rgba(255,255,255,0.05);
-    }
-    .footer-inner { max-width: 1100px; margin: 0 auto; }
-    .footer-top {
-      display: flex; justify-content: space-between;
-      align-items: flex-start; flex-wrap: wrap;
-      gap: 32px; margin-bottom: 44px;
-    }
-    .footer-brand { display: flex; align-items: center; gap: 12px; margin-bottom: 14px; }
-    .footer-brand img {
-      width: 44px; height: 44px; border-radius: 12px;
-      object-fit: contain; background: rgba(255,255,255,0.06);
-      padding: 4px; border: 1.5px solid rgba(59,130,246,0.25);
-    }
-    .footer-brand strong { display: block; font-size: 15px; font-weight: 900; color: #fff; }
-    .footer-brand span   { display: block; font-size: 12px; color: rgba(255,255,255,0.38); }
-    .footer-desc { font-size: 13px; max-width: 260px; line-height: 1.75; }
-    .f-col h5 { font-size: 11px; font-weight: 700; color: rgba(255,255,255,0.3); text-transform: uppercase; letter-spacing: 1.2px; margin-bottom: 14px; }
-    .f-col a  { display: block; font-size: 14px; color: rgba(255,255,255,0.52); margin-bottom: 8px; transition: color 0.15s; }
-    .f-col a:hover { color: #fff; }
-    .social-row { display: flex; gap: 10px; margin-top: 4px; }
-    .social-btn {
-      width: 40px; height: 40px; border-radius: 10px;
-      background: rgba(255,255,255,0.07); border: 1px solid rgba(255,255,255,0.1);
-      display: flex; align-items: center; justify-content: center;
-      font-size: 18px; text-decoration: none;
-      transition: all 0.2s;
-    }
-    .social-btn:hover { background: var(--blue); border-color: var(--blue); transform: translateY(-2px); }
-    .footer-bottom {
-      border-top: 1px solid rgba(255,255,255,0.06); padding-top: 24px;
-      display: flex; justify-content: space-between;
-      align-items: center; flex-wrap: wrap; gap: 10px; font-size: 13px;
-    }
+/* ══ SERVICIOS PANEL ════════════════════════════════════════════ */
+#panel-servicios{background:linear-gradient(180deg,#040c1a 0%,var(--dark) 100%)}
+.srv-grid{display:flex;flex-direction:column;gap:10px;margin-top:28px}
+.srv-item{background:rgba(20,32,54,.8);border:1px solid var(--border);border-radius:var(--radius);overflow:hidden;transition:border-color .25s}
+.srv-item.open{border-color:rgba(59,130,246,.35);box-shadow:0 8px 32px rgba(0,0,0,.3)}
+.srv-hdr{display:flex;align-items:center;gap:16px;padding:20px 22px;cursor:pointer;
+  width:100%;text-align:left;color:#fff;background:none;border-radius:var(--radius);transition:.2s}
+.srv-hdr:hover{background:rgba(59,130,246,.04)}
+.srv-ico{width:46px;height:46px;border-radius:12px;flex-shrink:0;display:flex;align-items:center;
+  justify-content:center;font-size:20px;background:rgba(30,41,59,.8);
+  border:1px solid var(--border);transition:.3s}
+.srv-item.open .srv-ico{background:rgba(37,99,235,.15);border-color:rgba(59,130,246,.35)}
+.srv-title-block{flex:1}
+.srv-title{font-size:16px;font-weight:800;color:#f1f5f9}
+.srv-subtitle{font-size:12px;color:var(--muted2);margin-top:2px}
+.srv-arr{width:28px;height:28px;border-radius:7px;display:flex;align-items:center;
+  justify-content:center;background:rgba(255,255,255,.04);
+  border:1px solid rgba(255,255,255,.07);color:var(--muted);font-size:12px;
+  transition:.3s;flex-shrink:0}
+.srv-item.open .srv-arr{background:rgba(37,99,235,.15);border-color:rgba(59,130,246,.3);
+  color:var(--blue3);transform:rotate(180deg)}
+.srv-body{display:none;padding:0 22px 24px 84px;
+  border-top:1px solid rgba(255,255,255,.05);animation:fadeUp .22s ease}
+.srv-item.open .srv-body{display:block}
+.srv-body p{font-size:14px;color:var(--muted);line-height:1.8;margin:16px 0}
+.srv-body h5{font-size:11px;font-weight:700;color:var(--blue);
+  text-transform:uppercase;letter-spacing:1px;margin-bottom:10px}
+.srv-tags{display:grid;grid-template-columns:repeat(auto-fill,minmax(160px,1fr));gap:8px;margin-bottom:14px}
+.srv-tag{background:rgba(37,99,235,.08);border:1px solid rgba(59,130,246,.2);
+  border-radius:9px;padding:9px 14px;font-size:12px;color:#cbd5e1;font-weight:600;
+  display:flex;align-items:center;gap:7px}
+.srv-body ul{list-style:none;display:flex;flex-direction:column;gap:7px;margin-bottom:14px}
+.srv-body ul li{font-size:13px;color:var(--muted);padding-left:18px;position:relative;line-height:1.65}
+.srv-body ul li::before{content:'';position:absolute;left:0;top:7px;
+  width:8px;height:8px;border-radius:50%;background:var(--blue);opacity:.6}
 
-    /* WhatsApp flotante */
-    .wa-float {
-      position: fixed; bottom: 28px; right: 24px; z-index: 999;
-      display: flex; align-items: center; gap: 10px;
-      background: #16a34a; color: #fff; padding: 14px 22px;
-      border-radius: 50px; font-weight: 700; font-size: 14px;
-      text-decoration: none;
-      box-shadow: 0 6px 28px rgba(22,163,74,0.45);
-      transition: all 0.25s;
-      animation: waPulse 3s ease-in-out infinite;
-    }
-    .wa-float:hover { transform: translateY(-3px) scale(1.04); }
-    .wa-float-icon { font-size: 22px; }
+/* ══ PROCEDIMIENTO PANEL ════════════════════════════════════════ */
+#panel-procedimiento{background:linear-gradient(180deg,var(--dark) 0%,#040c1a 100%)}
+.proc-wrap{max-width:820px;margin:0 auto;padding:32px 0 48px}
+.proc-timeline{position:relative}
+.proc-line{position:absolute;left:27px;top:0;bottom:0;width:2px;
+  background:linear-gradient(180deg,var(--blue) 0%,var(--orange) 100%);opacity:.25}
+.proc-step{display:flex;gap:24px;padding-bottom:28px;position:relative}
+.proc-step:last-child{padding-bottom:0}
+.proc-dot{width:56px;height:56px;border-radius:50%;flex-shrink:0;
+  background:linear-gradient(135deg,#1e3a5f,#1d4ed8);
+  border:2px solid rgba(59,130,246,.4);display:flex;align-items:center;
+  justify-content:center;font-size:18px;position:relative;z-index:2;
+  box-shadow:0 0 20px rgba(37,99,235,.25);transition:.3s}
+.proc-step:hover .proc-dot{box-shadow:0 0 32px rgba(37,99,235,.5);border-color:var(--blue3);transform:scale(1.07)}
+.proc-body{background:var(--glass);border:1px solid var(--border);
+  border-radius:var(--radius);padding:20px 24px;flex:1;transition:.25s}
+.proc-step:hover .proc-body{border-color:var(--borderB)}
+.proc-num{font-size:10px;font-weight:700;color:var(--blue);letter-spacing:1.5px;
+  text-transform:uppercase;margin-bottom:4px}
+.proc-body h4{font-size:16px;font-weight:800;color:#f1f5f9;margin-bottom:10px}
+.proc-body ul{list-style:none;display:flex;flex-direction:column;gap:5px}
+.proc-body ul li{font-size:13px;color:var(--muted);padding-left:14px;position:relative;line-height:1.6}
+.proc-body ul li::before{content:'•';position:absolute;left:0;color:var(--blue)}
+.proc-extra{margin-top:40px;background:rgba(37,99,235,.06);
+  border:1px solid rgba(59,130,246,.2);border-radius:var(--radius);padding:22px 26px}
+.proc-extra h4{font-size:12px;font-weight:800;color:var(--blue3);
+  text-transform:uppercase;letter-spacing:1px;margin-bottom:12px}
+.proc-extra ul{list-style:none;display:flex;flex-direction:column;gap:7px}
+.proc-extra ul li{font-size:13px;color:var(--muted);padding-left:16px;position:relative;line-height:1.6}
+.proc-extra ul li::before{content:'→';position:absolute;left:0;color:var(--blue);font-size:11px}
 
-    /* ══════════════════════════════════════════════════
-       ANIMACIONES
-    ══════════════════════════════════════════════════ */
-    @keyframes fadeUp {
-      from { opacity: 0; transform: translateY(22px); }
-      to   { opacity: 1; transform: translateY(0); }
-    }
-    @keyframes heroLogoIn {
-      from { opacity: 0; transform: scale(0.75) translateY(-10px); }
-      to   { opacity: 1; transform: scale(1) translateY(0); }
-    }
-    @keyframes scrollBounce {
-      0%,100% { transform: translateX(-50%) translateY(0); }
-      50%      { transform: translateX(-50%) translateY(9px); }
-    }
-    @keyframes waPulse {
-      0%,100% { box-shadow: 0 6px 28px rgba(22,163,74,0.45); }
-      50%      { box-shadow: 0 6px 28px rgba(22,163,74,0.65), 0 0 0 10px rgba(22,163,74,0.1); }
-    }
-    @keyframes spin {
-      to { transform: rotate(360deg); }
-    }
-    .spinner    { width: 28px; height: 28px; border: 3px solid rgba(0,0,0,0.08); border-top-color: var(--blue);   border-radius: 50%; animation: spin 0.75s linear infinite; }
-    .spinner-sm { width: 18px; height: 18px; border: 2px solid rgba(255,255,255,0.3); border-top-color: #fff; border-radius: 50%; animation: spin 0.75s linear infinite; }
+/* ══ CAFETERÍA PANEL ════════════════════════════════════════════ */
+#panel-cafeteria{background:linear-gradient(180deg,#040c1a 0%,var(--dark) 100%)}
+.cafe-tabs{display:flex;gap:8px;flex-wrap:wrap;margin:24px 0 20px}
+.cafe-tab{background:rgba(30,41,59,.7);border:1px solid var(--border);
+  color:var(--muted2);padding:8px 18px;border-radius:100px;
+  font-size:13px;font-weight:700;transition:.2s;cursor:pointer}
+.cafe-tab.active,.cafe-tab:hover{background:var(--orange);color:#fff;border-color:var(--orange)}
+.cafe-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(200px,1fr));gap:16px}
+.cafe-card{background:rgba(20,32,54,.8);border:1px solid var(--border);
+  border-radius:var(--radius);overflow:hidden;transition:.3s}
+.cafe-card:hover{transform:translateY(-4px);border-color:rgba(249,115,22,.3);
+  box-shadow:0 12px 32px rgba(0,0,0,.35)}
+.cafe-img-wrap{width:100%;aspect-ratio:1/1;overflow:hidden;background:var(--dark2)}
+.cafe-img{width:100%;height:100%;object-fit:cover;display:block;transition:transform .4s}
+.cafe-card:hover .cafe-img{transform:scale(1.06)}
+.cafe-placeholder{width:100%;aspect-ratio:1/1;display:flex;align-items:center;
+  justify-content:center;font-size:40px;background:rgba(30,41,59,.8);color:var(--muted2)}
+.cafe-body{padding:14px}
+.cafe-cat{font-size:10px;font-weight:700;color:var(--orange);text-transform:uppercase;
+  letter-spacing:1px;margin-bottom:4px}
+.cafe-name{font-size:15px;font-weight:800;color:#f1f5f9;margin-bottom:6px;line-height:1.3}
+.cafe-price{font-size:17px;font-weight:900;color:var(--green)}
+.cafe-empty{text-align:center;padding:48px 20px;color:var(--muted2)}
 
-    /* Reveal on scroll */
-    .reveal { opacity: 0; transform: translateY(24px); transition: opacity 0.6s ease, transform 0.6s ease; }
-    .reveal.visible { opacity: 1; transform: none; }
+/* ══ NOSOTROS PANEL ═════════════════════════════════════════════ */
+#panel-nosotros{background:linear-gradient(180deg,#040c1a 0%,var(--dark) 100%)}
+.mv-grid{display:grid;grid-template-columns:1fr 1fr;gap:20px;margin-top:28px}
+.mv-card{background:var(--glass);border:1px solid var(--border);
+  border-radius:var(--radius2);padding:32px;position:relative;overflow:hidden;transition:.3s}
+.mv-card:hover{transform:translateY(-3px);box-shadow:0 16px 48px rgba(0,0,0,.3)}
+.mv-card::before{content:'';position:absolute;top:0;left:0;right:0;height:3px;border-radius:20px 20px 0 0}
+.mv-card.mision::before{background:linear-gradient(90deg,var(--blue),var(--blue3))}
+.mv-card.vision::before{background:linear-gradient(90deg,var(--orange),var(--orange2))}
+.mv-icon{width:50px;height:50px;border-radius:14px;display:flex;align-items:center;
+  justify-content:center;font-size:22px;margin-bottom:16px}
+.mv-card.mision .mv-icon{background:rgba(59,130,246,.12);border:1px solid rgba(59,130,246,.25)}
+.mv-card.vision  .mv-icon{background:rgba(249,115,22,.12);border:1px solid rgba(249,115,22,.25)}
+.mv-card h3{font-size:20px;font-weight:800;margin-bottom:14px}
+.mv-card.mision h3{color:var(--blue3)}
+.mv-card.vision  h3{color:#fb923c}
+.mv-card p{font-size:14px;color:var(--muted);line-height:1.8;margin-bottom:12px}
+.mv-card ul{list-style:none;display:flex;flex-direction:column;gap:8px}
+.mv-card ul li{font-size:13px;color:var(--muted);padding-left:16px;position:relative;line-height:1.6}
+.mv-card ul li::before{content:'›';position:absolute;left:0;color:#fb923c;font-weight:900}
 
-    /* ══════════════════════════════════════════════════
-       RESPONSIVE
-    ══════════════════════════════════════════════════ */
-    @media (max-width: 768px) {
-      .nav-links,.nav-cta { display: none; }
-      .hamburger { display: flex; }
-      .consulta-form { flex-direction: column; }
-      .contacto-grid { grid-template-columns: 1fr; }
-      .contacto-map  { min-height: 260px; }
-      .contacto-map iframe { min-height: 260px; }
-      .footer-top    { flex-direction: column; gap: 24px; }
-      .footer-bottom { flex-direction: column; text-align: center; }
-      .hero-actions  { flex-direction: column; align-items: center; }
-      .hero-actions .btn { width: 100%; max-width: 320px; justify-content: center; }
-      .wa-float span.wa-float-txt { display: none; }
-      .wa-float { padding: 14px; }
-    }
-    @media (max-width: 480px) {
-      .servicios-grid, .cafe-grid, .porq-grid { grid-template-columns: 1fr 1fr; }
-      .resultado-info-grid { grid-template-columns: 1fr 1fr; }
-    }
+/* Valores */
+.val-grid{display:flex;flex-wrap:wrap;gap:10px;margin-top:28px;justify-content:center}
+.val-chip{display:flex;align-items:center;gap:9px;background:rgba(30,41,59,.8);
+  border:1px solid var(--border);border-radius:50px;padding:11px 20px;
+  font-size:13px;font-weight:700;transition:.2s;cursor:default}
+.val-chip:hover{border-color:rgba(59,130,246,.4);background:rgba(37,99,235,.1);transform:translateY(-2px)}
+.val-chip .vi{font-size:16px}
 
-    /* ══════════════════════════════════════════════════
-       RESULTADO DE CONSULTA — estilo app del cliente
-    ══════════════════════════════════════════════════ */
-    .cr-btn-volver {
-      margin-bottom: 14px;
-      padding: 10px 20px;
-      background: rgba(0,0,0,0.05);
-      border: 1.5px solid var(--border);
-      border-radius: 100px;
-      cursor: pointer;
-      font-weight: 600;
-      font-size: 13px;
-      color: var(--muted);
-      transition: background 0.15s;
-    }
-    .cr-btn-volver:hover { background: rgba(0,0,0,0.09); }
+/* SÓLIDO */
+.sol-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:16px;margin-top:28px}
+.sol-card{background:var(--glass);border:1px solid var(--border);border-radius:var(--radius2);
+  padding:28px 22px;position:relative;overflow:hidden;transition:.3s;cursor:default}
+.sol-card:hover{border-color:rgba(59,130,246,.35);transform:translateY(-3px)}
+.sol-letter{font-size:56px;font-weight:900;line-height:1;margin-bottom:10px;display:block;
+  background:linear-gradient(135deg,var(--blue3),var(--blue));
+  -webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text}
+.sol-card:nth-child(even) .sol-letter{background:linear-gradient(135deg,#fb923c,var(--orange));
+  -webkit-background-clip:text;-webkit-text-fill-color:transparent}
+.sol-word{font-size:15px;font-weight:800;color:#f1f5f9;margin-bottom:8px}
+.sol-text{font-size:12px;color:var(--muted);line-height:1.75}
+.sol-num{position:absolute;bottom:12px;right:16px;font-size:56px;font-weight:900;
+  color:rgba(255,255,255,.025);line-height:1;pointer-events:none}
 
-    /* Tarjeta vehículo */
-    .cr-car-card {
-      background: linear-gradient(135deg, #0f1729 0%, #1e3a5f 100%);
-      border: 1px solid rgba(59,130,246,0.2);
-      border-radius: 20px;
-      padding: 22px;
-      margin-bottom: 12px;
-      position: relative;
-      overflow: hidden;
-    }
-    .cr-car-card::before {
-      content:''; position:absolute; right:-30px; top:-30px;
-      width:160px; height:160px; border-radius:50%;
-      background: radial-gradient(circle, rgba(59,130,246,0.18) 0%, transparent 70%);
-    }
-    .cr-car-main { display:flex; gap:16px; align-items:center; position:relative; }
-    .cr-car-emoji { font-size:48px; }
-    .cr-car-marca { font-size:22px; font-weight:900; color:#fff; }
-    .cr-car-meta  { font-size:13px; color:#64748b; margin-top:4px; }
-    .cr-placa-badge {
-      margin-top:10px; display:inline-block;
-      background: rgba(255,255,255,0.07);
-      border: 1px solid rgba(255,255,255,0.15);
-      padding: 7px 18px; border-radius:10px;
-      font-weight:900; font-size:18px;
-      letter-spacing:5px; color:#93c5fd;
-    }
+/* Objetivos */
+.obj-grid{display:grid;grid-template-columns:repeat(2,1fr);gap:12px;margin-top:28px}
+.obj-item{display:flex;gap:16px;align-items:flex-start;background:var(--glass);
+  border:1px solid var(--border);border-radius:var(--radius);padding:20px;transition:.25s}
+.obj-item:hover{border-color:var(--borderB);transform:translateY(-2px)}
+.obj-num{width:36px;height:36px;border-radius:10px;flex-shrink:0;
+  background:linear-gradient(135deg,#1e3a5f,#2563eb);display:flex;align-items:center;
+  justify-content:center;font-size:14px;font-weight:900;color:var(--blue3);
+  border:1px solid rgba(59,130,246,.3)}
+.obj-text{font-size:13px;color:#cbd5e1;line-height:1.7;padding-top:6px}
 
-    /* Tarjeta de estado */
-    .cr-estado-card {
-      border-radius: 20px;
-      padding: 22px;
-      margin-bottom: 12px;
-      overflow: hidden;
-    }
-    .cr-estado-top {
-      font-size:10px; font-weight:700; letter-spacing:2px;
-      text-transform:uppercase; color:rgba(255,255,255,0.45);
-      margin-bottom:14px;
-    }
-    .cr-estado-row { display:flex; align-items:center; gap:14px; margin-bottom:20px; }
-    .cr-estado-emoji { font-size:44px; }
-    .cr-estado-name { font-size:20px; font-weight:900; color:#fff; }
-    .cr-estado-msg  { font-size:13px; color:rgba(255,255,255,0.6); margin-top:4px; line-height:1.6; }
+/* ══ CONTACTO (dentro de panel-nosotros) ══════════════════════ */
+.contact-grid{display:grid;grid-template-columns:1fr 1fr;gap:20px;margin-top:28px}
+.contact-card{background:var(--glass);border:1px solid var(--border);
+  border-radius:var(--radius2);padding:28px;transition:.25s}
+.contact-card:hover{border-color:var(--borderB)}
+.contact-card h4{font-size:13px;font-weight:800;color:var(--blue3);
+  text-transform:uppercase;letter-spacing:1px;margin-bottom:16px}
+.horario-row{display:flex;justify-content:space-between;align-items:center;
+  padding:9px 0;border-bottom:1px solid var(--border);font-size:14px;color:var(--muted)}
+.horario-row:last-child{border-bottom:none}
+.horario-row strong{color:#fff}
+.map-wrap{border-radius:12px;overflow:hidden;height:180px;margin-top:14px}
+.map-wrap iframe{width:100%;height:100%;border:none}
 
-    /* Barra de progreso */
-    .cr-prog-wrap {
-      display:flex; justify-content:space-between; gap:4px;
-    }
-    .cr-prog-step { display:flex; flex-direction:column; align-items:center; flex:1; }
-    .cr-prog-dot {
-      width:28px; height:28px; border-radius:50%;
-      display:flex; align-items:center; justify-content:center;
-      font-size:11px; font-weight:800;
-    }
-    .cr-dot-done   { background:rgba(255,255,255,0.2); color:#fff; }
-    .cr-dot-active { background:#fff; color:#111; box-shadow:0 0 12px rgba(255,255,255,0.4); }
-    .cr-dot-future { background:rgba(255,255,255,0.07); color:rgba(255,255,255,0.25); }
-    .cr-prog-lbl { font-size:8px; margin-top:5px; text-align:center; font-weight:700; white-space:nowrap; }
-    .cr-lbl-on  { color:rgba(255,255,255,0.85); }
-    .cr-lbl-off { color:rgba(255,255,255,0.22); }
+/* ══ FOOTER ══════════════════════════════════════════════════════ */
+footer{background:var(--dark4);border-top:1px solid rgba(255,255,255,.06);padding:36px 0 20px}
+.footer-inner{display:flex;align-items:center;justify-content:space-between;
+  gap:20px;flex-wrap:wrap;margin-bottom:20px}
+.footer-brand strong{font-size:15px;font-weight:900;color:#fff}
+.footer-brand span{display:block;font-size:10px;color:var(--muted2);letter-spacing:1.5px;margin-top:2px}
+.footer-links{display:flex;gap:6px;flex-wrap:wrap}
+.footer-links a{font-size:12px;color:var(--muted2);padding:5px 10px;border-radius:7px;transition:.15s}
+.footer-links a:hover{color:#fff;background:rgba(255,255,255,.06)}
+.footer-copy{font-size:11px;color:var(--muted2);text-align:center;
+  padding-top:16px;border-top:1px solid rgba(255,255,255,.05)}
 
-    /* Tabs */
-    .cr-tabs {
-      display:grid; grid-template-columns:1fr 1fr 1fr;
-      gap:8px; margin-bottom:12px;
-    }
-    .cr-tab {
-      padding:12px 6px; border-radius:12px;
-      border:1.5px solid var(--border);
-      font-size:12px; font-weight:700; cursor:pointer;
-      transition:all 0.2s; background:#fff; color:var(--muted);
-    }
-    .cr-tab-active {
-      background:linear-gradient(135deg,#1d4ed8,#3b82f6);
-      color:#fff; border-color:transparent;
-      box-shadow:0 4px 14px rgba(59,130,246,0.3);
-    }
+/* ══ WA FAB ══════════════════════════════════════════════════════ */
+#wa-fab{position:fixed;bottom:24px;right:24px;z-index:999;
+  width:56px;height:56px;border-radius:50%;background:#16a34a;
+  color:#fff;font-size:24px;display:flex;align-items:center;justify-content:center;
+  box-shadow:0 6px 24px rgba(22,163,74,.45);transition:.2s;
+  animation:wab 3s ease-in-out infinite}
+#wa-fab:hover{transform:scale(1.1);box-shadow:0 8px 32px rgba(22,163,74,.6)}
+@keyframes wab{0%,100%{transform:translateY(0)}50%{transform:translateY(-4px)}}
 
-    /* Tarjeta orden */
-    .cr-orden-card {
-      border-radius:16px; padding:18px; margin-bottom:10px;
-      background:#fff; border:1.5px solid var(--border);
-      border-left:4px solid;
-      box-shadow:0 2px 12px rgba(0,0,0,0.06);
-    }
-    .cr-orden-header { display:flex; justify-content:space-between; align-items:center; margin-bottom:8px; }
-    .cr-orden-id     { font-weight:800; font-size:15px; color:var(--dark); }
-    .cr-orden-badge  { padding:4px 12px; border-radius:100px; font-size:11px; font-weight:700; }
-    .cr-orden-desc   { font-size:13px; color:var(--muted); line-height:1.6; }
-    .cr-btn-wa-card  {
-      display:block; margin-top:12px; width:100%; padding:11px;
-      background:linear-gradient(135deg,#14532d,#16a34a);
-      color:#fff; border:none; border-radius:10px;
-      font-weight:700; font-size:13px; cursor:pointer;
-      text-align:center; text-decoration:none;
-      box-shadow:0 4px 12px rgba(22,163,74,0.25);
-    }
-
-    /* Diagnósticos */
-    .cr-diag-card {
-      border-radius:16px; padding:18px; margin-bottom:10px;
-      background:#fff; border:1.5px solid var(--border);
-      box-shadow:0 2px 12px rgba(0,0,0,0.06);
-    }
-    .cr-diag-tipo { font-weight:700; font-size:15px; color:var(--dark); margin-bottom:6px; }
-    .cr-diag-obs  { font-size:13px; color:var(--muted); line-height:1.6; }
-
-    /* Historial timeline */
-    .cr-hist-timeline { position:relative; padding-left:22px; }
-    .cr-hist-timeline::before {
-      content:''; position:absolute; left:7px; top:0; bottom:0;
-      width:2px; background:var(--border); border-radius:2px;
-    }
-    .cr-hist-item {
-      position:relative; margin-bottom:12px; cursor:pointer;
-      background:#fff; border:1.5px solid var(--border);
-      border-radius:16px; padding:16px;
-      transition:border-color 0.2s, transform 0.15s, box-shadow 0.2s;
-      box-shadow:0 2px 12px rgba(0,0,0,0.06);
-    }
-    .cr-hist-item:hover { border-color:#3b82f6; transform:translateX(2px); box-shadow:0 4px 20px rgba(59,130,246,0.12); }
-    .cr-hist-item::before {
-      content:''; position:absolute; left:-17px; top:18px;
-      width:12px; height:12px; border-radius:50%;
-      background:linear-gradient(135deg,#1d4ed8,#3b82f6);
-      box-shadow:0 0 6px rgba(59,130,246,0.5);
-    }
-    .cr-hist-servicio { font-weight:700; font-size:14px; color:var(--dark); margin-bottom:4px; }
-    .cr-hist-meta     { font-size:12px; color:var(--muted); margin-bottom:4px; }
-    .cr-hist-cost     { font-weight:900; font-size:17px; color:#16a34a; }
-    .cr-hist-badge    {
-      display:inline-block; padding:2px 10px; border-radius:100px;
-      font-size:11px; font-weight:700;
-      background:rgba(59,130,246,0.1); color:#3b82f6; margin-left:8px;
-    }
-
-    /* Detalle historial */
-    .cr-detalle-header {
-      background:linear-gradient(135deg,#0f1729,#1e3a5f);
-      border:1px solid rgba(59,130,246,0.2);
-      border-radius:18px; padding:20px; margin-bottom:12px;
-    }
-    .cr-det-card {
-      background:#fff; border:1.5px solid var(--border);
-      border-radius:16px; padding:18px; margin-bottom:10px;
-      box-shadow:0 2px 12px rgba(0,0,0,0.06);
-    }
-    .cr-det-title   { font-size:11px; font-weight:700; color:var(--muted); text-transform:uppercase; letter-spacing:1px; margin-bottom:12px; }
-    .cr-det-section { margin-bottom:10px; }
-    .cr-det-sub     { font-size:11px; font-weight:700; color:var(--muted); margin-bottom:4px; }
-    .cr-det-txt     { font-size:13px; color:var(--text); line-height:1.7; }
-    .cr-det-falla   {
-      background:#fffbeb; border:1.5px solid #fde68a;
-      border-radius:14px; padding:14px 16px; margin-bottom:10px;
-    }
-    .cr-det-falla-title { font-size:11px; font-weight:700; color:#92400e; text-transform:uppercase; letter-spacing:1px; margin-bottom:6px; }
-    .cr-det-falla-txt   { font-size:13px; color:#78350f; line-height:1.6; }
-    .cr-costos-grid { display:grid; grid-template-columns:1fr 1fr; gap:10px; margin-top:8px; }
-    .cr-costo-box   { background:var(--light); border-radius:10px; padding:12px; text-align:center; }
-    .cr-costo-lbl   { font-size:10px; color:var(--muted); text-transform:uppercase; letter-spacing:0.8px; margin-bottom:4px; }
-    .cr-costo-val   { font-weight:700; font-size:14px; color:var(--dark); }
-
-    @media (max-width:500px) {
-      .cr-tabs { grid-template-columns:1fr; }
-      .cr-tab  { padding:10px; font-size:13px; }
-    }
-  </style>
+/* ══ RESPONSIVE ═════════════════════════════════════════════════ */
+@media(max-width:900px){
+  .portal-cards{grid-template-columns:repeat(3,1fr)}
+  .mv-grid,.contact-grid{grid-template-columns:1fr}
+  .sol-grid{grid-template-columns:repeat(2,1fr)}
+  .obj-grid{grid-template-columns:1fr}
+}
+@media(max-width:640px){
+  .portal-tabs,.nav-wa-btn{display:none}
+  .hamburger{display:flex}
+  .portal-cards{grid-template-columns:repeat(2,1fr)}
+  .sol-grid{grid-template-columns:1fr}
+  .consulta-row{flex-direction:column}
+  .buscar-btn{width:100%;justify-content:center}
+  .cr-tabs{grid-template-columns:1fr}
+  .srv-body{padding-left:22px}
+  .proc-dot{width:44px;height:44px;font-size:16px}
+  .proc-line{left:21px}
+  .cr-costos-grid,.mv-grid{grid-template-columns:1fr}
+}
+.panel-section{padding:40px 0 64px}
+</style>
 </head>
 <body>
 
-<!-- ══ NAVEGACIÓN ════════════════════════════════════════════════ -->
+<!-- ══ TOP BAR ══════════════════════════════════════════════════ -->
+<div id="top-bar">
+  <span>
+    <span>📍 Santo Domingo, RD</span>
+    <span>📞 <a id="tel-link" href="#" style="color:inherit"></a></span>
+    <span id="horario-top"></span>
+  </span>
+  <a id="topbar-wa-btn" class="topbar-wa" href="#" target="_blank" rel="noopener">💬 WhatsApp</a>
+</div>
+
+<!-- ══ NAV ══════════════════════════════════════════════════════ -->
 <nav id="nav">
-  <div class="nav-inner">
-    <a class="nav-logo" href="#">
-      <img src="logo.png" alt="Logo" onerror="this.style.display='none'" />
+  <div class="nav-row1">
+    <a class="nav-logo" href="#" onclick="showPortal('home');return false">
+      <div class="nav-logo-icon">🔧</div>
       <div class="nav-logo-text">
         <strong>SÓLIDO AUTO</strong>
         <span>SERVICIO &amp; CAFÉ</span>
       </div>
     </a>
-    <div class="nav-links">
-      <a href="#servicios">Servicios</a>
-      <a href="#consulta">Mi Vehículo</a>
-      <a href="#cafeteria">Cafetería</a>
-      <a href="nosotros.html">Nosotros</a>
-      <a href="#contacto">Contacto</a>
+    <div class="portal-tabs">
+      <button class="ptab" data-portal="clientes"      onclick="showPortal('clientes')">CLIENTES</button>
+      <button class="ptab" data-portal="servicios"     onclick="showPortal('servicios')">SERVICIOS</button>
+      <button class="ptab" data-portal="procedimiento" onclick="showPortal('procedimiento')">PROCEDIMIENTO</button>
+      <button class="ptab" data-portal="cafeteria"     onclick="showPortal('cafeteria')">CAFETERÍA</button>
+      <button class="ptab" data-portal="nosotros"      onclick="showPortal('nosotros')">NOSOTROS</button>
     </div>
-    <a id="nav-wa" class="nav-cta" href="#" target="_blank" rel="noopener">
-      💬 WhatsApp
-    </a>
-    <button class="hamburger" id="hamburger" aria-label="Abrir menú">
-      <span></span><span></span><span></span>
-    </button>
+    <div class="nav-right">
+      <a id="nav-wa" class="nav-wa-btn" href="#" target="_blank" rel="noopener">💬 WhatsApp</a>
+      <button class="hamburger" id="hamburger" aria-label="Menú">
+        <span></span><span></span><span></span>
+      </button>
+    </div>
   </div>
-  <div class="nav-mobile" id="nav-mobile">
-    <a href="#servicios"  onclick="closeMob()">🔧 Servicios</a>
-    <a href="#consulta"   onclick="closeMob()">🚗 Mi Vehículo</a>
-    <a href="#cafeteria"  onclick="closeMob()">☕ Cafetería</a>
-    <a href="nosotros.html" onclick="closeMob()" style="color:#93c5fd">🏢 Nosotros</a>
-    <a href="#contacto"   onclick="closeMob()">📍 Contacto</a>
-    <a id="nav-mob-wa" href="#" target="_blank" rel="noopener" onclick="closeMob()" style="color:#4ade80">💬 WhatsApp</a>
+
+  <!-- Sub-nav (changes per portal) -->
+  <div id="sub-nav">
+    <!-- Injected by JS -->
+  </div>
+
+  <!-- Mobile menu -->
+  <div id="nav-mobile">
+    <a href="#" onclick="showPortal('home');closeMob();return false">🏠 Inicio</a>
+    <a href="#" onclick="showPortal('clientes');closeMob();return false">🚗 Clientes</a>
+    <a href="#" onclick="showPortal('servicios');closeMob();return false">🔧 Servicios</a>
+    <a href="#" onclick="showPortal('procedimiento');closeMob();return false">⚙️ Procedimiento</a>
+    <a href="#" onclick="showPortal('cafeteria');closeMob();return false">☕ Cafetería</a>
+    <a href="#" onclick="showPortal('nosotros');closeMob();return false">🏢 Nosotros</a>
+    <a id="nav-mob-wa" href="#" target="_blank" rel="noopener" style="color:#4ade80">💬 WhatsApp</a>
   </div>
 </nav>
 
-<!-- ══ HERO ══════════════════════════════════════════════════════ -->
-<section id="hero">
-  <div class="hero-grid-bg"></div>
-  <div class="hero-glow-1"></div>
-  <div class="hero-glow-2"></div>
-
-  <img class="hero-logo" src="logo.png" alt="Sólido Auto Servicio"
-       onerror="this.style.display='none'" />
-
-  <div class="badge hero-badge">🏆 Santo Domingo, República Dominicana</div>
-
-  <h1 class="hero-title">
-    Sólido Auto<br/><span class="accent">Servicio</span>
-  </h1>
-  <p class="hero-slogan">
-    Tu vehículo en manos expertas.<br/>
-    Tecnología, transparencia y resultados reales.
-  </p>
-  <div class="hero-actions">
-    <button class="btn btn-primary"
-            onclick="document.getElementById('consulta').scrollIntoView({behavior:'smooth'})">
-      🚗 Consultar mi vehículo
-    </button>
-    <a id="hero-wa" class="btn btn-wa" href="#" target="_blank" rel="noopener">
-      💬 Escribir por WhatsApp
-    </a>
-  </div>
-
-  <div class="hero-scroll">
-    <span class="hero-scroll-lbl">Explorar</span>
-    <div class="hero-scroll-arr"></div>
-  </div>
-</section>
-
-<!-- Stats -->
-<div class="stats-bar">
-  <div class="stats-inner">
-    <div class="stat"><span class="stat-num">+500</span><span class="stat-lbl">Clientes atendidos</span></div>
-    <div class="stat"><span class="stat-num">+8</span><span class="stat-lbl">Años de experiencia</span></div>
-    <div class="stat"><span class="stat-num">100%</span><span class="stat-lbl">Diagnóstico digital</span></div>
-    <div class="stat"><span class="stat-num">⭐ 4.9</span><span class="stat-lbl">Satisfacción</span></div>
-  </div>
-</div>
-
-<!-- ══ SERVICIOS ═════════════════════════════════════════════════ -->
-<section id="servicios">
-  <div class="container">
-    <div class="badge reveal">Nuestros Servicios</div>
-    <h2 class="section-title reveal">Todo lo que tu vehículo necesita</h2>
-    <p class="section-subtitle reveal">
-      Equipos de diagnóstico de última generación y técnicos certificados para cada especialidad.
+<!-- ══════════════════════════════════════════════════════════════
+     PANEL: HOME
+══════════════════════════════════════════════════════════════════ -->
+<section id="panel-home" class="panel active">
+  <div class="grid-bg"></div>
+  <div class="home-orb home-orb-1"></div>
+  <div class="home-orb home-orb-2"></div>
+  <div class="container hero-inner">
+    <div class="hero-tag"><span class="pulse-dot"></span> Taller Automotriz Premium</div>
+    <h1 class="hero-h1">Más que un taller,<br><em>una Experiencia</em></h1>
+    <p class="hero-desc">
+      Somos una empresa de <strong>mantenimiento automotriz</strong> dedicada a la conservación de vehículos,
+      brindando calidad de <strong>clase mundial</strong> con un equipo guiado a la mejora continua.
     </p>
-    <div class="servicios-grid">
-      <div class="serv-card reveal">
-        <div class="serv-icon" style="background:linear-gradient(135deg,#dbeafe,#bfdbfe)">🔧</div>
-        <h3>Mecánica General</h3>
-        <p>Mantenimiento preventivo y correctivo. Motor, transmisión, frenos y suspensión.</p>
+    <div class="hero-stats">
+      <div class="hero-stat"><strong>+500</strong><span>Clientes atendidos</span></div>
+      <div class="hero-stat"><strong>9</strong><span>Servicios especializados</span></div>
+      <div class="hero-stat"><strong>100%</strong><span>Compromiso de calidad</span></div>
+      <div class="hero-stat"><strong>9</strong><span>Pasos de proceso</span></div>
+    </div>
+
+    <!-- Portal access cards -->
+    <div class="portal-cards">
+      <div class="pcard" onclick="showPortal('clientes')">
+        <span class="pcard-icon">🚗</span>
+        <div class="pcard-name">Clientes</div>
+        <div class="pcard-desc">Consulta el estado de tu vehículo</div>
       </div>
-      <div class="serv-card reveal">
-        <div class="serv-icon" style="background:linear-gradient(135deg,#ede9fe,#ddd6fe)">💻</div>
-        <h3>Diagnóstico Computarizado</h3>
-        <p>Lectura de códigos OBD-II y diagnóstico electrónico avanzado con equipos profesionales.</p>
+      <div class="pcard" onclick="showPortal('servicios')">
+        <span class="pcard-icon">🔧</span>
+        <div class="pcard-name">Servicios</div>
+        <div class="pcard-desc">Mecánica, electricidad y más</div>
       </div>
-      <div class="serv-card reveal">
-        <div class="serv-icon" style="background:linear-gradient(135deg,#dcfce7,#bbf7d0)">⚖️</div>
-        <h3>Alineación y Balanceo</h3>
-        <p>Precisión milimétrica para mayor seguridad, durabilidad de neumáticos y mejor rendimiento.</p>
+      <div class="pcard" onclick="showPortal('procedimiento')">
+        <span class="pcard-icon">⚙️</span>
+        <div class="pcard-name">Procedimiento</div>
+        <div class="pcard-desc">Nuestro proceso de 9 pasos</div>
       </div>
-      <div class="serv-card reveal">
-        <div class="serv-icon" style="background:linear-gradient(135deg,#cffafe,#a5f3fc)">❄️</div>
-        <h3>Aire Acondicionado</h3>
-        <p>Carga de refrigerante, reparación de compresor y limpieza completa del sistema A/C.</p>
+      <div class="pcard" onclick="showPortal('cafeteria')">
+        <span class="pcard-icon">☕</span>
+        <div class="pcard-name">Cafetería</div>
+        <div class="pcard-desc">Menú mientras esperas</div>
       </div>
-      <div class="serv-card reveal">
-        <div class="serv-icon" style="background:linear-gradient(135deg,#fef9c3,#fef08a)">⚡</div>
-        <h3>Electricidad Automotriz</h3>
-        <p>Batería, alternador, sistema de arranque y diagnóstico del cableado completo.</p>
+      <div class="pcard" onclick="showPortal('nosotros')">
+        <span class="pcard-icon">🏢</span>
+        <div class="pcard-name">Nosotros</div>
+        <div class="pcard-desc">Misión, visión y valores</div>
       </div>
     </div>
   </div>
 </section>
 
-<!-- ══ POR QUÉ ELEGIRNOS ═════════════════════════════════════════ -->
-<section id="por-que">
-  <div class="container">
-    <div class="badge reveal" style="background:rgba(59,130,246,0.15);color:#93c5fd;border-color:rgba(59,130,246,0.3)">
-      ¿Por qué elegirnos?
-    </div>
-    <h2 class="section-title reveal">Diferencia que se siente al volante</h2>
-    <p class="section-subtitle reveal">No somos un taller más. Somos tu aliado en el cuidado de tu inversión.</p>
-    <div class="porq-grid">
-      <div class="porq-card reveal">
-        <span class="porq-icon">⚡</span>
-        <h3>Rapidez</h3>
-        <p>Tiempos de entrega claros desde el inicio. Diagnóstico exprés y atención sin demoras innecesarias.</p>
-      </div>
-      <div class="porq-card reveal">
-        <span class="porq-icon">🔍</span>
-        <h3>Transparencia</h3>
-        <p>Ves el diagnóstico completo antes de autorizar. Sin sorpresas en la factura. Tu aprobación en cada paso.</p>
-      </div>
-      <div class="porq-card reveal">
-        <span class="porq-icon">🖥️</span>
-        <h3>Tecnología</h3>
-        <p>CRM propio, diagnóstico digital OBD-II y seguimiento en tiempo real desde tu celular con solo la placa.</p>
-      </div>
-      <div class="porq-card reveal">
-        <span class="porq-icon">🤝</span>
-        <h3>Atención al Cliente</h3>
-        <p>Comunicación directa por WhatsApp. Sin esperas ni burocracia. Te acompañamos todo el proceso.</p>
-      </div>
-    </div>
-  </div>
-</section>
+<!-- ══════════════════════════════════════════════════════════════
+     PANEL: CLIENTES
+══════════════════════════════════════════════════════════════════ -->
+<section id="panel-clientes" class="panel">
+  <div class="panel-section">
+    <div class="container">
+      <div class="badge-pill" style="margin-bottom:16px">🚗 Portal de Clientes</div>
+      <h2 class="panel-title">Estado de tu <span style="color:var(--blue3)">Vehículo</span></h2>
+      <p class="panel-sub">Ingresa la placa de tu vehículo para ver el estado en tiempo real, órdenes activas, diagnósticos e historial de servicios.</p>
 
-<!-- ══ CONSULTA DE VEHÍCULO ══════════════════════════════════════ -->
-<section id="consulta">
-  <div class="container">
-    <div class="badge reveal">Consulta en Tiempo Real</div>
-    <h2 class="section-title reveal">¿Cómo está tu vehículo?</h2>
-    <p class="section-subtitle reveal">
-      Ingresa el número de placa y ve el estado actual directamente desde nuestro sistema CRM.
-    </p>
-    <div class="consulta-wrap reveal">
-      <div class="consulta-form">
-        <input
-          id="placa-input"
-          class="consulta-input"
-          type="text"
-          placeholder="Ej: A123456"
-          maxlength="10"
-          autocomplete="off"
-          onkeydown="if(event.key==='Enter') buscar()"
-          oninput="this.value=this.value.toUpperCase().replace(/[^A-Z0-9\-]/g,'')"
-        />
-        <button class="consulta-btn" id="buscar-btn" onclick="buscar()">
-          <span id="btn-icon">🔍</span>
-          <span id="btn-txt">Consultar</span>
-        </button>
+      <div class="consulta-box">
+        <div class="consulta-label">Número de placa</div>
+        <div class="consulta-row">
+          <input class="placa-input" id="placa-input" type="text" maxlength="10"
+            placeholder="Ej: A123456" autocomplete="off" autocapitalize="characters"
+            onkeydown="if(event.key==='Enter')buscar()"/>
+          <button class="buscar-btn" id="buscar-btn" onclick="buscar()">
+            <span id="btn-icon">🔍</span>
+            <span id="btn-txt">Consultar</span>
+          </button>
+        </div>
       </div>
+
       <div id="resultado"></div>
+
+      <!-- Cómo funciona -->
+      <div style="margin-top:48px;padding-top:40px;border-top:1px solid var(--border)">
+        <div class="badge-pill" style="margin-bottom:16px">ℹ️ Cómo funciona</div>
+        <div style="display:grid;grid-template-columns:repeat(auto-fill,minmax(200px,1fr));gap:14px;margin-top:20px">
+          <div class="gcard" style="padding:20px">
+            <div style="font-size:28px;margin-bottom:10px">1️⃣</div>
+            <div style="font-size:14px;font-weight:800;color:#f1f5f9;margin-bottom:6px">Ingresa tu placa</div>
+            <div style="font-size:13px;color:var(--muted);line-height:1.6">Escribe el número de placa de tu vehículo en el campo de búsqueda.</div>
+          </div>
+          <div class="gcard" style="padding:20px">
+            <div style="font-size:28px;margin-bottom:10px">2️⃣</div>
+            <div style="font-size:14px;font-weight:800;color:#f1f5f9;margin-bottom:6px">Ver estado actual</div>
+            <div style="font-size:13px;color:var(--muted);line-height:1.6">Consulta en qué etapa del proceso está tu vehículo (6 etapas).</div>
+          </div>
+          <div class="gcard" style="padding:20px">
+            <div style="font-size:28px;margin-bottom:10px">3️⃣</div>
+            <div style="font-size:14px;font-weight:800;color:#f1f5f9;margin-bottom:6px">Órdenes y diagnósticos</div>
+            <div style="font-size:13px;color:var(--muted);line-height:1.6">Ve las órdenes activas, diagnósticos técnicos y historial completo.</div>
+          </div>
+          <div class="gcard" style="padding:20px">
+            <div style="font-size:28px;margin-bottom:10px">4️⃣</div>
+            <div style="font-size:14px;font-weight:800;color:#f1f5f9;margin-bottom:6px">Contáctanos</div>
+            <div style="font-size:13px;color:var(--muted);line-height:1.6">Escríbenos por WhatsApp directamente desde tu resultado.</div>
+          </div>
+        </div>
+      </div>
     </div>
   </div>
 </section>
 
-<!-- ══ CAFETERÍA ═════════════════════════════════════════════════ -->
-<section id="cafeteria">
-  <div class="container">
-    <div class="badge reveal" style="background:rgba(249,115,22,0.1);color:#f97316;border-color:rgba(249,115,22,0.25)">
-      ☕ Sólido Cafe Garage
-    </div>
-    <h2 class="section-title reveal">Nuestro Menú</h2>
-    <p class="section-subtitle reveal">
-      Mientras atendemos tu vehículo, disfruta de nuestro café y snacks. Precios y productos en tiempo real.
-    </p>
-    <div class="cafe-tabs" id="cafe-tabs">
-      <button class="cafe-tab active" data-cat="TODOS" onclick="filtrar('TODOS')">🍽️ Todo el Menú</button>
-    </div>
-    <div id="cafe-grid-wrap">
-      <div class="cafe-loading">
-        <div class="spinner"></div>
-        <span>Cargando menú...</span>
+<!-- ══════════════════════════════════════════════════════════════
+     PANEL: SERVICIOS
+══════════════════════════════════════════════════════════════════ -->
+<section id="panel-servicios" class="panel">
+  <div class="panel-section">
+    <div class="container">
+      <div class="badge-pill" style="margin-bottom:16px">🔩 Nuestros Servicios</div>
+      <h2 class="panel-title">Soluciones <span style="color:var(--orange)">Automotrices</span></h2>
+      <p class="panel-sub">Haz clic en cada servicio para ver los detalles técnicos. Estándares de calidad mundial en cada intervención.</p>
+
+      <div class="srv-grid" id="srv-list">
+
+        <div class="srv-item" id="s1">
+          <button class="srv-hdr" onclick="toggleSrv('s1')">
+            <div class="srv-ico">⚖️</div>
+            <div class="srv-title-block">
+              <div class="srv-title">Alineación y Balanceo Automotriz</div>
+              <div class="srv-subtitle">Geometría de ruedas · Equipos de alta tecnología</div>
+            </div>
+            <div class="srv-arr">▼</div>
+          </button>
+          <div class="srv-body">
+            <p>Servicio especializado orientado al ajuste preciso de la geometría de las ruedas, utilizando equipos de alta tecnología con estándares internacionales para garantizar estabilidad, control de la dirección, seguridad y prolongar la vida útil de los neumáticos.</p>
+            <h5>Parámetros Técnicos</h5>
+            <div class="srv-tags">
+              <div class="srv-tag">⚙️ Ángulo de Caída (Camber)</div>
+              <div class="srv-tag">↪️ Ángulo de Avance (Caster)</div>
+              <div class="srv-tag">↔️ Convergencia / Divergencia (Toe)</div>
+              <div class="srv-tag">📐 Ángulo de Empuje</div>
+              <div class="srv-tag">🔄 Centrado del Volante</div>
+            </div>
+          </div>
+        </div>
+
+        <div class="srv-item" id="s2">
+          <button class="srv-hdr" onclick="toggleSrv('s2')">
+            <div class="srv-ico">🛢️</div>
+            <div class="srv-title-block">
+              <div class="srv-title">Cambio de Aceite</div>
+              <div class="srv-subtitle">Aceites de calidad · Protección óptima del motor</div>
+            </div>
+            <div class="srv-arr">▼</div>
+          </button>
+          <div class="srv-body">
+            <p>Brindamos este servicio con los mejores aceites del mercado para brindar a los motores una protección óptima y alargar su vida útil según los manuales del fabricante.</p>
+            <ul>
+              <li>Selección del aceite adecuado según especificaciones del fabricante.</li>
+              <li>Inspección del filtro de aceite y reemplazo de ser necesario.</li>
+              <li>Verificación de niveles de fluidos complementarios.</li>
+              <li>Registro en el historial del vehículo para seguimiento preventivo.</li>
+            </ul>
+          </div>
+        </div>
+
+        <div class="srv-item" id="s3">
+          <button class="srv-hdr" onclick="toggleSrv('s3')">
+            <div class="srv-ico">💧</div>
+            <div class="srv-title-block">
+              <div class="srv-title">Cambio de Fluidos del Motor</div>
+              <div class="srv-subtitle">Diagnóstico previo · Anticongelante · Líquido de frenos</div>
+            </div>
+            <div class="srv-arr">▼</div>
+          </button>
+          <div class="srv-body">
+            <p>Nuestros profesionales hacen un chequeo preliminar para determinar si es totalmente necesario el cambio, garantizando fluidos certificados y compatibles.</p>
+            <div class="srv-tags">
+              <div class="srv-tag">🌡️ Cambio de Anticongelante</div>
+              <div class="srv-tag">🔴 Cambio de Líquido de Frenos</div>
+            </div>
+          </div>
+        </div>
+
+        <div class="srv-item" id="s4">
+          <button class="srv-hdr" onclick="toggleSrv('s4')">
+            <div class="srv-ico">🔧</div>
+            <div class="srv-title-block">
+              <div class="srv-title">Mecánica en General</div>
+              <div class="srv-subtitle">Motor · Frenos · Suspensión · Sistema de enfriamiento</div>
+            </div>
+            <div class="srv-arr">▼</div>
+          </button>
+          <div class="srv-body">
+            <p>Realizamos un chequeo óptimo de todos los componentes del vehículo. Cualquier hallazgo es notificado al cliente para las intervenciones pertinentes.</p>
+            <h5>Reparación y Mantenimiento de:</h5>
+            <div class="srv-tags">
+              <div class="srv-tag">⚙️ Motor</div>
+              <div class="srv-tag">🛑 Frenos</div>
+              <div class="srv-tag">🌀 Suspensión</div>
+              <div class="srv-tag">🔗 Embrague</div>
+              <div class="srv-tag">💨 Sistema de Escape</div>
+              <div class="srv-tag">❄️ Sistema de Enfriamiento</div>
+            </div>
+          </div>
+        </div>
+
+        <div class="srv-item" id="s5">
+          <button class="srv-hdr" onclick="toggleSrv('s5')">
+            <div class="srv-ico">🏪</div>
+            <div class="srv-title-block">
+              <div class="srv-title">Venta de Repuestos</div>
+              <div class="srv-subtitle">Stock disponible · Agilidad en la intervención</div>
+            </div>
+            <div class="srv-arr">▼</div>
+          </button>
+          <div class="srv-body">
+            <p>Contamos con un espacio con repuestos para los vehículos, a fin de ser más ágiles al momento de intervenir y minimizar los tiempos de espera del cliente.</p>
+            <ul>
+              <li>Amplio inventario de piezas para los modelos más comunes.</li>
+              <li>Repuestos originales y alternativos de calidad certificada.</li>
+              <li>Coordinación con proveedores externos para piezas especiales.</li>
+            </ul>
+          </div>
+        </div>
+
+        <div class="srv-item" id="s6">
+          <button class="srv-hdr" onclick="toggleSrv('s6')">
+            <div class="srv-ico">🎵</div>
+            <div class="srv-title-block">
+              <div class="srv-title">Instalación de Música Automotriz</div>
+              <div class="srv-subtitle">Audio profesional · Instalación especializada</div>
+            </div>
+            <div class="srv-arr">▼</div>
+          </button>
+          <div class="srv-body">
+            <p>Contamos con un espacio dedicado para la instalación de música automotriz. Cableado profesional sin afectar el sistema eléctrico original.</p>
+            <ul>
+              <li>Instalación de sistemas de sonido completos y componentes individuales.</li>
+              <li>Cableado sin afectar el sistema eléctrico original del vehículo.</li>
+              <li>Garantía de instalación y soporte post-servicio.</li>
+            </ul>
+          </div>
+        </div>
+
+        <div class="srv-item" id="s7">
+          <button class="srv-hdr" onclick="toggleSrv('s7')">
+            <div class="srv-ico">⚡</div>
+            <div class="srv-title-block">
+              <div class="srv-title">Electricidad Automotriz</div>
+              <div class="srv-subtitle">Diagnóstico eléctrico · Sensores · Alternador · Arranque</div>
+            </div>
+            <div class="srv-arr">▼</div>
+          </button>
+          <div class="srv-body">
+            <p>Contamos con excelentes profesionales en el ámbito eléctrico automotriz para garantizar una correcta intervención de los vehículos.</p>
+            <h5>Diagnóstico y Reparación de:</h5>
+            <div class="srv-tags">
+              <div class="srv-tag">🔑 Sistema de Encendido</div>
+              <div class="srv-tag">⚡ Alternador</div>
+              <div class="srv-tag">🔋 Arranque y Batería</div>
+              <div class="srv-tag">💡 Luces</div>
+              <div class="srv-tag">📡 Sensores Electrónicos</div>
+            </div>
+          </div>
+        </div>
+
+        <div class="srv-item" id="s8">
+          <button class="srv-hdr" onclick="toggleSrv('s8')">
+            <div class="srv-ico">🚿</div>
+            <div class="srv-title-block">
+              <div class="srv-title">Lavado Automotriz</div>
+              <div class="srv-subtitle">Limpieza · Encerado · Motor · Tapicería · Tratamientos</div>
+            </div>
+            <div class="srv-arr">▼</div>
+          </button>
+          <div class="srv-body">
+            <p>Establecimiento especializado en la limpieza, cuidado y conservación estética de vehículos. Personal capacitado con técnicas adecuadas de lavado y manejo responsable de químicos.</p>
+            <div class="srv-tags">
+              <div class="srv-tag">🚗 Lavado Exterior</div>
+              <div class="srv-tag">✨ Lavado Completo</div>
+              <div class="srv-tag">💎 Encerado</div>
+              <div class="srv-tag">⚙️ Limpieza de Motor</div>
+              <div class="srv-tag">🪑 Limpieza de Tapicería</div>
+              <div class="srv-tag">🛡️ Tratamientos Protectores</div>
+            </div>
+          </div>
+        </div>
+
+        <div class="srv-item" id="s9">
+          <button class="srv-hdr" onclick="toggleSrv('s9')">
+            <div class="srv-ico">🎓</div>
+            <div class="srv-title-block">
+              <div class="srv-title">Capacitación Automotriz</div>
+              <div class="srv-subtitle">Formación profesional · Cursos especializados</div>
+            </div>
+            <div class="srv-arr">▼</div>
+          </button>
+          <div class="srv-body">
+            <p>Espacio dedicado a la capacitación de profesionales y al público apasionado por el mundo automotriz, impulsando la mejora continua.</p>
+            <div class="srv-tags">
+              <div class="srv-tag">⚖️ Alineación y Balanceo</div>
+              <div class="srv-tag">🔧 Mecánica de Gasolina</div>
+              <div class="srv-tag">⚡ Electricidad Automotriz</div>
+              <div class="srv-tag">🎵 Música Automotriz</div>
+            </div>
+          </div>
+        </div>
+
       </div>
     </div>
   </div>
 </section>
 
-<!-- ══ CONTACTO ══════════════════════════════════════════════════ -->
-<section id="contacto">
-  <div class="container">
-    <div class="badge reveal" style="background:rgba(59,130,246,0.15);color:#93c5fd;border-color:rgba(59,130,246,0.3)">
-      Contáctanos
+<!-- ══════════════════════════════════════════════════════════════
+     PANEL: PROCEDIMIENTO
+══════════════════════════════════════════════════════════════════ -->
+<section id="panel-procedimiento" class="panel">
+  <div class="panel-section">
+    <div class="container">
+      <div class="badge-pill" style="margin-bottom:16px">⚙️ Proceso Estandarizado</div>
+      <h2 class="panel-title">Procedimiento de <span style="color:var(--blue3)">Verificación y Diagnóstico</span></h2>
+      <p class="panel-sub">9 pasos estandarizados que garantizan calidad, transparencia con el cliente y eficiencia operativa en cada intervención.</p>
+
+      <div class="proc-wrap">
+        <div class="proc-timeline">
+          <div class="proc-line"></div>
+
+          <div class="proc-step">
+            <div class="proc-dot">📋</div>
+            <div class="proc-body">
+              <div class="proc-num">Paso 01</div>
+              <h4>Recepción del Vehículo</h4>
+              <ul>
+                <li>Registro de datos del cliente, vehículo y motivo de la visita.</li>
+                <li>Verificación exterior e interior con hoja de chequeo.</li>
+                <li>Generación de orden de trabajo inicial.</li>
+                <li>Asignación a técnico calificado para su evaluación.</li>
+              </ul>
+            </div>
+          </div>
+
+          <div class="proc-step">
+            <div class="proc-dot">🔍</div>
+            <div class="proc-body">
+              <div class="proc-num">Paso 02</div>
+              <h4>Evaluación y Diagnóstico</h4>
+              <ul>
+                <li>El técnico traslada el vehículo al área correspondiente.</li>
+                <li>Inspección visual y técnica con herramientas especializadas.</li>
+                <li>Identificación de fallas mecánicas, eléctricas o electrónicas.</li>
+                <li>Documentación clara y detallada de todos los hallazgos.</li>
+              </ul>
+            </div>
+          </div>
+
+          <div class="proc-step">
+            <div class="proc-dot">📊</div>
+            <div class="proc-body">
+              <div class="proc-num">Paso 03</div>
+              <h4>Reporte de Hallazgos</h4>
+              <ul>
+                <li>El técnico informa los resultados al Administrador o recepción.</li>
+                <li>Elaboración de informe técnico con fallas y recomendaciones.</li>
+                <li>El cliente es notificado de manera clara y transparente.</li>
+              </ul>
+            </div>
+          </div>
+
+          <div class="proc-step">
+            <div class="proc-dot">💰</div>
+            <div class="proc-body">
+              <div class="proc-num">Paso 04</div>
+              <h4>Elaboración de Cotización</h4>
+              <ul>
+                <li>Cotización detallada: mano de obra, repuestos y tiempos estimados.</li>
+                <li>Consulta con proveedores externos si no hay piezas en inventario.</li>
+                <li>Presentación al cliente con información económica completa.</li>
+              </ul>
+            </div>
+          </div>
+
+          <div class="proc-step">
+            <div class="proc-dot">✅</div>
+            <div class="proc-body">
+              <div class="proc-num">Paso 05</div>
+              <h4>Aprobación del Cliente</h4>
+              <ul>
+                <li>Ningún trabajo se inicia sin autorización previa del cliente.</li>
+                <li>La aprobación puede ser verbal o escrita según las políticas del taller.</li>
+              </ul>
+            </div>
+          </div>
+
+          <div class="proc-step">
+            <div class="proc-dot">🔧</div>
+            <div class="proc-body">
+              <div class="proc-num">Paso 06</div>
+              <h4>Ejecución del Servicio</h4>
+              <ul>
+                <li>Reparaciones y mantenimientos realizados por técnico asignado.</li>
+                <li>Procedimientos técnicos y estándares de calidad establecidos.</li>
+                <li>Comunicación interna constante sobre el avance del trabajo.</li>
+              </ul>
+            </div>
+          </div>
+
+          <div class="proc-step">
+            <div class="proc-dot">🔬</div>
+            <div class="proc-body">
+              <div class="proc-num">Paso 07</div>
+              <h4>Control de Calidad</h4>
+              <ul>
+                <li>Revisión exhaustiva para verificar que las reparaciones se ejecutaron correctamente.</li>
+                <li>Comprobación del funcionamiento del vehículo antes de la entrega.</li>
+              </ul>
+            </div>
+          </div>
+
+          <div class="proc-step">
+            <div class="proc-dot">🚿</div>
+            <div class="proc-body">
+              <div class="proc-num">Paso 08</div>
+              <h4>Limpieza y Preparación</h4>
+              <ul>
+                <li>Traslado del vehículo al área de lavado.</li>
+                <li>Limpieza básica o detallada según el servicio ofrecido.</li>
+                <li>Vehículo preparado en condiciones óptimas para la entrega.</li>
+              </ul>
+            </div>
+          </div>
+
+          <div class="proc-step">
+            <div class="proc-dot">🚗</div>
+            <div class="proc-body">
+              <div class="proc-num">Paso 09</div>
+              <h4>Entrega del Vehículo</h4>
+              <ul>
+                <li>Notificación al cliente de la finalización del servicio.</li>
+                <li>Explicación de trabajos realizados y recomendaciones futuras.</li>
+                <li>Facturación, cobro y firma de conformidad del servicio recibido.</li>
+              </ul>
+            </div>
+          </div>
+        </div>
+
+        <div class="proc-extra">
+          <h4>📌 Mejora Continua</h4>
+          <ul>
+            <li>Registro histórico de cada vehículo para futuros diagnósticos.</li>
+            <li>Checklist de inspección para estandarizar evaluaciones.</li>
+            <li>Tiempos de respuesta adecuados para mejorar la experiencia del cliente.</li>
+            <li>Comunicación constante con el cliente durante todo el proceso.</li>
+            <li>Normas de seguridad en cada etapa del servicio.</li>
+          </ul>
+        </div>
+      </div>
     </div>
-    <h2 class="section-title reveal">Estamos para servirte</h2>
-    <p class="section-subtitle reveal">Visítanos, llámanos o escríbenos. Siempre hay alguien para atenderte.</p>
-    <div class="contacto-grid reveal">
-      <!-- Info -->
-      <div class="contacto-info">
-        <a id="wa-big" class="wa-block" href="#" target="_blank" rel="noopener">
-          <span class="wa-block-icon">💬</span>
-          <div>
-            <h4>WhatsApp directo</h4>
-            <strong id="wa-num-txt">+1 809-712-2027</strong>
-          </div>
-        </a>
-        <div class="cinfo-item">
-          <div class="cinfo-icon" style="background:rgba(59,130,246,0.12)">📞</div>
-          <div>
-            <h4>Teléfono</h4>
-            <a id="tel-link" href="tel:8097122027">809-712-2027</a>
-          </div>
+  </div>
+</section>
+
+<!-- ══════════════════════════════════════════════════════════════
+     PANEL: CAFETERÍA
+══════════════════════════════════════════════════════════════════ -->
+<section id="panel-cafeteria" class="panel">
+  <div class="panel-section">
+    <div class="container">
+      <div class="badge-pill" style="margin-bottom:16px">☕ Cafetería</div>
+      <h2 class="panel-title">Nuestro <span style="color:var(--orange)">Menú</span></h2>
+      <p class="panel-sub">Disfruta de nuestras opciones mientras tu vehículo es atendido. Menú actualizado en tiempo real.</p>
+      <div class="cafe-tabs" id="cafe-tabs">
+        <button class="cafe-tab active" data-cat="TODOS" onclick="filtrar('TODOS')">🍽️ Todo el Menú</button>
+      </div>
+      <div id="cafe-grid-wrap">
+        <div class="cafe-empty" style="padding:60px 0">
+          <div style="font-size:40px;margin-bottom:12px">☕</div>
+          <div style="font-size:15px;font-weight:600;color:var(--muted)">Cargando menú...</div>
         </div>
-        <div class="cinfo-item">
-          <div class="cinfo-icon" style="background:rgba(249,115,22,0.12)">📍</div>
-          <div>
-            <h4>Ubicación</h4>
-            <p id="dir-txt">Santo Domingo, República Dominicana</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ══════════════════════════════════════════════════════════════
+     PANEL: NOSOTROS
+══════════════════════════════════════════════════════════════════ -->
+<section id="panel-nosotros" class="panel">
+  <div class="panel-section">
+    <div class="container">
+
+      <!-- Sub-section: Quiénes somos -->
+      <div id="ns-quienes" class="sub-section active">
+        <div class="badge-pill" style="margin-bottom:16px">🏢 Quiénes Somos</div>
+        <h2 class="panel-title">Sólido Auto <span style="color:var(--blue3)">Servicio</span></h2>
+        <p class="panel-sub">Somos una empresa de mantenimiento automotriz dedicada a la conservación de vehículos, brindando calidad de clase mundial con un equipo de profesionales guiados a la mejora continua.</p>
+        <div class="mv-grid">
+          <div class="mv-card mision">
+            <div class="mv-icon">🎯</div>
+            <h3>Misión</h3>
+            <p>Estandarizar los protocolos para la intervención automotriz, agilizando procesos y procedimientos con los más altos estándares.</p>
+            <ul>
+              <li>Brindar un espacio acogedor donde los clientes compartan con sus familiares.</li>
+              <li>Área especial para niños para una espera confortable.</li>
+              <li>Equipos modernos y última tecnología para minimizar tiempos muertos.</li>
+              <li>Espacio integral: pintura, electricidad, aceite, capacitación, piezas, alineación.</li>
+            </ul>
           </div>
-        </div>
-        <div class="cinfo-item">
-          <div class="cinfo-icon" style="background:rgba(16,185,129,0.12)">🕐</div>
-          <div style="flex:1">
-            <h4>Horario de Atención</h4>
-            <div id="horario"></div>
+          <div class="mv-card vision">
+            <div class="mv-icon">🔭</div>
+            <h3>Visión</h3>
+            <p>Ser un taller automotriz reconocido por su excelencia en el servicio, institucionalidad y capacidad de adaptación a las nuevas tecnologías del sector.</p>
+            <ul>
+              <li>Convertirnos en referente de confianza y profesionalismo en la comunidad.</li>
+              <li>Sucursales en otras partes del país.</li>
+              <li>Crear una marca que demuestre el compromiso de ser los mejores.</li>
+              <li>Generar beneficios que permitan la estabilidad y crecimiento del negocio.</li>
+            </ul>
           </div>
         </div>
       </div>
-      <!-- Mapa -->
-      <div class="contacto-map">
-        <iframe id="mapa" src="" loading="lazy" allowfullscreen
-                referrerpolicy="no-referrer-when-downgrade"
-                title="Ubicación Sólido Auto Servicio"></iframe>
+
+      <!-- Sub-section: Valores -->
+      <div id="ns-valores" class="sub-section">
+        <div class="badge-pill" style="margin-bottom:16px">💎 Valores</div>
+        <h2 class="panel-title">Valores <span style="color:var(--blue3)">Institucionales</span></h2>
+        <p class="panel-sub">Los principios que definen quiénes somos y cómo actuamos en cada interacción con nuestros clientes.</p>
+        <div class="val-grid">
+          <div class="val-chip"><span class="vi">🛡️</span> Responsabilidad</div>
+          <div class="val-chip"><span class="vi">💡</span> Innovación</div>
+          <div class="val-chip"><span class="vi">📐</span> Organización y Disciplina</div>
+          <div class="val-chip"><span class="vi">🔍</span> Transparencia</div>
+          <div class="val-chip"><span class="vi">🤝</span> Orientación al Cliente</div>
+          <div class="val-chip"><span class="vi">✅</span> Honestidad</div>
+          <div class="val-chip"><span class="vi">👥</span> Trabajo en Equipo</div>
+          <div class="val-chip"><span class="vi">🌟</span> Respeto</div>
+          <div class="val-chip"><span class="vi">🎓</span> Profesionalismo</div>
+          <div class="val-chip"><span class="vi">📈</span> Enfoque en el Crecimiento</div>
+          <div class="val-chip"><span class="vi">🔒</span> Seguridad</div>
+        </div>
+        <div class="obj-grid" style="margin-top:44px">
+          <div style="grid-column:1/-1;margin-bottom:8px">
+            <div class="badge-pill">🎯 Objetivos Específicos</div>
+          </div>
+          <div class="obj-item"><div class="obj-num">1</div><p class="obj-text">Garantizar la calidad del servicio mediante procedimientos técnicos adecuados y repuestos certificados.</p></div>
+          <div class="obj-item"><div class="obj-num">2</div><p class="obj-text">Optimizar los tiempos de atención, reduciendo períodos de espera y mejorando la programación.</p></div>
+          <div class="obj-item"><div class="obj-num">3</div><p class="obj-text">Fortalecer la confianza del cliente con diagnósticos precisos y presupuestos transparentes.</p></div>
+          <div class="obj-item"><div class="obj-num">4</div><p class="obj-text">Incrementar la rentabilidad controlando costos operativos y aumentando el volumen de servicios.</p></div>
+          <div class="obj-item"><div class="obj-num">5</div><p class="obj-text">Promover la capacitación continua del personal frente a las nuevas tecnologías automotrices.</p></div>
+          <div class="obj-item"><div class="obj-num">6</div><p class="obj-text">Cumplir con normas de seguridad e higiene, protegiendo al personal, clientes e instalaciones.</p></div>
+          <div class="obj-item" style="grid-column:1/-1"><div class="obj-num">7</div><p class="obj-text">Consolidar la presencia en el mercado local mediante estrategias de promoción y fidelización.</p></div>
+        </div>
       </div>
+
+      <!-- Sub-section: SÓLIDO -->
+      <div id="ns-solido" class="sub-section">
+        <div class="badge-pill" style="margin-bottom:16px">✦ Nuestro ADN</div>
+        <h2 class="panel-title">El significado de <span style="color:var(--orange)">SÓLIDO</span></h2>
+        <p class="panel-sub">Cada letra de nuestro nombre representa un pilar fundamental de nuestra filosofía de trabajo.</p>
+        <div class="sol-grid">
+          <div class="sol-card"><span class="sol-letter">S</span><div class="sol-word">Servicio</div><p class="sol-text">Atención personalizada, honesta y eficiente. Resolvemos problemas de forma rápida generando tranquilidad y fidelidad.</p><div class="sol-num">S</div></div>
+          <div class="sol-card"><span class="sol-letter">O</span><div class="sol-word">Organización</div><p class="sol-text">Áreas definidas para cada proceso. Órdenes registradas con seguimiento para evitar confusiones y retrasos.</p><div class="sol-num">O</div></div>
+          <div class="sol-card"><span class="sol-letter">L</span><div class="sol-word">Limpieza</div><p class="sol-text">Instalaciones limpias, herramientas guardadas correctamente y vehículos entregados en condiciones higiénicas.</p><div class="sol-num">L</div></div>
+          <div class="sol-card"><span class="sol-letter">I</span><div class="sol-word">Institucionalidad</div><p class="sol-text">Normas internas claras y protocolos estandarizados. Cumplimiento de políticas de seguridad laboral.</p><div class="sol-num">I</div></div>
+          <div class="sol-card"><span class="sol-letter">D</span><div class="sol-word">Dinamismo</div><p class="sol-text">Constante actualización técnica. Respondemos con rapidez adaptándonos a distintos tipos de vehículos y situaciones.</p><div class="sol-num">D</div></div>
+          <div class="sol-card"><span class="sol-letter">O</span><div class="sol-word">Orden</div><p class="sol-text">Herramientas clasificadas, repuestos etiquetados, espacios delimitados. Secuencia lógica en cada intervención.</p><div class="sol-num">O</div></div>
+        </div>
+      </div>
+
+      <!-- Sub-section: Contacto -->
+      <div id="ns-contacto" class="sub-section">
+        <div class="badge-pill" style="margin-bottom:16px">📍 Contacto</div>
+        <h2 class="panel-title">Encuéntranos en <span style="color:var(--blue3)">Santo Domingo</span></h2>
+        <p class="panel-sub">Estamos aquí para atenderte. Visítanos o contáctanos por cualquiera de nuestros canales.</p>
+        <div class="contact-grid">
+          <div class="contact-card">
+            <h4>🕐 Horario de Atención</h4>
+            <div id="horario-contact"></div>
+            <div style="margin-top:20px">
+              <h4>📞 Contacto Directo</h4>
+              <div style="margin-top:12px;display:flex;flex-direction:column;gap:10px">
+                <a id="wa-contact-btn" href="#" target="_blank" rel="noopener"
+                   style="display:flex;align-items:center;gap:10px;background:rgba(22,163,74,.15);
+                   border:1px solid rgba(22,163,74,.3);border-radius:10px;padding:14px 18px;
+                   color:#4ade80;font-weight:700;font-size:14px;transition:.2s">
+                  💬 WhatsApp — <span id="wa-num"></span>
+                </a>
+                <a id="tel-contact" href="#"
+                   style="display:flex;align-items:center;gap:10px;background:rgba(59,130,246,.1);
+                   border:1px solid rgba(59,130,246,.25);border-radius:10px;padding:14px 18px;
+                   color:var(--blue3);font-weight:700;font-size:14px">
+                  📞 <span id="tel-contact-num"></span>
+                </a>
+              </div>
+            </div>
+          </div>
+          <div class="contact-card">
+            <h4>🗺️ Ubicación</h4>
+            <div id="dir-txt" style="font-size:14px;color:var(--muted);margin-bottom:14px"></div>
+            <div class="map-wrap">
+              <iframe id="mapa" src="" allowfullscreen loading="lazy" referrerpolicy="no-referrer-when-downgrade"></iframe>
+            </div>
+          </div>
+        </div>
+      </div>
+
     </div>
   </div>
 </section>
 
 <!-- ══ FOOTER ════════════════════════════════════════════════════ -->
 <footer>
-  <div class="footer-inner">
-    <div class="footer-top">
-      <div>
-        <div class="footer-brand">
-          <img src="logo.png" alt="Logo" onerror="this.style.display='none'" />
-          <div>
-            <strong>SÓLIDO AUTO SERVICIO</strong>
-            <span>Taller Automotriz + Cafetería · RD</span>
-          </div>
-        </div>
-        <p class="footer-desc">Tu vehículo en manos expertas. Tecnología, transparencia y resultados desde Santo Domingo.</p>
+  <div class="container">
+    <div class="footer-inner">
+      <div class="footer-brand">
+        <strong>SÓLIDO AUTO SERVICIO</strong>
+        <span>MÁS QUE UN TALLER, UNA EXPERIENCIA</span>
       </div>
-      <div class="f-col">
-        <h5>Navegación</h5>
-        <a href="#servicios">Servicios</a>
-        <a href="#consulta">Consultar Vehículo</a>
-        <a href="#cafeteria">Menú Cafetería</a>
-        <a href="#contacto">Contacto</a>
-      </div>
-      <div class="f-col">
-        <h5>Síguenos</h5>
-        <div class="social-row">
-          <a id="footer-wa" href="#" target="_blank" rel="noopener" class="social-btn" title="WhatsApp">💬</a>
-          <a href="https://www.facebook.com/" target="_blank" rel="noopener" class="social-btn" title="Facebook">📘</a>
-          <a href="https://www.instagram.com/" target="_blank" rel="noopener" class="social-btn" title="Instagram">📸</a>
-        </div>
+      <div class="footer-links">
+        <a href="#" onclick="showPortal('home');return false">Inicio</a>
+        <a href="#" onclick="showPortal('clientes');return false">Clientes</a>
+        <a href="#" onclick="showPortal('servicios');return false">Servicios</a>
+        <a href="#" onclick="showPortal('procedimiento');return false">Procedimiento</a>
+        <a href="#" onclick="showPortal('cafeteria');return false">Cafetería</a>
+        <a href="#" onclick="showPortal('nosotros');return false">Nosotros</a>
+        <a href="nosotros.html">Ver página completa ↗</a>
       </div>
     </div>
-    <div class="footer-bottom">
-      <span>© <span id="yr"></span> Sólido Auto Servicio · Todos los derechos reservados.</span>
-      <span>Diseñado para la excelencia automotriz 🔧</span>
+    <div class="footer-copy">
+      © <span id="yr"></span> Sólido Auto Servicio · Santo Domingo, República Dominicana · 809-712-2027
     </div>
   </div>
 </footer>
 
-<!-- ══ BOTÓN FLOTANTE WHATSAPP ═══════════════════════════════════ -->
-<a id="wa-float" class="wa-float" href="#" target="_blank" rel="noopener">
-  <span class="wa-float-icon">💬</span>
-  <span class="wa-float-txt">¿Necesitas ayuda?</span>
-</a>
+<!-- WA FAB -->
+<a id="wa-fab" href="#" target="_blank" rel="noopener" aria-label="WhatsApp">💬</a>
 
-<!-- ══════════════════════════════════════════════════════════════
-     SCRIPTS
-════════════════════════════════════════════════════════════════ -->
+<!-- ══ SCRIPTS ════════════════════════════════════════════════════ -->
 <script>
 "use strict";
 
-/* ─── Init ─────────────────────────────────────────────────────── */
-document.addEventListener("DOMContentLoaded", () => {
-  setupNav();
-  setupWA();
-  setupContacto();
-  setupReveal();
-  loadCafe();
-  document.getElementById("yr").textContent = new Date().getFullYear();
-});
+/* ── Sub-nav config per portal ─────────────────────────────────── */
+const PORTAL_SUBS = {
+  home:          [],
+  clientes:      [],
+  servicios:     [],
+  procedimiento: [],
+  cafeteria:     [],
+  nosotros: [
+    {id:"ns-quienes",  label:"Quiénes somos"},
+    {id:"ns-valores",  label:"Valores y Objetivos"},
+    {id:"ns-solido",   label:"Acrónimo SÓLIDO"},
+    {id:"ns-contacto", label:"Contacto"},
+  ],
+};
 
-/* ─── WhatsApp ──────────────────────────────────────────────────── */
-function waUrl(msg) {
-  return `https://wa.me/${CONFIG.WHATSAPP}?text=${encodeURIComponent(msg || "Hola, me comunico desde la web de Sólido Auto Servicio 👋")}`;
-}
-function setupWA() {
-  const url = waUrl();
-  ["nav-wa","nav-mob-wa","hero-wa","wa-big","wa-float","footer-wa"]
-    .forEach(id => { const el = document.getElementById(id); if(el) el.href = url; });
-  const numEl = document.getElementById("wa-num-txt");
-  if (numEl) numEl.textContent = `+1 ${CONFIG.TELEFONO}`;
+let activePortal = "home";
+
+/* ── Portal switching ──────────────────────────────────────────── */
+function showPortal(id) {
+  activePortal = id;
+  // Panels
+  document.querySelectorAll(".panel").forEach(p => p.classList.remove("active"));
+  const panel = document.getElementById("panel-" + id);
+  if (panel) panel.classList.add("active");
+  // Portal tabs
+  document.querySelectorAll(".ptab").forEach(t => t.classList.toggle("active", t.dataset.portal === id));
+  // Sub-nav
+  const subs = PORTAL_SUBS[id] || [];
+  const subNav = document.getElementById("sub-nav");
+  if (subs.length) {
+    subNav.innerHTML = subs.map((s,i) =>
+      `<button class="stab${i===0?' active':''}" data-sub="${s.id}" onclick="showSub('${s.id}')">${s.label}</button>`
+    ).join("");
+    subNav.classList.add("visible");
+    // Show first sub-section
+    showSub(subs[0].id, false);
+  } else {
+    subNav.innerHTML = "";
+    subNav.classList.remove("visible");
+  }
+  // Scroll to top
+  window.scrollTo({top:0, behavior:"smooth"});
+  // Load cafetería on first visit
+  if (id === "cafeteria" && !window._cafeLoaded) {
+    window._cafeLoaded = true;
+    loadCafe();
+  }
 }
 
-/* ─── Contacto ──────────────────────────────────────────────────── */
-function setupContacto() {
-  const tel = document.getElementById("tel-link");
-  if (tel) { tel.href = `tel:${CONFIG.TELEFONO.replace(/\D/g,"")}`; tel.textContent = CONFIG.TELEFONO; }
-  const dir = document.getElementById("dir-txt");
-  if (dir) dir.textContent = CONFIG.DIRECCION;
-  const map = document.getElementById("mapa");
-  if (map) map.src = CONFIG.MAPS_EMBED;
-  const hor = document.getElementById("horario");
-  if (hor) hor.innerHTML = CONFIG.HORARIO.map(h =>
-    `<div class="horario-row"><span>${h.dia}</span><strong style="color:${h.hora==="Cerrado"?"#f87171":"#fff"}">${h.hora}</strong></div>`
-  ).join("");
+/* ── Sub-section switching ─────────────────────────────────────── */
+function showSub(id, updateTabs) {
+  if (updateTabs !== false) {
+    document.querySelectorAll(".stab").forEach(t => t.classList.toggle("active", t.dataset.sub === id));
+  }
+  // Hide all sub-sections in the active panel
+  const panel = document.getElementById("panel-" + activePortal);
+  if (!panel) return;
+  panel.querySelectorAll(".sub-section").forEach(s => s.classList.remove("active"));
+  const sec = document.getElementById(id);
+  if (sec) sec.classList.add("active");
 }
 
-/* ─── Nav scroll + hamburger ───────────────────────────────────── */
-function setupNav() {
-  const nav = document.getElementById("nav");
-  const upd = () => nav.classList.toggle("scrolled", window.scrollY > 50);
-  window.addEventListener("scroll", upd, { passive: true });
-  upd();
-}
+/* ── Hamburger ─────────────────────────────────────────────────── */
 document.getElementById("hamburger").addEventListener("click", () => {
   document.getElementById("nav-mobile").classList.toggle("open");
 });
-function closeMob() {
-  document.getElementById("nav-mobile").classList.remove("open");
-}
+function closeMob() { document.getElementById("nav-mobile").classList.remove("open"); }
 
-/* ─── Reveal on scroll ─────────────────────────────────────────── */
-function setupReveal() {
-  const obs = new IntersectionObserver(
-    entries => entries.forEach(e => { if(e.isIntersecting){ e.target.classList.add("visible"); obs.unobserve(e.target); }}),
-    { threshold: 0.12 }
-  );
-  document.querySelectorAll(".reveal").forEach(el => obs.observe(el));
-}
+/* ── Init ──────────────────────────────────────────────────────── */
+document.addEventListener("DOMContentLoaded", () => {
+  // WhatsApp links
+  const waUrl = (msg) => `https://wa.me/${CONFIG.WHATSAPP}?text=${encodeURIComponent(msg||"Hola, me comunico desde la web de Sólido Auto Servicio 👋")}`;
+  const waBase = waUrl();
+  ["nav-wa","nav-mob-wa","wa-fab","topbar-wa-btn","wa-contact-btn"].forEach(id => {
+    const el = document.getElementById(id); if (el) el.href = waBase;
+  });
+  // Phone
+  const telLink = document.getElementById("tel-link");
+  if (telLink) { telLink.href=`tel:${CONFIG.TELEFONO.replace(/\D/g,"")}`; telLink.textContent=CONFIG.TELEFONO; }
+  const telC = document.getElementById("tel-contact");
+  const telCN = document.getElementById("tel-contact-num");
+  if (telC) telC.href=`tel:${CONFIG.TELEFONO.replace(/\D/g,"")}`;
+  if (telCN) telCN.textContent=CONFIG.TELEFONO;
+  // WA number label
+  const waNum = document.getElementById("wa-num");
+  if (waNum) waNum.textContent="+1 "+CONFIG.TELEFONO;
+  // Address
+  const dirEl = document.getElementById("dir-txt");
+  if (dirEl) dirEl.textContent=CONFIG.DIRECCION;
+  // Map
+  const map = document.getElementById("mapa");
+  if (map) map.src=CONFIG.MAPS_EMBED;
+  // Horario top bar
+  const horTop = document.getElementById("horario-top");
+  if (horTop && CONFIG.HORARIO[0]) horTop.textContent=CONFIG.HORARIO[0].dia+": "+CONFIG.HORARIO[0].hora;
+  // Horario contact
+  const horC = document.getElementById("horario-contact");
+  if (horC) horC.innerHTML = CONFIG.HORARIO.map(h =>
+    `<div class="horario-row"><span>${h.dia}</span><strong style="color:${h.hora==="Cerrado"?"#f87171":"#fff"}">${h.hora}</strong></div>`
+  ).join("");
+  // Year
+  document.getElementById("yr").textContent = new Date().getFullYear();
+});
 
-/* ══════════════════════════════════════════════════════════════════
-   CONSULTA DE VEHÍCULO — idéntico a la app del cliente
-══════════════════════════════════════════════════════════════════ */
+/* ══ VEHICLE LOOKUP ════════════════════════════════════════════ */
 const ESTADO_INFO = {
-  RECIBIDO:        { color:"#60a5fa", grad:"linear-gradient(135deg,#1e3a5f,#2563eb)",   emoji:"📋", paso:1, msg:"Tu vehículo fue recibido. Pronto será evaluado." },
-  DIAGNOSTICO:     { color:"#fbbf24", grad:"linear-gradient(135deg,#451a03,#d97706)",   emoji:"🔍", paso:2, msg:"Nuestro técnico está evaluando tu vehículo." },
-  REPARACION:      { color:"#f87171", grad:"linear-gradient(135deg,#450a0a,#dc2626)",   emoji:"🔧", paso:3, msg:"Tu vehículo está siendo reparado por nuestro equipo." },
-  EN_PROCESO:      { color:"#f87171", grad:"linear-gradient(135deg,#450a0a,#dc2626)",   emoji:"🔧", paso:3, msg:"Tu vehículo está siendo reparado por nuestro equipo." },
-  CONTROL_CALIDAD: { color:"#a78bfa", grad:"linear-gradient(135deg,#2e1065,#7c3aed)",   emoji:"✅", paso:4, msg:"Revisión final de calidad en proceso." },
-  LISTO:           { color:"#34d399", grad:"linear-gradient(135deg,#022c22,#059669)",   emoji:"🎉", paso:5, msg:"¡Tu vehículo está listo! Puedes pasar a recogerlo." },
-  COMPLETADO:      { color:"#34d399", grad:"linear-gradient(135deg,#022c22,#059669)",   emoji:"✅", paso:5, msg:"Servicio completado satisfactoriamente." },
-  ENTREGADO:       { color:"#94a3b8", grad:"linear-gradient(135deg,#1e293b,#475569)",   emoji:"🚗", paso:6, msg:"Vehículo entregado. ¡Gracias por tu confianza!" },
-  FACTURADO:       { color:"#94a3b8", grad:"linear-gradient(135deg,#1e293b,#475569)",   emoji:"🧾", paso:6, msg:"Servicio facturado y entregado." },
+  RECIBIDO:        {color:"#60a5fa",grad:"linear-gradient(135deg,#1e3a5f,#2563eb)",   emoji:"📋",paso:1,msg:"Tu vehículo fue recibido. Pronto será evaluado."},
+  DIAGNOSTICO:     {color:"#fbbf24",grad:"linear-gradient(135deg,#451a03,#d97706)",   emoji:"🔍",paso:2,msg:"Nuestro técnico está evaluando tu vehículo."},
+  REPARACION:      {color:"#f87171",grad:"linear-gradient(135deg,#450a0a,#dc2626)",   emoji:"🔧",paso:3,msg:"Tu vehículo está siendo reparado por nuestro equipo."},
+  EN_PROCESO:      {color:"#f87171",grad:"linear-gradient(135deg,#450a0a,#dc2626)",   emoji:"🔧",paso:3,msg:"Tu vehículo está siendo reparado por nuestro equipo."},
+  CONTROL_CALIDAD: {color:"#a78bfa",grad:"linear-gradient(135deg,#2e1065,#7c3aed)",   emoji:"✅",paso:4,msg:"Revisión final de calidad en proceso."},
+  LISTO:           {color:"#34d399",grad:"linear-gradient(135deg,#022c22,#059669)",   emoji:"🎉",paso:5,msg:"¡Tu vehículo está listo! Puedes pasar a recogerlo."},
+  COMPLETADO:      {color:"#34d399",grad:"linear-gradient(135deg,#022c22,#059669)",   emoji:"✅",paso:5,msg:"Servicio completado satisfactoriamente."},
+  ENTREGADO:       {color:"#94a3b8",grad:"linear-gradient(135deg,#1e293b,#475569)",   emoji:"🚗",paso:6,msg:"Vehículo entregado. ¡Gracias por tu confianza!"},
+  FACTURADO:       {color:"#94a3b8",grad:"linear-gradient(135deg,#1e293b,#475569)",   emoji:"🧾",paso:6,msg:"Servicio facturado y entregado."},
 };
 const PASOS       = ["RECIBIDO","DIAGNOSTICO","REPARACION","CONTROL_CALIDAD","LISTO","ENTREGADO"];
 const PASOS_LABEL = ["Recibido","Diagnóstico","Reparación","C. Calidad","Listo","Entregado"];
 
-// Estado global del resultado
-let _resultado = null;
-let _histPerm  = [];
-let _tabActual = "ordenes";
-let _histDetalle = null;
+let _resultado=null,_histPerm=[],_tabActual="ordenes",_histDetalle=null;
 
-async function buscar() {
-  const placa = document.getElementById("placa-input").value.trim().toUpperCase().replace(/\s/g,"");
-  const resEl = document.getElementById("resultado");
-  const btn   = document.getElementById("buscar-btn");
-  const icon  = document.getElementById("btn-icon");
-  const txt   = document.getElementById("btn-txt");
+function waUrl(msg){return`https://wa.me/${CONFIG.WHATSAPP}?text=${encodeURIComponent(msg||"Hola, me comunico desde la web de Sólido Auto Servicio 👋")}`}
 
-  if (!placa) { showErr("Ingresa un número de placa para continuar."); return; }
-
-  btn.disabled = true;
-  icon.innerHTML = '<span class="spinner-sm"></span>';
-  txt.textContent = "Buscando...";
-  resEl.innerHTML = "";
-  _resultado = null; _histPerm = []; _tabActual = "ordenes"; _histDetalle = null;
-
-  try {
-    // ── 4 llamadas paralelas igual que la app del cliente ────────
-    const [vRes, oRes, dRes, hRes] = await Promise.all([
+async function buscar(){
+  const placa=document.getElementById("placa-input").value.trim().toUpperCase().replace(/\s/g,"");
+  const resEl=document.getElementById("resultado");
+  const btn=document.getElementById("buscar-btn");
+  const icon=document.getElementById("btn-icon");
+  const txt=document.getElementById("btn-txt");
+  if(!placa){showErr("Ingresa un número de placa para continuar.");return;}
+  btn.disabled=true;
+  icon.innerHTML='<span class="spinner-sm"></span>';
+  txt.textContent="Buscando...";
+  resEl.innerHTML="";
+  _resultado=null;_histPerm=[];_tabActual="ordenes";_histDetalle=null;
+  try{
+    const [vRes,oRes,dRes,hRes]=await Promise.all([
       fetch(`${CONFIG.API_BASE}/vehiculos`),
       fetch(`${CONFIG.API_BASE}/ordenes`),
       fetch(`${CONFIG.API_BASE}/diagnosticos`),
       fetch(`${CONFIG.API_BASE}/vehiculo-historial/placa/${encodeURIComponent(placa)}`),
     ]);
-    const vehiculos    = await vRes.json();
-    const ordenes      = await oRes.json();
-    const diagnosticos = await dRes.json();
-    const histData     = await hRes.json();
-
-    const vehiculo = Array.isArray(vehiculos)
-      ? vehiculos.find(v => v.placa?.toUpperCase() === placa)
-      : null;
-
-    if (!vehiculo && !histData.found) {
-      showErr(`No encontramos registros para la placa <b>${placa}</b>.<br>Verifica el número o contáctanos.`);
-      return;
+    const vehiculos=await vRes.json();
+    const ordenes=await oRes.json();
+    const diagnosticos=await dRes.json();
+    const histData=await hRes.json();
+    const vehiculo=Array.isArray(vehiculos)?vehiculos.find(v=>v.placa?.toUpperCase()===placa):null;
+    if(!vehiculo&&!histData.found){showErr(`No encontramos registros para la placa <b>${placa}</b>.<br>Verifica el número o contáctanos.`);return;}
+    if(histData.found)_histPerm=histData.historial||[];
+    if(vehiculo){
+      const ordenesVeh=Array.isArray(ordenes)?ordenes.filter(o=>o.vehiculo_id===vehiculo.id||o.vehiculo_info?.includes(vehiculo.placa)).sort((a,b)=>new Date(b.created_at)-new Date(a.created_at)):[];
+      const diagsVeh=Array.isArray(diagnosticos)?diagnosticos.filter(d=>d.vehiculo_id===vehiculo.id).sort((a,b)=>new Date(b.created_at)-new Date(a.created_at)):[];
+      _resultado={vehiculo,ordenes:ordenesVeh,diagnosticos:diagsVeh};
+    }else{
+      _resultado={vehiculo:{...histData.vehiculo,id:null},ordenes:[],diagnosticos:[]};
     }
-
-    if (histData.found) _histPerm = histData.historial || [];
-
-    if (vehiculo) {
-      const ordenesVeh = Array.isArray(ordenes)
-        ? ordenes.filter(o => o.vehiculo_id === vehiculo.id || o.vehiculo_info?.includes(vehiculo.placa))
-                 .sort((a,b) => new Date(b.created_at) - new Date(a.created_at))
-        : [];
-      const diagsVeh = Array.isArray(diagnosticos)
-        ? diagnosticos.filter(d => d.vehiculo_id === vehiculo.id)
-                      .sort((a,b) => new Date(b.created_at) - new Date(a.created_at))
-        : [];
-      _resultado = { vehiculo, ordenes: ordenesVeh, diagnosticos: diagsVeh };
-    } else {
-      _resultado = { vehiculo: { ...histData.vehiculo, id: null }, ordenes: [], diagnosticos: [] };
-    }
-
     renderResultado();
-  } catch(e) {
+  }catch(e){
     showErr("Error de conexión. Verifica tu internet e inténtalo de nuevo.");
     console.error(e);
-  } finally {
-    btn.disabled = false;
-    icon.textContent = "🔍";
-    txt.textContent  = "Consultar";
+  }finally{
+    btn.disabled=false;icon.textContent="🔍";txt.textContent="Consultar";
   }
 }
 
-function renderResultado() {
-  if (!_resultado) return;
-  const { vehiculo, ordenes, diagnosticos } = _resultado;
-  const ultimaOrden = ordenes[0] || null;
-  const estadoInfo  = ultimaOrden
-    ? (ESTADO_INFO[ultimaOrden.estado] || ESTADO_INFO.RECIBIDO)
-    : (_histPerm.length ? ESTADO_INFO.ENTREGADO : null);
-  const pasoActual  = estadoInfo ? estadoInfo.paso : 0;
-
-  // ── Barra de progreso ──────────────────────────────────────────
-  const progHTML = PASOS.map((paso, i) => {
-    const alcanzado = i < pasoActual - 1;
-    const actual    = i === pasoActual - 1;
-    return `<div class="cr-prog-step">
-      <div class="cr-prog-dot ${actual ? "cr-dot-active" : alcanzado ? "cr-dot-done" : "cr-dot-future"}">
-        ${alcanzado || actual ? "✓" : i + 1}
-      </div>
-      <div class="cr-prog-lbl ${alcanzado || actual ? "cr-lbl-on" : "cr-lbl-off"}">${PASOS_LABEL[i]}</div>
-    </div>`;
+function renderResultado(){
+  if(!_resultado)return;
+  const{vehiculo,ordenes,diagnosticos}=_resultado;
+  const ultimaOrden=ordenes[0]||null;
+  const estadoInfo=ultimaOrden?(ESTADO_INFO[ultimaOrden.estado]||ESTADO_INFO.RECIBIDO):(_histPerm.length?ESTADO_INFO.ENTREGADO:null);
+  const pasoActual=estadoInfo?estadoInfo.paso:0;
+  const progHTML=PASOS.map((paso,i)=>{
+    const alcanzado=i<pasoActual-1,actual=i===pasoActual-1;
+    return`<div class="cr-prog-step"><div class="cr-prog-dot ${actual?"cr-dot-active":alcanzado?"cr-dot-done":"cr-dot-future"}">${alcanzado||actual?"✓":i+1}</div><div class="cr-prog-lbl ${alcanzado||actual?"cr-lbl-on":"cr-lbl-off"}">${PASOS_LABEL[i]}</div></div>`;
   }).join("");
-
-  // ── Estado card ────────────────────────────────────────────────
-  const estadoHTML = estadoInfo ? `
-    <div class="cr-estado-card" style="background:${estadoInfo.grad}">
-      <div class="cr-estado-top">Estado Actual</div>
-      <div class="cr-estado-row">
-        <span class="cr-estado-emoji">${estadoInfo.emoji}</span>
-        <div>
-          <div class="cr-estado-name">${(ultimaOrden?.estado || "ENTREGADO").replace("_"," ")}</div>
-          <div class="cr-estado-msg">${estadoInfo.msg}</div>
-        </div>
-      </div>
-      <div class="cr-prog-wrap">${progHTML}</div>
-    </div>` : "";
-
-  // ── Tabs ───────────────────────────────────────────────────────
-  const tabs = [
-    { key:"ordenes",    label:`📋 Órdenes (${ordenes.length})` },
-    { key:"diagnosticos", label:`🔬 Diagnósticos (${diagnosticos.length})` },
-    { key:"historial",  label:`📚 Historial (${_histPerm.length})` },
-  ];
-  const tabsHTML = `<div class="cr-tabs">
-    ${tabs.map(t => `<button class="cr-tab ${_tabActual===t.key?"cr-tab-active":""}"
-      onclick="cambiarTab('${t.key}')">${t.label}</button>`).join("")}
-  </div>`;
-
-  const resEl = document.getElementById("resultado");
-  resEl.innerHTML = `
+  const estadoHTML=estadoInfo?`<div class="cr-estado-card" style="background:${estadoInfo.grad}"><div class="cr-estado-top">Estado Actual</div><div class="cr-estado-row"><span class="cr-estado-emoji">${estadoInfo.emoji}</span><div><div class="cr-estado-name">${(ultimaOrden?.estado||"ENTREGADO").replace("_"," ")}</div><div class="cr-estado-msg">${estadoInfo.msg}</div></div></div><div class="cr-prog-wrap">${progHTML}</div></div>`:"";
+  const tabs=[{key:"ordenes",label:`📋 Órdenes (${ordenes.length})`},{key:"diagnosticos",label:`🔬 Diagnósticos (${diagnosticos.length})`},{key:"historial",label:`📚 Historial (${_histPerm.length})`}];
+  const tabsHTML=`<div class="cr-tabs">${tabs.map(t=>`<button class="cr-tab ${_tabActual===t.key?"cr-tab-active":""}" onclick="cambiarTab('${t.key}')">${t.label}</button>`).join("")}</div>`;
+  document.getElementById("resultado").innerHTML=`
     <button class="cr-btn-volver" onclick="limpiarResultado()">← Nueva consulta</button>
-
-    <!-- Tarjeta vehículo -->
-    <div class="cr-car-card">
-      <div class="cr-car-main">
-        <span class="cr-car-emoji">🚗</span>
-        <div>
-          <div class="cr-car-marca">${vehiculo.marca||""} ${vehiculo.modelo||""}</div>
-          <div class="cr-car-meta">
-            ${vehiculo.ano ? `Año ${vehiculo.ano}` : ""}
-            ${vehiculo.color ? ` · ${vehiculo.color}` : ""}
-          </div>
-          <div class="cr-placa-badge">${vehiculo.placa||""}</div>
-        </div>
-      </div>
-    </div>
-
-    ${estadoHTML}
-    ${tabsHTML}
-    <div id="cr-tab-content"></div>`;
-
+    <div class="cr-car-card"><div class="cr-car-main"><span class="cr-car-emoji">🚗</span><div>
+      <div class="cr-car-marca">${vehiculo.marca||""} ${vehiculo.modelo||""}</div>
+      <div class="cr-car-meta">${vehiculo.ano?`Año ${vehiculo.ano}`:""}${vehiculo.color?` · ${vehiculo.color}`:""}</div>
+      <div class="cr-placa-badge">${vehiculo.placa||""}</div>
+    </div></div></div>
+    ${estadoHTML}${tabsHTML}<div id="cr-tab-content"></div>`;
   renderTab();
 }
 
-function cambiarTab(key) {
-  _tabActual = key;
-  _histDetalle = null;
-  // Actualizar clases
-  document.querySelectorAll(".cr-tab").forEach(b => {
-    b.classList.toggle("cr-tab-active", b.textContent.includes(
-      key === "ordenes" ? "Órdenes" : key === "diagnosticos" ? "Diagnósticos" : "Historial"
-    ));
-  });
+function cambiarTab(key){
+  _tabActual=key;_histDetalle=null;
+  document.querySelectorAll(".cr-tab").forEach(b=>b.classList.toggle("cr-tab-active",b.textContent.includes(key==="ordenes"?"Órdenes":key==="diagnosticos"?"Diagnósticos":"Historial")));
   renderTab();
 }
 
-function renderTab() {
-  const cont = document.getElementById("cr-tab-content");
-  if (!cont) return;
-  const { ordenes, diagnosticos } = _resultado;
-
-  if (_tabActual === "ordenes") {
-    if (!ordenes.length) {
-      cont.innerHTML = crEmpty("📋","Sin órdenes registradas.");
-      return;
-    }
-    cont.innerHTML = ordenes.map(o => {
-      const info = ESTADO_INFO[o.estado] || ESTADO_INFO.RECIBIDO;
-      const placa = _resultado.vehiculo.placa;
-      return `<div class="cr-orden-card" style="border-left-color:${info.color}">
-        <div class="cr-orden-header">
-          <span class="cr-orden-id">Orden #${o.id}</span>
-          <span class="cr-orden-badge" style="background:${info.color}22;color:${info.color}">
-            ${o.estado.replace("_"," ")}
-          </span>
-        </div>
-        <div class="cr-orden-desc">${o.descripcion||"Servicio en proceso"}</div>
-        <a href="${waUrl("Hola, consulto sobre mi vehículo ("+placa+"), orden #"+o.id)}"
-           target="_blank" class="cr-btn-wa-card">💬 Consultar por WhatsApp</a>
-      </div>`;
+function renderTab(){
+  const cont=document.getElementById("cr-tab-content");
+  if(!cont)return;
+  const{ordenes,diagnosticos}=_resultado;
+  if(_tabActual==="ordenes"){
+    if(!ordenes.length){cont.innerHTML=crEmpty("📋","Sin órdenes registradas.");return;}
+    cont.innerHTML=ordenes.map(o=>{
+      const info=ESTADO_INFO[o.estado]||ESTADO_INFO.RECIBIDO;
+      return`<div class="cr-orden-card" style="border-left-color:${info.color}"><div class="cr-orden-header"><span class="cr-orden-id">Orden #${o.id}</span><span class="cr-orden-badge" style="background:${info.color}22;color:${info.color}">${o.estado.replace("_"," ")}</span></div><div class="cr-orden-desc">${o.descripcion||"Servicio en proceso"}</div><a href="${waUrl("Hola, consulto sobre mi vehículo ("+_resultado.vehiculo.placa+"), orden #"+o.id)}" target="_blank" class="cr-btn-wa-card">💬 Consultar por WhatsApp</a></div>`;
     }).join("");
     return;
   }
-
-  if (_tabActual === "diagnosticos") {
-    if (!diagnosticos.length) {
-      cont.innerHTML = crEmpty("🔬","Sin diagnósticos registrados.");
-      return;
-    }
-    cont.innerHTML = diagnosticos.map(d => `
-      <div class="cr-diag-card">
-        <div class="cr-diag-tipo">${d.tipo_servicio||"Diagnóstico"}</div>
-        <div class="cr-diag-obs">${d.observaciones||d.fallas_identificadas||"Sin observaciones registradas."}</div>
-      </div>`).join("");
+  if(_tabActual==="diagnosticos"){
+    if(!diagnosticos.length){cont.innerHTML=crEmpty("🔬","Sin diagnósticos registrados.");return;}
+    cont.innerHTML=diagnosticos.map(d=>`<div class="cr-diag-card"><div class="cr-diag-tipo">${d.tipo_servicio||"Diagnóstico"}</div><div class="cr-diag-obs">${d.observaciones||d.fallas_identificadas||"Sin observaciones registradas."}</div></div>`).join("");
     return;
   }
-
-  if (_tabActual === "historial") {
-    if (_histDetalle) {
-      renderHistDetalle();
-      return;
-    }
-    if (!_histPerm.length) {
-      cont.innerHTML = crEmpty("📚","Sin historial permanente.","El historial se genera automáticamente cuando se completa un servicio.");
-      return;
-    }
-    cont.innerHTML = `
-      <div style="font-size:12px;color:#64748b;margin-bottom:14px;font-weight:600">
-        ${_histPerm.length} servicio${_histPerm.length!==1?"s":""} registrado${_histPerm.length!==1?"s":""}
-      </div>
-      <div class="cr-hist-timeline">
-        ${_histPerm.map((h,idx) => `
-          <div class="cr-hist-item" onclick="verDetalleHist(${idx})">
-            <div class="cr-hist-servicio">${h.tipo_servicio||"Servicio"}</div>
-            <div class="cr-hist-meta">
-              ${h.fecha_servicio ? new Date(h.fecha_servicio).toLocaleDateString("es-DO",{year:"numeric",month:"short",day:"numeric"}) : "—"}
-              ${h.tecnico_nombre ? ` · ${h.tecnico_nombre}` : ""}
-              ${idx===0 ? '<span class="cr-hist-badge">Más reciente</span>' : ""}
-            </div>
-            <div style="display:flex;justify-content:space-between;align-items:center;margin-top:6px">
-              ${h.costo_total>0 ? `<span class="cr-hist-cost">RD$ ${Number(h.costo_total).toLocaleString("es-DO",{minimumFractionDigits:2})}</span>` : "<span></span>"}
-              <span style="font-size:11px;color:#64748b;font-weight:600">Ver detalle →</span>
-            </div>
-          </div>`).join("")}
-      </div>`;
+  if(_tabActual==="historial"){
+    if(_histDetalle){renderHistDetalle();return;}
+    if(!_histPerm.length){cont.innerHTML=crEmpty("📚","Sin historial permanente.","El historial se genera cuando se completa un servicio.");return;}
+    cont.innerHTML=`<div style="font-size:12px;color:#64748b;margin-bottom:14px;font-weight:600">${_histPerm.length} servicio${_histPerm.length!==1?"s":""} registrado${_histPerm.length!==1?"s":""}</div><div class="cr-hist-timeline">${_histPerm.map((h,idx)=>`<div class="cr-hist-item" onclick="verDetalleHist(${idx})"><div class="cr-hist-servicio">${h.tipo_servicio||"Servicio"}</div><div class="cr-hist-meta">${h.fecha_servicio?new Date(h.fecha_servicio).toLocaleDateString("es-DO",{year:"numeric",month:"short",day:"numeric"}):"—"}${h.tecnico_nombre?` · ${h.tecnico_nombre}`:""} ${idx===0?'<span class="cr-hist-badge">Más reciente</span>':""}</div><div style="display:flex;justify-content:space-between;align-items:center;margin-top:6px">${h.costo_total>0?`<span class="cr-hist-cost">RD$ ${Number(h.costo_total).toLocaleString("es-DO",{minimumFractionDigits:2})}</span>`:"<span></span>"}<span style="font-size:11px;color:#64748b;font-weight:600">Ver detalle →</span></div></div>`).join("")}</div>`;
   }
 }
 
-function verDetalleHist(idx) {
-  _histDetalle = _histPerm[idx];
-  renderHistDetalle();
-}
+function verDetalleHist(idx){_histDetalle=_histPerm[idx];renderHistDetalle();}
 
-function renderHistDetalle() {
-  const h = _histDetalle;
-  const cont = document.getElementById("cr-tab-content");
-  cont.innerHTML = `
-    <button class="cr-btn-volver" style="width:100%;margin-bottom:14px" onclick="_histDetalle=null;renderTab()">
-      ← Volver al historial
-    </button>
-
+function renderHistDetalle(){
+  const h=_histDetalle;
+  const cont=document.getElementById("cr-tab-content");
+  cont.innerHTML=`
+    <button class="cr-btn-volver" style="width:100%;margin-bottom:14px" onclick="_histDetalle=null;renderTab()">← Volver al historial</button>
     <div class="cr-detalle-header">
-      <div style="font-size:10px;color:#64748b;font-weight:700;letter-spacing:1.5px;text-transform:uppercase;margin-bottom:6px">
-        ${h.fecha_servicio ? new Date(h.fecha_servicio).toLocaleDateString("es-DO",{year:"numeric",month:"long",day:"numeric"}) : "—"}
-      </div>
+      <div style="font-size:10px;color:#64748b;font-weight:700;letter-spacing:1.5px;text-transform:uppercase;margin-bottom:6px">${h.fecha_servicio?new Date(h.fecha_servicio).toLocaleDateString("es-DO",{year:"numeric",month:"long",day:"numeric"}):"—"}</div>
       <div style="font-size:20px;font-weight:900;color:#fff">${h.tipo_servicio||"Servicio"}</div>
-      ${h.tecnico_nombre ? `<div style="font-size:13px;color:#94a3b8;margin-top:4px">👨‍🔧 ${h.tecnico_nombre}</div>` : ""}
+      ${h.tecnico_nombre?`<div style="font-size:13px;color:#94a3b8;margin-top:4px">👨‍🔧 ${h.tecnico_nombre}</div>`:""}
     </div>
-
-    ${(h.inspeccion_mecanica||h.inspeccion_electrica||h.inspeccion_electronica) ? `
-    <div class="cr-det-card">
-      <div class="cr-det-title">🔍 Inspección Técnica</div>
-      ${h.inspeccion_mecanica ? `<div class="cr-det-section"><div class="cr-det-sub">🔧 Mecánica</div><div class="cr-det-txt">${h.inspeccion_mecanica}</div></div>` : ""}
-      ${h.inspeccion_electrica ? `<div class="cr-det-section"><div class="cr-det-sub">⚡ Eléctrica</div><div class="cr-det-txt">${h.inspeccion_electrica}</div></div>` : ""}
-      ${h.inspeccion_electronica ? `<div class="cr-det-section"><div class="cr-det-sub">💻 Scanner</div><div class="cr-det-txt">${h.inspeccion_electronica}</div></div>` : ""}
-    </div>` : ""}
-
-    ${(h.codigos_falla||h.fallas_identificadas) ? `
-    <div class="cr-det-falla">
-      <div class="cr-det-falla-title">⚠️ Fallas Identificadas</div>
-      ${h.codigos_falla ? `<div class="cr-det-falla-txt" style="margin-bottom:4px">Códigos: ${h.codigos_falla}</div>` : ""}
-      ${h.fallas_identificadas ? `<div class="cr-det-falla-txt">${h.fallas_identificadas}</div>` : ""}
-    </div>` : ""}
-
-    ${h.trabajos_realizados ? `
-    <div class="cr-det-card">
-      <div class="cr-det-title">🛠️ Trabajos Realizados</div>
-      <div class="cr-det-txt" style="white-space:pre-wrap">${h.trabajos_realizados}</div>
-    </div>` : ""}
-
-    ${h.observaciones ? `
-    <div class="cr-det-card">
-      <div class="cr-det-title">📝 Observaciones</div>
-      <div class="cr-det-txt">${h.observaciones}</div>
-    </div>` : ""}
-
-    ${h.costo_total>0 ? `
-    <div class="cr-det-card">
-      <div class="cr-det-title">💰 Costos del Servicio</div>
-      <div class="cr-costos-grid">
-        <div class="cr-costo-box"><div class="cr-costo-lbl">Mano de Obra</div>
-          <div class="cr-costo-val">RD$ ${Number(h.costo_mano_obra||0).toLocaleString("es-DO",{minimumFractionDigits:2})}</div></div>
-        <div class="cr-costo-box"><div class="cr-costo-lbl">Repuestos</div>
-          <div class="cr-costo-val">RD$ ${Number(h.costo_repuestos||0).toLocaleString("es-DO",{minimumFractionDigits:2})}</div></div>
-      </div>
-      <div style="text-align:center;margin-top:14px;font-size:22px;font-weight:900;color:#34d399">
-        Total: RD$ ${Number(h.costo_total).toLocaleString("es-DO",{minimumFractionDigits:2})}
-      </div>
-      ${h.ncf ? `<div style="font-size:11px;color:#64748b;text-align:center;margin-top:6px">🧾 NCF: ${h.ncf}</div>` : ""}
-    </div>` : ""}`;
+    ${(h.inspeccion_mecanica||h.inspeccion_electrica||h.inspeccion_electronica)?`<div class="cr-det-card"><div class="cr-det-title">🔍 Inspección Técnica</div>${h.inspeccion_mecanica?`<div class="cr-det-section"><div class="cr-det-sub">🔧 Mecánica</div><div class="cr-det-txt">${h.inspeccion_mecanica}</div></div>`:""}${h.inspeccion_electrica?`<div class="cr-det-section"><div class="cr-det-sub">⚡ Eléctrica</div><div class="cr-det-txt">${h.inspeccion_electrica}</div></div>`:""}${h.inspeccion_electronica?`<div class="cr-det-section"><div class="cr-det-sub">💻 Scanner</div><div class="cr-det-txt">${h.inspeccion_electronica}</div></div>`:""}</div>`:""}
+    ${(h.codigos_falla||h.fallas_identificadas)?`<div class="cr-det-falla"><div class="cr-det-falla-title">⚠️ Fallas Identificadas</div>${h.codigos_falla?`<div class="cr-det-falla-txt" style="margin-bottom:4px">Códigos: ${h.codigos_falla}</div>`:""}${h.fallas_identificadas?`<div class="cr-det-falla-txt">${h.fallas_identificadas}</div>`:""}</div>`:""}
+    ${h.trabajos_realizados?`<div class="cr-det-card"><div class="cr-det-title">🛠️ Trabajos Realizados</div><div class="cr-det-txt" style="white-space:pre-wrap">${h.trabajos_realizados}</div></div>`:""}
+    ${h.observaciones?`<div class="cr-det-card"><div class="cr-det-title">📝 Observaciones</div><div class="cr-det-txt">${h.observaciones}</div></div>`:""}
+    ${h.costo_total>0?`<div class="cr-det-card"><div class="cr-det-title">💰 Costos del Servicio</div><div class="cr-costos-grid"><div class="cr-costo-box"><div class="cr-costo-lbl">Mano de Obra</div><div class="cr-costo-val">RD$ ${Number(h.costo_mano_obra||0).toLocaleString("es-DO",{minimumFractionDigits:2})}</div></div><div class="cr-costo-box"><div class="cr-costo-lbl">Repuestos</div><div class="cr-costo-val">RD$ ${Number(h.costo_repuestos||0).toLocaleString("es-DO",{minimumFractionDigits:2})}</div></div></div><div style="text-align:center;margin-top:14px;font-size:22px;font-weight:900;color:#34d399">Total: RD$ ${Number(h.costo_total).toLocaleString("es-DO",{minimumFractionDigits:2})}</div>${h.ncf?`<div style="font-size:11px;color:#64748b;text-align:center;margin-top:6px">🧾 NCF: ${h.ncf}</div>`:""}</div>`:""}`
 }
 
-function crEmpty(icon, msg, sub) {
-  return `<div style="text-align:center;padding:32px 20px;color:#64748b">
-    <div style="font-size:36px;margin-bottom:10px">${icon}</div>
-    <div style="font-weight:600;font-size:15px">${msg}</div>
-    ${sub ? `<div style="font-size:12px;color:#94a3b8;margin-top:6px">${sub}</div>` : ""}
-  </div>`;
-}
+function crEmpty(icon,msg,sub){return`<div style="text-align:center;padding:32px 20px;color:#64748b"><div style="font-size:36px;margin-bottom:10px">${icon}</div><div style="font-weight:600;font-size:15px;color:var(--muted)">${msg}</div>${sub?`<div style="font-size:12px;color:#475569;margin-top:6px">${sub}</div>`:""}</div>`}
 
-function limpiarResultado() {
-  _resultado = null; _histPerm = []; _histDetalle = null;
-  document.getElementById("resultado").innerHTML = "";
-  document.getElementById("placa-input").value = "";
-}
+function limpiarResultado(){_resultado=null;_histPerm=[];_histDetalle=null;document.getElementById("resultado").innerHTML="";document.getElementById("placa-input").value="";}
 
-function showErr(msg) {
-  document.getElementById("resultado").innerHTML = `
-    <div class="consulta-error">
-      <span style="font-size:22px;flex-shrink:0">⚠️</span>
-      <div>${msg}<br><br>
-        <a href="${waUrl()}" target="_blank" style="color:#1d4ed8;font-weight:700">
-          💬 Contáctanos por WhatsApp
-        </a>
-      </div>
-    </div>`;
-}
+function showErr(msg){document.getElementById("resultado").innerHTML=`<div class="consulta-error"><span style="font-size:22px;flex-shrink:0">⚠️</span><div>${msg}<br><br><a href="${waUrl()}" target="_blank" style="color:#93c5fd;font-weight:700">💬 Contáctanos por WhatsApp</a></div></div>`}
 
-/* ══════════════════════════════════════════════════════════════════
-   CAFETERÍA
-══════════════════════════════════════════════════════════════════ */
-let todosProds = [];
-let catActiva  = "TODOS";
+/* ══ CAFETERÍA ══════════════════════════════════════════════════ */
+let todosProds=[],catActiva="TODOS";
 
-async function loadCafe() {
-  try {
-    const r    = await fetch(`${CONFIG.API_BASE}/cafeteria/productos`);
-    const data = await r.json();
-    todosProds = (Array.isArray(data) ? data : []).filter(p => p.stock > 0);
-    buildTabs();
-    renderGrid("TODOS");
-  } catch {
-    document.getElementById("cafe-grid-wrap").innerHTML = `
-      <div class="cafe-empty">
-        <p style="font-size:40px;margin-bottom:10px">☕</p>
-        <p style="font-weight:600;color:#64748b">Menú no disponible en este momento.</p>
-        <p style="margin-top:8px">
-          <a href="${waUrl("Hola, quisiera ver el menú de la cafetería")}" target="_blank"
-             style="color:#f97316;font-weight:700">Consultar por WhatsApp →</a>
-        </p>
-      </div>`;
+async function loadCafe(){
+  try{
+    const r=await fetch(`${CONFIG.API_BASE}/cafeteria/productos`);
+    const data=await r.json();
+    todosProds=(Array.isArray(data)?data:[]).filter(p=>p.stock>0);
+    buildTabs();renderGrid("TODOS");
+  }catch{
+    document.getElementById("cafe-grid-wrap").innerHTML=`<div class="cafe-empty"><div style="font-size:40px;margin-bottom:12px">☕</div><p style="font-weight:600;color:var(--muted)">Menú no disponible en este momento.</p><p style="margin-top:8px"><a href="${waUrl('Hola, quisiera ver el menú de la cafetería')}" target="_blank" style="color:var(--orange);font-weight:700">Consultar por WhatsApp →</a></p></div>`;
   }
 }
 
-function buildTabs() {
-  const cats  = [...new Set(todosProds.map(p => p.categoria||"General"))].sort();
-  const tabsEl = document.getElementById("cafe-tabs");
-  tabsEl.innerHTML =
-    `<button class="cafe-tab active" data-cat="TODOS" onclick="filtrar('TODOS')">🍽️ Todo el Menú</button>` +
-    cats.map(c => `<button class="cafe-tab" data-cat="${c}" onclick="filtrar('${c}')">${c}</button>`).join("");
+function buildTabs(){
+  const cats=[...new Set(todosProds.map(p=>p.categoria||"General"))].sort();
+  document.getElementById("cafe-tabs").innerHTML=
+    `<button class="cafe-tab active" data-cat="TODOS" onclick="filtrar('TODOS')">🍽️ Todo el Menú</button>`+
+    cats.map(c=>`<button class="cafe-tab" data-cat="${c}" onclick="filtrar('${c}')">${c}</button>`).join("");
 }
 
-function filtrar(cat) {
-  catActiva = cat;
-  document.querySelectorAll(".cafe-tab").forEach(b => b.classList.toggle("active", b.dataset.cat === cat));
+function filtrar(cat){
+  catActiva=cat;
+  document.querySelectorAll(".cafe-tab").forEach(b=>b.classList.toggle("active",b.dataset.cat===cat));
   renderGrid(cat);
 }
 
-function renderGrid(cat) {
-  const lista = cat === "TODOS" ? todosProds : todosProds.filter(p => (p.categoria||"General") === cat);
-  const wrap  = document.getElementById("cafe-grid-wrap");
-  if (!lista.length) {
-    wrap.innerHTML = `<div class="cafe-empty"><p style="font-size:36px;margin-bottom:8px">🍽️</p><p>No hay productos en esta categoría.</p></div>`;
-    return;
-  }
-  wrap.innerHTML = `<div class="cafe-grid">${lista.map(cardHTML).join("")}</div>`;
+function renderGrid(cat){
+  const lista=cat==="TODOS"?todosProds:todosProds.filter(p=>(p.categoria||"General")===cat);
+  const wrap=document.getElementById("cafe-grid-wrap");
+  if(!lista.length){wrap.innerHTML=`<div class="cafe-empty"><div style="font-size:36px;margin-bottom:8px">🍽️</div><p style="color:var(--muted)">No hay productos en esta categoría.</p></div>`;return;}
+  wrap.innerHTML=`<div class="cafe-grid">${lista.map(cardHTML).join("")}</div>`;
 }
 
-function cardHTML(p) {
-  const img = p.imagen
-    ? `<div class="cafe-img-wrap"><img class="cafe-img" src="${p.imagen}" alt="${p.nombre}" loading="lazy" onerror="this.parentElement.innerHTML='<div class=\\'cafe-placeholder\\'>☕</div>'"/></div>`
-    : `<div class="cafe-placeholder">☕</div>`;
-  return `
-    <div class="cafe-card">
-      ${img}
-      <div class="cafe-body">
-        <div class="cafe-cat">${p.categoria||"General"}</div>
-        <div class="cafe-name">${p.nombre}</div>
-        <div class="cafe-price">RD$ ${Number(p.precio).toLocaleString("es-DO",{minimumFractionDigits:2})}</div>
-      </div>
-    </div>`;
+function cardHTML(p){
+  const img=p.imagen
+    ?`<div class="cafe-img-wrap"><img class="cafe-img" src="${p.imagen}" alt="${p.nombre}" loading="lazy" onerror="this.parentElement.innerHTML='<div class=\\'cafe-placeholder\\'>☕</div>'"/></div>`
+    :`<div class="cafe-placeholder">☕</div>`;
+  return`<div class="cafe-card">${img}<div class="cafe-body"><div class="cafe-cat">${p.categoria||"General"}</div><div class="cafe-name">${p.nombre}</div><div class="cafe-price">RD$ ${Number(p.precio).toLocaleString("es-DO",{minimumFractionDigits:2})}</div></div></div>`;
+}
+
+/* ══ SERVICIOS ACCORDION ════════════════════════════════════════ */
+function toggleSrv(id){
+  const item=document.getElementById(id);
+  const wasOpen=item.classList.contains("open");
+  document.querySelectorAll(".srv-item").forEach(el=>el.classList.remove("open"));
+  if(!wasOpen)item.classList.add("open");
 }
 </script>
 </body>
