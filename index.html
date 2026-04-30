@@ -423,6 +423,7 @@ button{cursor:pointer;font-family:inherit;border:none}
 .rep-cat-badge{font-size:10px;font-weight:700;color:#f87171;text-transform:uppercase;letter-spacing:1px}
 .rep-name{font-size:15px;font-weight:800;color:#f1f5f9;line-height:1.3}
 .rep-desc{font-size:12px;color:var(--muted);line-height:1.55;flex:1}
+.rep-marcas{font-size:11px;color:#94a3b8;line-height:1.4;font-style:italic}
 .rep-footer{display:flex;align-items:center;justify-content:space-between;margin-top:6px}
 .rep-price{font-size:18px;font-weight:900;color:#34d399}
 .rep-stock{font-size:11px;font-weight:700;padding:3px 9px;border-radius:8px}
@@ -1575,15 +1576,17 @@ async function loadRep(){
 }
 
 function buildCatsRep(){
-  // inventario no tiene campo categoría — usamos el prefijo del código si existe
-  const cats=[...new Set(todosRep.map(p=>{
-    if(!p.code) return null;
-    const pref=p.code.split("-")[0];
-    return pref||null;
-  }).filter(Boolean))].sort();
+  // Usar el campo `categoria` real del inventario
+  const CAT_ICON={
+    "Filtros":"🔽","Frenos":"🛑","Suspensión":"🔧","Motor":"⚙️","Eléctrico":"⚡",
+    "Transmisión":"🔄","Enfriamiento":"❄️","Escape":"💨","Lubricantes":"🛢️",
+    "Iluminación":"💡","Correas y Cadenas":"🔗","Inyección":"⛽",
+    "Aceites":"🛢️","Fluidos":"💧","General":"📦","Otro":"🔩"
+  };
+  const cats=[...new Set(todosRep.map(p=>p.categoria||"General"))].sort();
   document.getElementById("rep-cats").innerHTML=
     `<button class="rep-cat active" data-cat="TODOS" onclick="setCatRep('TODOS')">🔩 Todos</button>`+
-    cats.map(c=>`<button class="rep-cat" data-cat="${c}" onclick="setCatRep('${c}')">${c}</button>`).join("");
+    cats.map(c=>`<button class="rep-cat" data-cat="${c}" onclick="setCatRep('${c}')">${CAT_ICON[c]||"🔩"} ${c}</button>`).join("");
 }
 
 function setCatRep(cat){
@@ -1599,9 +1602,14 @@ function filtrarRep(){
 function renderRep(){
   const q=(document.getElementById("rep-search")?.value||"").trim().toLowerCase();
   const lista=todosRep.filter(p=>{
-    const codePref=p.code?p.code.split("-")[0]:"";
-    const matchCat=catRepActiva==="TODOS"||codePref===catRepActiva;
-    const matchQ=!q||p.name.toLowerCase().includes(q)||(p.code||"").toLowerCase().includes(q);
+    const cat=p.categoria||"General";
+    const matchCat=catRepActiva==="TODOS"||cat===catRepActiva;
+    const matchQ=!q||
+      p.name.toLowerCase().includes(q)||
+      (p.code||"").toLowerCase().includes(q)||
+      (p.descripcion||"").toLowerCase().includes(q)||
+      (p.marcas_compatibles||"").toLowerCase().includes(q)||
+      cat.toLowerCase().includes(q);
     return matchCat&&matchQ;
   });
   const wrap=document.getElementById("rep-grid-wrap");
@@ -1613,17 +1621,20 @@ function renderRep(){
 }
 
 function repCardHTML(p){
-  // Campos de tabla inventario: name, price, stock, code
   const img=`<div class="rep-placeholder">🔩</div>`;
   const stockClass=p.stock<=3?"low":"ok";
   const stockLabel=p.stock<=3?`⚠️ Stock: ${p.stock}`:`✅ Disp.: ${p.stock}`;
-  const waMsg=encodeURIComponent(`Hola, me interesa el repuesto: ${p.name} (RD$ ${Number(p.price).toFixed(2)}). ¿Está disponible?`);
+  const cat=p.categoria||"General";
+  const waMsg=encodeURIComponent(`Hola, me interesa el repuesto: ${p.name}${p.code?" ("+p.code+")":""} (RD$ ${Number(p.price).toFixed(2)}). ¿Está disponible?`);
+  const desc=p.descripcion?(p.descripcion.length>70?p.descripcion.substring(0,68)+"…":p.descripcion):"";
+  const marcas=p.marcas_compatibles?`<div class="rep-marcas">🚗 ${p.marcas_compatibles.length>55?p.marcas_compatibles.substring(0,53)+"…":p.marcas_compatibles}</div>`:"";
   return`<div class="rep-card" onclick="window.open('https://wa.me/${CONFIG.WHATSAPP}?text=${waMsg}','_blank')" style="cursor:pointer" title="Consultar por WhatsApp">
     ${img}
     <div class="rep-body">
-      ${p.code?`<div class="rep-cat-badge">Ref: ${p.code}</div>`:`<div class="rep-cat-badge">Repuesto</div>`}
+      <div class="rep-cat-badge">${cat}${p.code?` · ${p.code}`:""}</div>
       <div class="rep-name">${p.name}</div>
-      ${p.code?`<div class="rep-desc">Código: ${p.code}</div>`:""}
+      ${desc?`<div class="rep-desc">${desc}</div>`:""}
+      ${marcas}
       <div class="rep-footer">
         <div class="rep-price">RD$ ${Number(p.price).toLocaleString("es-DO",{minimumFractionDigits:2})}</div>
         <span class="rep-stock ${stockClass}">${stockLabel}</span>
