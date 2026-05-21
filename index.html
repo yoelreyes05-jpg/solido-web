@@ -306,6 +306,50 @@ button{cursor:pointer;font-family:inherit;border:none}
 .cr-costo-box{background:rgba(30,41,59,.8);border-radius:10px;padding:12px;text-align:center}
 .cr-costo-lbl{font-size:10px;color:var(--muted);text-transform:uppercase;letter-spacing:.8px;margin-bottom:4px}
 .cr-costo-val{font-weight:700;font-size:14px;color:#f1f5f9}
+/* ── Avances de Reparación ── */
+.cr-det-avance{display:flex;gap:12px;align-items:flex-start;background:rgba(30,41,59,.6);
+  border:1px solid var(--border);border-radius:10px;padding:10px 14px;margin-bottom:8px}
+.cr-det-avance-date{min-width:90px;font-size:11px;color:var(--muted);padding-top:2px;flex-shrink:0}
+.cr-det-avance-desc{font-size:13px;color:#cbd5e1;line-height:1.6;flex:1}
+.cr-det-avance-tec{font-size:11px;color:#818cf8;font-weight:700;white-space:nowrap;padding-top:2px;flex-shrink:0}
+/* ── Cotización Items ── */
+.cr-cot-items{margin-top:10px}
+.cr-cot-item-row{display:flex;justify-content:space-between;align-items:center;
+  font-size:13px;padding:6px 0;border-bottom:1px solid rgba(148,163,184,.1);color:#cbd5e1}
+.cr-cot-item-row:last-child{border-bottom:none}
+.cr-cot-item-price{font-weight:700;color:#f1f5f9;white-space:nowrap;margin-left:10px}
+/* ── Factura Items ── */
+.cr-fac-table{width:100%;border-collapse:collapse;font-size:12px;margin-top:8px}
+.cr-fac-table th{padding:7px 10px;text-align:left;color:var(--muted);font-weight:700;
+  font-size:11px;background:rgba(15,23,42,.6);border-bottom:1px solid rgba(148,163,184,.12)}
+.cr-fac-table td{padding:7px 10px;color:#cbd5e1;border-bottom:1px solid rgba(148,163,184,.06)}
+.cr-fac-table tr:last-child td{border-bottom:none}
+/* ── QC Checklist ── */
+.cr-qc-checklist{display:flex;flex-wrap:wrap;gap:8px;margin-top:10px}
+.cr-qc-check-item{display:flex;align-items:center;gap:5px;font-size:12px;
+  padding:4px 10px;border-radius:20px;font-weight:600;text-transform:capitalize}
+.cr-qc-ok{background:rgba(16,185,129,.12);color:#6ee7b7;border:1px solid rgba(16,185,129,.25)}
+.cr-qc-fail{background:rgba(239,68,68,.1);color:#fca5a5;border:1px solid rgba(239,68,68,.2)}
+/* ── Timeline de Estados ── */
+.cr-timeline-wrap{display:flex;flex-direction:column;gap:8px}
+.cr-timeline-row{display:flex;gap:12px;align-items:flex-start;font-size:12px}
+.cr-timeline-time{min-width:130px;color:var(--muted);font-size:11px;padding-top:3px;flex-shrink:0}
+.cr-timeline-badges{display:flex;flex-wrap:wrap;gap:6px;align-items:center}
+.cr-timeline-sep{color:rgba(148,163,184,.4);font-size:14px}
+.cr-timeline-user{font-size:11px;color:var(--muted2)}
+.cr-timeline-motivo{font-size:11px;color:#94a3b8;font-style:italic}
+/* ── Fechas del Proceso ── */
+.cr-fechas-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(150px,1fr));gap:10px;margin-top:10px}
+.cr-fecha-box{background:rgba(30,41,59,.7);border:1px solid var(--border);border-radius:10px;padding:10px 12px}
+.cr-fecha-lbl{font-size:10px;color:var(--muted);letter-spacing:.8px;text-transform:uppercase;margin-bottom:4px}
+.cr-fecha-val{font-size:12px;font-weight:700;color:#e2e8f0}
+/* ── Sección de título en detalle ── */
+.cr-det-seccion{font-size:11px;font-weight:700;color:var(--blue3);text-transform:uppercase;
+  letter-spacing:1.2px;margin:18px 0 10px;display:flex;align-items:center;gap:6px}
+.cr-det-total-box{text-align:center;margin-top:14px;padding:14px;
+  background:rgba(16,185,129,.06);border:1px solid rgba(16,185,129,.2);border-radius:12px}
+.cr-det-total-val{font-size:24px;font-weight:900;color:#34d399}
+.cr-det-total-sub{font-size:11px;color:#64748b;margin-top:4px}
 
 /* ══ SERVICIOS PANEL ════════════════════════════════════════════ */
 #panel-servicios{background:linear-gradient(180deg,#040c1a 0%,var(--dark) 100%)}
@@ -1497,18 +1541,157 @@ function verDetalleHist(idx){_histDetalle=_histPerm[idx];renderHistDetalle();}
 function renderHistDetalle(){
   const h=_histDetalle;
   const cont=document.getElementById("cr-tab-content");
+
+  // Helpers
+  const moneda=v=>`RD$ ${Number(v||0).toLocaleString("es-DO",{minimumFractionDigits:2})}`;
+  const fmtF=v=>v?new Date(v).toLocaleDateString("es-DO",{year:"numeric",month:"short",day:"numeric"}):null;
+  const fmtFH=v=>v?new Date(v).toLocaleString("es-DO",{year:"numeric",month:"short",day:"numeric",hour:"2-digit",minute:"2-digit"}):null;
+
+  // Parsear campos JSONB del snapshot
+  const avances=Array.isArray(h.avances_data)?h.avances_data:[];
+  const timeline=Array.isArray(h.timeline_data)?h.timeline_data:[];
+  const cot=(h.cotizacion_data&&typeof h.cotizacion_data==="object"&&!Array.isArray(h.cotizacion_data))?h.cotizacion_data:null;
+  const fac=(h.factura_data&&typeof h.factura_data==="object"&&!Array.isArray(h.factura_data))?h.factura_data:null;
+  const fechas=(h.fechas_proceso&&typeof h.fechas_proceso==="object")?h.fechas_proceso:{};
+  const checklist=(h.checklist_qc&&typeof h.checklist_qc==="object")?h.checklist_qc:{};
+  const cotItems=Array.isArray(cot?.items)?cot.items:(Array.isArray(cot?.items_detalle)?cot.items_detalle:[]);
+  const facItems=Array.isArray(fac?.items)?fac.items:[];
+
+  const ECOL={ENTREGADO:"#10b981",LISTO:"#3b82f6",REPARACION:"#f59e0b",CONTROL_CALIDAD:"#8b5cf6",ESPERANDO_APROBACION:"#f97316",DIAGNOSTICO:"#6366f1",RECIBIDO:"#64748b",CANCELADO:"#ef4444",APROBADO:"#10b981",RECHAZADO:"#ef4444"};
+  const badge=(txt,col)=>`<span style="background:${col||ECOL[txt]||"#64748b"};color:#fff;padding:2px 10px;border-radius:20px;font-size:11px;font-weight:800">${txt}</span>`;
+  const seccion=(ico,titulo)=>`<div class="cr-det-seccion">${ico} ${titulo}</div>`;
+
+  // ── HEADER ──────────────────────────────────────────────────────
+  const headerHTML=`
+    <div class="cr-detalle-header">
+      <div style="font-size:10px;color:#64748b;font-weight:700;letter-spacing:1.5px;text-transform:uppercase;margin-bottom:6px">
+        ${h.fecha_servicio?new Date(h.fecha_servicio).toLocaleDateString("es-DO",{year:"numeric",month:"long",day:"numeric"}):"—"}
+        ${h.numero_orden?` · Orden #${h.numero_orden}`:""}
+      </div>
+      <div style="font-size:20px;font-weight:900;color:#fff">${h.tipo_servicio||"Servicio"}</div>
+      <div style="margin-top:6px;display:flex;flex-wrap:wrap;align-items:center;gap:8px">
+        ${h.tecnico_nombre?`<span style="font-size:13px;color:#94a3b8">👨‍🔧 ${h.tecnico_nombre}</span>`:""}
+        ${badge(h.estado||"ENTREGADO")}
+      </div>
+    </div>`;
+
+  // ── DIAGNÓSTICO ─────────────────────────────────────────────────
+  const hayInsp=h.inspeccion_mecanica||h.inspeccion_electrica||h.inspeccion_electronica;
+  const diagHTML=hayInsp?`
+    ${seccion("🔬","Diagnóstico Técnico")}
+    ${h.diagnostico_general?`<div style="background:rgba(99,102,241,.08);border:1px solid rgba(99,102,241,.2);border-radius:10px;padding:10px 14px;margin-bottom:10px;font-size:13px;color:#a5b4fc;font-weight:600">${h.diagnostico_general}</div>`:""}
+    <div class="cr-det-card" style="display:grid;grid-template-columns:repeat(auto-fill,minmax(200px,1fr));gap:10px;background:none;padding:0;border:none">
+      ${h.inspeccion_mecanica?`<div class="cr-det-card"><div class="cr-det-sub">🔧 Mecánica</div><div class="cr-det-txt">${h.inspeccion_mecanica}</div></div>`:""}
+      ${h.inspeccion_electrica?`<div class="cr-det-card"><div class="cr-det-sub">⚡ Eléctrica</div><div class="cr-det-txt">${h.inspeccion_electrica}</div></div>`:""}
+      ${h.inspeccion_electronica?`<div class="cr-det-card"><div class="cr-det-sub">💻 Escáner</div><div class="cr-det-txt">${h.inspeccion_electronica}</div></div>`:""}
+    </div>
+    ${(h.codigos_falla||h.fallas_identificadas)?`<div class="cr-det-falla" style="margin-top:10px"><div class="cr-det-falla-title">⚠️ Fallas Identificadas</div>${h.codigos_falla?`<div class="cr-det-falla-txt" style="margin-bottom:4px">Códigos: ${h.codigos_falla}</div>`:""}${h.fallas_identificadas?`<div class="cr-det-falla-txt">${h.fallas_identificadas}</div>`:""}</div>`:""}
+    ${h.observaciones?`<div class="cr-det-card" style="margin-top:10px"><div class="cr-det-sub">📝 Observaciones del técnico</div><div class="cr-det-txt" style="white-space:pre-wrap">${h.observaciones}</div></div>`:""}
+  `:"";
+
+  // ── AVANCES DE REPARACIÓN ───────────────────────────────────────
+  const avancesHTML=(avances.length>0||h.trabajos_realizados)?`
+    ${seccion("🛠️","Trabajos Realizados")}
+    ${avances.length>0
+      ?avances.map(a=>`<div class="cr-det-avance"><div class="cr-det-avance-date">${fmtF(a.created_at)||"—"}</div><div class="cr-det-avance-desc">${a.descripcion||""}</div>${a.tecnico_nombre?`<div class="cr-det-avance-tec">👨‍🔧 ${a.tecnico_nombre}</div>`:""}</div>`).join("")
+      :`<div class="cr-det-card"><div class="cr-det-txt" style="white-space:pre-wrap">${h.trabajos_realizados}</div></div>`}
+  `:"";
+
+  // ── COTIZACIÓN ──────────────────────────────────────────────────
+  const cotHTML=cot?`
+    ${seccion("📄","Cotización Aprobada")}
+    <div class="cr-det-card">
+      <div style="display:grid;grid-template-columns:repeat(auto-fill,minmax(150px,1fr));gap:8px;margin-bottom:10px">
+        ${cot.numero?`<div class="cr-costo-box"><div class="cr-costo-lbl">Número</div><div class="cr-costo-val">${cot.numero}</div></div>`:""}
+        ${cot.tiempo_estimado?`<div class="cr-costo-box"><div class="cr-costo-lbl">Tiempo estimado</div><div class="cr-costo-val">${cot.tiempo_estimado}</div></div>`:""}
+        ${cot.mano_obra>0?`<div class="cr-costo-box"><div class="cr-costo-lbl">Mano de Obra</div><div class="cr-costo-val">${moneda(cot.mano_obra)}</div></div>`:""}
+        ${cot.repuestos>0?`<div class="cr-costo-box"><div class="cr-costo-lbl">Repuestos</div><div class="cr-costo-val">${moneda(cot.repuestos)}</div></div>`:""}
+        ${cot.itbis>0?`<div class="cr-costo-box"><div class="cr-costo-lbl">ITBIS</div><div class="cr-costo-val">${moneda(cot.itbis)}</div></div>`:""}
+      </div>
+      ${cotItems.length>0?`<div class="cr-cot-items">${cotItems.map(item=>`<div class="cr-cot-item-row"><span>${item.descripcion||item.nombre||item.concepto||"—"}${Number(item.cantidad)>1?` × ${item.cantidad}`:""}</span><span class="cr-cot-item-price">${moneda(item.precio_unitario||item.precio||item.subtotal)}</span></div>`).join("")}</div>`:""}
+      ${cot.aprobado_at?`<div style="margin-top:10px;font-size:12px;color:#34d399;font-weight:700">✅ Aprobado el ${fmtFH(cot.aprobado_at)}</div>`:""}
+      ${cot.notas?`<div style="margin-top:8px;font-size:12px;color:var(--muted)">${cot.notas}</div>`:""}
+    </div>
+  `:"";
+
+  // ── CONTROL DE CALIDAD ──────────────────────────────────────────
+  const hayQC=h.resultado_qc||h.observaciones_qc||Object.keys(checklist).length>0;
+  const qcHTML=hayQC?`
+    ${seccion("✅","Control de Calidad")}
+    <div class="cr-det-card">
+      ${h.resultado_qc?`<div style="margin-bottom:10px">${badge(h.resultado_qc,h.resultado_qc==="APROBADO"?"#10b981":"#ef4444")}</div>`:""}
+      ${h.observaciones_qc?`<div class="cr-det-txt">${h.observaciones_qc}</div>`:""}
+      ${Object.keys(checklist).length>0?`<div class="cr-qc-checklist">${Object.entries(checklist).map(([k,v])=>`<div class="cr-qc-check-item ${v?"cr-qc-ok":"cr-qc-fail"}">${v?"✅":"❌"} ${k.replace(/_/g," ")}</div>`).join("")}</div>`:""}
+    </div>
+  `:"";
+
+  // ── COSTOS / FACTURA ────────────────────────────────────────────
+  const costoHTML=`
+    ${seccion("💰","Costos del Servicio")}
+    <div class="cr-det-card">
+      <div class="cr-costos-grid">
+        <div class="cr-costo-box"><div class="cr-costo-lbl">Mano de Obra</div><div class="cr-costo-val">${moneda(h.costo_mano_obra)}</div></div>
+        <div class="cr-costo-box"><div class="cr-costo-lbl">Repuestos</div><div class="cr-costo-val">${moneda(h.costo_repuestos)}</div></div>
+        ${fac?.itbis>0?`<div class="cr-costo-box"><div class="cr-costo-lbl">ITBIS</div><div class="cr-costo-val">${moneda(fac.itbis)}</div></div>`:""}
+        ${fac?.metodo_pago?`<div class="cr-costo-box"><div class="cr-costo-lbl">Método de Pago</div><div class="cr-costo-val">${fac.metodo_pago}</div></div>`:""}
+      </div>
+      <div class="cr-det-total-box">
+        <div class="cr-det-total-val">${moneda(h.costo_total)}</div>
+        <div class="cr-det-total-sub">Total del Servicio${(h.ncf||fac?.ncf)?` · 🧾 NCF: ${h.ncf||fac.ncf}`:""}</div>
+      </div>
+    </div>
+    ${fac&&facItems.length>0?`
+      <div class="cr-det-card" style="margin-top:10px">
+        <div class="cr-det-sub" style="margin-bottom:6px">🧾 Detalle de Factura</div>
+        <table class="cr-fac-table">
+          <thead><tr><th>Descripción</th><th>Tipo</th><th style="text-align:center">Cant.</th><th style="text-align:right">Precio</th><th style="text-align:right">Subtotal</th></tr></thead>
+          <tbody>${facItems.map(fi=>`<tr><td>${fi.descripcion||"—"}</td><td style="color:var(--muted)">${fi.tipo||"—"}</td><td style="text-align:center">${fi.cantidad||1}</td><td style="text-align:right">${moneda(fi.precio_unitario)}</td><td style="text-align:right;font-weight:700">${moneda(fi.subtotal)}</td></tr>`).join("")}</tbody>
+        </table>
+      </div>`:""}
+  `;
+
+  // ── LÍNEA DE TIEMPO ─────────────────────────────────────────────
+  const timelineHTML=timeline.length>0?`
+    ${seccion("📅","Línea de Tiempo")}
+    <div class="cr-timeline-wrap">
+      ${timeline.map(t=>`<div class="cr-timeline-row">
+        <div class="cr-timeline-time">${fmtFH(t.created_at)||"—"}</div>
+        <div class="cr-timeline-badges">
+          ${t.estado_anterior?`${badge(t.estado_anterior)}<span class="cr-timeline-sep">→</span>`:""}
+          ${badge(t.estado_nuevo||t.estado)}
+          ${t.usuario_nombre?`<span class="cr-timeline-user">· ${t.usuario_nombre}</span>`:""}
+          ${t.motivo?`<span class="cr-timeline-motivo">"${t.motivo}"</span>`:""}
+        </div>
+      </div>`).join("")}
+    </div>
+  `:"";
+
+  // ── FECHAS DEL PROCESO ──────────────────────────────────────────
+  const fechasDef=[
+    {label:"Recibido",val:fechas.recibido},{label:"Diagnóstico",val:fechas.diagnostico},
+    {label:"Esp. Aprobación",val:fechas.esperando_aprobacion},{label:"Aprobado",val:fechas.aprobacion},
+    {label:"Inicio Reparación",val:fechas.inicio_reparacion},{label:"Control Calidad",val:fechas.control_calidad},
+    {label:"Listo",val:fechas.listo},{label:"Entregado",val:fechas.entrega},
+  ].filter(f=>f.val);
+  const fechasHTML=fechasDef.length>0?`
+    ${seccion("🕐","Fechas del Proceso")}
+    <div class="cr-fechas-grid">
+      ${fechasDef.map(f=>`<div class="cr-fecha-box"><div class="cr-fecha-lbl">${f.label}</div><div class="cr-fecha-val">${fmtFH(f.val)}</div></div>`).join("")}
+    </div>
+  `:"";
+
+  // ── RENDER FINAL ────────────────────────────────────────────────
   cont.innerHTML=`
     <button class="cr-btn-volver" style="width:100%;margin-bottom:14px" onclick="_histDetalle=null;renderTab()">← Volver al historial</button>
-    <div class="cr-detalle-header">
-      <div style="font-size:10px;color:#64748b;font-weight:700;letter-spacing:1.5px;text-transform:uppercase;margin-bottom:6px">${h.fecha_servicio?new Date(h.fecha_servicio).toLocaleDateString("es-DO",{year:"numeric",month:"long",day:"numeric"}):"—"}</div>
-      <div style="font-size:20px;font-weight:900;color:#fff">${h.tipo_servicio||"Servicio"}</div>
-      ${h.tecnico_nombre?`<div style="font-size:13px;color:#94a3b8;margin-top:4px">👨‍🔧 ${h.tecnico_nombre}</div>`:""}
-    </div>
-    ${(h.inspeccion_mecanica||h.inspeccion_electrica||h.inspeccion_electronica)?`<div class="cr-det-card"><div class="cr-det-title">🔍 Inspección Técnica</div>${h.inspeccion_mecanica?`<div class="cr-det-section"><div class="cr-det-sub">🔧 Mecánica</div><div class="cr-det-txt">${h.inspeccion_mecanica}</div></div>`:""}${h.inspeccion_electrica?`<div class="cr-det-section"><div class="cr-det-sub">⚡ Eléctrica</div><div class="cr-det-txt">${h.inspeccion_electrica}</div></div>`:""}${h.inspeccion_electronica?`<div class="cr-det-section"><div class="cr-det-sub">💻 Scanner</div><div class="cr-det-txt">${h.inspeccion_electronica}</div></div>`:""}</div>`:""}
-    ${(h.codigos_falla||h.fallas_identificadas)?`<div class="cr-det-falla"><div class="cr-det-falla-title">⚠️ Fallas Identificadas</div>${h.codigos_falla?`<div class="cr-det-falla-txt" style="margin-bottom:4px">Códigos: ${h.codigos_falla}</div>`:""}${h.fallas_identificadas?`<div class="cr-det-falla-txt">${h.fallas_identificadas}</div>`:""}</div>`:""}
-    ${h.trabajos_realizados?`<div class="cr-det-card"><div class="cr-det-title">🛠️ Trabajos Realizados</div><div class="cr-det-txt" style="white-space:pre-wrap">${h.trabajos_realizados}</div></div>`:""}
-    ${h.observaciones?`<div class="cr-det-card"><div class="cr-det-title">📝 Observaciones</div><div class="cr-det-txt">${h.observaciones}</div></div>`:""}
-    ${h.costo_total>0?`<div class="cr-det-card"><div class="cr-det-title">💰 Costos del Servicio</div><div class="cr-costos-grid"><div class="cr-costo-box"><div class="cr-costo-lbl">Mano de Obra</div><div class="cr-costo-val">RD$ ${Number(h.costo_mano_obra||0).toLocaleString("es-DO",{minimumFractionDigits:2})}</div></div><div class="cr-costo-box"><div class="cr-costo-lbl">Repuestos</div><div class="cr-costo-val">RD$ ${Number(h.costo_repuestos||0).toLocaleString("es-DO",{minimumFractionDigits:2})}</div></div></div><div style="text-align:center;margin-top:14px;font-size:22px;font-weight:900;color:#34d399">Total: RD$ ${Number(h.costo_total).toLocaleString("es-DO",{minimumFractionDigits:2})}</div>${h.ncf?`<div style="font-size:11px;color:#64748b;text-align:center;margin-top:6px">🧾 NCF: ${h.ncf}</div>`:""}</div>`:""}`
+    ${headerHTML}
+    ${diagHTML}
+    ${avancesHTML}
+    ${cotHTML}
+    ${qcHTML}
+    ${costoHTML}
+    ${timelineHTML}
+    ${fechasHTML}
+  `;
 }
 
 function crEmpty(icon,msg,sub){return`<div style="text-align:center;padding:32px 20px;color:#64748b"><div style="font-size:36px;margin-bottom:10px">${icon}</div><div style="font-weight:600;font-size:15px;color:var(--muted)">${msg}</div>${sub?`<div style="font-size:12px;color:#475569;margin-top:6px">${sub}</div>`:""}</div>`}
