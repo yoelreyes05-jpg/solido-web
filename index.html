@@ -343,6 +343,35 @@ button{cursor:pointer;font-family:inherit;border:none}
 .cr-fecha-box{background:rgba(30,41,59,.7);border:1px solid var(--border);border-radius:10px;padding:10px 12px}
 .cr-fecha-lbl{font-size:10px;color:var(--muted);letter-spacing:.8px;text-transform:uppercase;margin-bottom:4px}
 .cr-fecha-val{font-size:12px;font-weight:700;color:#e2e8f0}
+/* ── Inspección vehicular ── */
+.cr-insp-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(140px,1fr));gap:10px;margin-bottom:12px}
+.cr-insp-stat{background:rgba(30,41,59,.7);border:1px solid var(--border);border-radius:10px;padding:10px 14px;text-align:center}
+.cr-insp-stat-lbl{font-size:10px;color:var(--muted);text-transform:uppercase;letter-spacing:.8px;margin-bottom:4px}
+.cr-insp-stat-val{font-size:16px;font-weight:900;color:#f1f5f9}
+.cr-combustible-bar{height:8px;background:rgba(148,163,184,.15);border-radius:4px;overflow:hidden;margin-top:6px}
+.cr-combustible-fill{height:100%;border-radius:4px;transition:width .3s}
+.cr-insp-check-list{display:flex;flex-wrap:wrap;gap:8px;margin-top:8px}
+.cr-insp-check-item{display:flex;align-items:center;gap:5px;font-size:12px;
+  padding:4px 10px;border-radius:20px;font-weight:600}
+.cr-insp-check-ok{background:rgba(16,185,129,.1);color:#6ee7b7;border:1px solid rgba(16,185,129,.2)}
+.cr-insp-check-no{background:rgba(239,68,68,.08);color:#fca5a5;border:1px solid rgba(239,68,68,.15)}
+.cr-insp-exterior-row{display:grid;grid-template-columns:repeat(auto-fill,minmax(180px,1fr));gap:10px;margin-bottom:10px}
+.cr-insp-ext-item{background:rgba(30,41,59,.6);border:1px solid var(--border);border-radius:10px;padding:10px 14px}
+.cr-insp-ext-lbl{font-size:10px;color:var(--muted);text-transform:uppercase;letter-spacing:.8px;margin-bottom:4px}
+.cr-insp-ext-val{font-size:13px;color:#cbd5e1;font-weight:600}
+.cr-insp-zonas{display:flex;flex-wrap:wrap;gap:6px;margin-top:8px}
+.cr-insp-zona-tag{font-size:11px;padding:4px 10px;background:rgba(249,115,22,.1);
+  color:#fb923c;border:1px solid rgba(249,115,22,.2);border-radius:20px;font-weight:600}
+.cr-fotos-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(140px,1fr));gap:10px;margin-top:8px}
+.cr-foto-wrap{border-radius:10px;overflow:hidden;border:1px solid var(--border);
+  background:rgba(15,23,42,.5);aspect-ratio:4/3;display:flex;flex-direction:column}
+.cr-foto-img{width:100%;flex:1;object-fit:cover;display:block}
+.cr-foto-lbl{font-size:10px;text-align:center;padding:4px;color:var(--muted);background:rgba(15,23,42,.8)}
+.cr-firma-wrap{margin-top:10px;border:1px solid var(--border);border-radius:10px;
+  overflow:hidden;max-width:320px;background:rgba(255,255,255,.05)}
+.cr-firma-lbl{font-size:10px;color:var(--muted);padding:6px 10px;
+  background:rgba(15,23,42,.6);text-transform:uppercase;letter-spacing:.8px}
+.cr-firma-img{width:100%;display:block;background:#fff}
 /* ── Sección de título en detalle ── */
 .cr-det-seccion{font-size:11px;font-weight:700;color:var(--blue3);text-transform:uppercase;
   letter-spacing:1.2px;margin:18px 0 10px;display:flex;align-items:center;gap:6px}
@@ -1548,6 +1577,7 @@ function renderHistDetalle(){
   const fmtFH=v=>v?new Date(v).toLocaleString("es-DO",{year:"numeric",month:"short",day:"numeric",hour:"2-digit",minute:"2-digit"}):null;
 
   // Parsear campos JSONB del snapshot
+  const insp=(h.inspeccion_data&&typeof h.inspeccion_data==="object"&&!Array.isArray(h.inspeccion_data))?h.inspeccion_data:null;
   const avances=Array.isArray(h.avances_data)?h.avances_data:[];
   const timeline=Array.isArray(h.timeline_data)?h.timeline_data:[];
   const cot=(h.cotizacion_data&&typeof h.cotizacion_data==="object"&&!Array.isArray(h.cotizacion_data))?h.cotizacion_data:null;
@@ -1574,6 +1604,76 @@ function renderHistDetalle(){
         ${badge(h.estado||"ENTREGADO")}
       </div>
     </div>`;
+
+  // ── INSPECCIÓN VEHICULAR DE RECEPCIÓN ───────────────────────────
+  let inspeccionVehHTML="";
+  if(insp){
+    // Checklist accesorios
+    const checkItems=[
+      {k:"radio_pantalla",l:"Radio / Pantalla"},{k:"tapiceria_ok",l:"Tapicería"},{k:"alfombras_ok",l:"Alfombras"},
+      {k:"luces_ok",l:"Luces"},{k:"bocina_ok",l:"Bocina"},{k:"espejos_ok",l:"Espejos"},
+      {k:"gato_ok",l:"Gato"},{k:"llanta_repuesto_ok",l:"Llanta de repuesto"},
+      {k:"documentos_ok",l:"Documentos"},{k:"herramientas_ok",l:"Herramientas"},
+    ].filter(c=>insp[c.k]!==null&&insp[c.k]!==undefined);
+
+    // Zonas de daño
+    const zonas=Array.isArray(insp.zonas_danio)?insp.zonas_danio:[];
+
+    // Fotos (fotos_slots + fotos adicionales)
+    const fotoSlots=insp.fotos_slots&&typeof insp.fotos_slots==="object"?insp.fotos_slots:{};
+    const fotosSlotArr=Object.entries(fotoSlots)
+      .filter(([,v])=>v)
+      .map(([k,v])=>({data:v,label:k.replace(/_/g," ")}));
+    const fotosExtra=Array.isArray(insp.fotos)?insp.fotos:[];
+    const todasFotos=[...fotosSlotArr,...fotosExtra].slice(0,12);
+
+    // Combustible color
+    const combPct=Number(insp.nivel_combustible||0);
+    const combColor=combPct>=60?"#22c55e":combPct>=30?"#f59e0b":"#ef4444";
+
+    inspeccionVehHTML=`
+      ${seccion("🚗","Inspección de Recepción")}
+      <div class="cr-det-card">
+        ${insp.creado_por_nombre?`<div style="font-size:12px;color:var(--muted);margin-bottom:10px">Recibido por: <b style="color:#94a3b8">${insp.creado_por_nombre}</b>${insp.fecha_recepcion?` · ${fmtFH(insp.fecha_recepcion)}`:" "}</div>`:""}
+
+        <div class="cr-insp-grid">
+          ${insp.km_entrada!=null?`<div class="cr-insp-stat"><div class="cr-insp-stat-lbl">Kilometraje</div><div class="cr-insp-stat-val">${Number(insp.km_entrada).toLocaleString("es-DO")} km</div></div>`:""}
+          ${insp.condicion_general?`<div class="cr-insp-stat"><div class="cr-insp-stat-lbl">Condición general</div><div class="cr-insp-stat-val" style="font-size:13px">${insp.condicion_general}</div></div>`:""}
+          ${insp.nivel_combustible!=null?`<div class="cr-insp-stat"><div class="cr-insp-stat-lbl">Combustible</div><div class="cr-insp-stat-val">${combPct}%</div><div class="cr-combustible-bar"><div class="cr-combustible-fill" style="width:${combPct}%;background:${combColor}"></div></div></div>`:""}
+        </div>
+
+        ${(insp.estado_vidrios||insp.estado_llantas||insp.estado_pintura||insp.rayones||insp.golpes)?`
+        <div style="font-size:11px;font-weight:700;color:var(--muted2);text-transform:uppercase;letter-spacing:.8px;margin-bottom:8px">Condición Exterior</div>
+        <div class="cr-insp-exterior-row">
+          ${insp.estado_vidrios?`<div class="cr-insp-ext-item"><div class="cr-insp-ext-lbl">Vidrios</div><div class="cr-insp-ext-val">${insp.estado_vidrios}</div></div>`:""}
+          ${insp.estado_llantas?`<div class="cr-insp-ext-item"><div class="cr-insp-ext-lbl">Llantas</div><div class="cr-insp-ext-val">${insp.estado_llantas}</div></div>`:""}
+          ${insp.estado_pintura?`<div class="cr-insp-ext-item"><div class="cr-insp-ext-lbl">Pintura</div><div class="cr-insp-ext-val">${insp.estado_pintura}</div></div>`:""}
+          ${insp.rayones?`<div class="cr-insp-ext-item"><div class="cr-insp-ext-lbl">Rayones</div><div class="cr-insp-ext-val">${insp.rayones}</div></div>`:""}
+          ${insp.golpes?`<div class="cr-insp-ext-item"><div class="cr-insp-ext-lbl">Golpes</div><div class="cr-insp-ext-val">${insp.golpes}</div></div>`:""}
+        </div>`:""}
+
+        ${zonas.length>0?`
+        <div style="font-size:11px;font-weight:700;color:#fb923c;text-transform:uppercase;letter-spacing:.8px;margin:10px 0 6px">⚠️ Zonas con Daño Registrado</div>
+        <div class="cr-insp-zonas">${zonas.map(z=>`<span class="cr-insp-zona-tag">📍 ${(z.zona||"").replace(/_/g," ")}${z.tipo?` — ${z.tipo}`:""}</span>`).join("")}</div>`:""}
+
+        ${checkItems.length>0?`
+        <div style="font-size:11px;font-weight:700;color:var(--muted2);text-transform:uppercase;letter-spacing:.8px;margin:12px 0 6px">Accesorios y Estado Interior</div>
+        <div class="cr-insp-check-list">
+          ${checkItems.map(c=>`<div class="cr-insp-check-item ${insp[c.k]?"cr-insp-check-ok":"cr-insp-check-no"}">${insp[c.k]?"✅":"❌"} ${c.l}</div>`).join("")}
+          ${insp.otros_accesorios?`<div class="cr-insp-check-item" style="background:rgba(99,102,241,.1);color:#a5b4fc;border:1px solid rgba(99,102,241,.2)">📦 ${insp.otros_accesorios}</div>`:""}
+        </div>`:""}
+
+        ${insp.observaciones?`<div style="margin-top:12px;font-size:13px;color:#94a3b8;background:rgba(15,23,42,.5);border-radius:8px;padding:10px 12px">${insp.observaciones}</div>`:""}
+
+        ${todasFotos.length>0?`
+        <div style="font-size:11px;font-weight:700;color:var(--muted2);text-transform:uppercase;letter-spacing:.8px;margin:14px 0 6px">📷 Fotos de Recepción</div>
+        <div class="cr-fotos-grid">${todasFotos.map(f=>`<div class="cr-foto-wrap"><img class="cr-foto-img" src="${f.data}" alt="${f.label||""}" loading="lazy" onerror="this.style.display='none'"/><div class="cr-foto-lbl">${f.label||""}</div></div>`).join("")}</div>`:""}
+
+        ${insp.firma_cliente?`
+        <div style="font-size:11px;font-weight:700;color:var(--muted2);text-transform:uppercase;letter-spacing:.8px;margin:14px 0 6px">✍️ Firma del Cliente</div>
+        <div class="cr-firma-wrap"><div class="cr-firma-lbl">Firma registrada al momento de la recepción</div><img class="cr-firma-img" src="${insp.firma_cliente}" alt="Firma del cliente"/></div>`:""}
+      </div>`;
+  }
 
   // ── DIAGNÓSTICO ─────────────────────────────────────────────────
   const hayInsp=h.inspeccion_mecanica||h.inspeccion_electrica||h.inspeccion_electronica;
@@ -1684,6 +1784,7 @@ function renderHistDetalle(){
   cont.innerHTML=`
     <button class="cr-btn-volver" style="width:100%;margin-bottom:14px" onclick="_histDetalle=null;renderTab()">← Volver al historial</button>
     ${headerHTML}
+    ${inspeccionVehHTML}
     ${diagHTML}
     ${avancesHTML}
     ${cotHTML}
