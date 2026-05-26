@@ -1465,7 +1465,7 @@ const ESTADO_INFO = {
 const PASOS       = ["RECIBIDO","DIAGNOSTICO","REPARACION","CONTROL_CALIDAD","LISTO","ENTREGADO"];
 const PASOS_LABEL = ["Recibido","Diagnóstico","Reparación","C. Calidad","Listo","Entregado"];
 
-let _resultado=null,_histPerm=[],_tabActual="ordenes",_histDetalle=null;
+let _resultado=null,_histPerm=[],_tabActual="ordenes",_histDetalle=null,_histDetalleCompleto=null;
 
 function waUrl(msg){return`https://wa.me/${CONFIG.WHATSAPP}?text=${encodeURIComponent(msg||"Hola, me comunico desde la web de Sólido Auto Servicio 👋")}`}
 
@@ -1555,7 +1555,34 @@ function renderTab(){
   }
   if(_tabActual==="diagnosticos"){
     if(!diagnosticos.length){cont.innerHTML=crEmpty("🔬","Sin diagnósticos registrados.");return;}
-    cont.innerHTML=diagnosticos.map(d=>`<div class="cr-diag-card"><div class="cr-diag-tipo">${d.tipo_servicio||"Diagnóstico"}</div><div class="cr-diag-obs">${d.observaciones||d.fallas_identificadas||"Sin observaciones registradas."}</div></div>`).join("");
+    cont.innerHTML=diagnosticos.map(d=>{
+      const info=ESTADO_INFO[d.estado]||ESTADO_INFO.RECIBIDO;
+      const moneda=v=>`RD$ ${Number(v||0).toLocaleString("es-DO",{minimumFractionDigits:2})}`;
+      const moTotal=Number(d.mano_obra||0);
+      const repTotal=Number(d.repuestos||0);
+      const total=moTotal+repTotal||Number(d.total||0);
+      const items=Array.isArray(d.repuestos_items)?d.repuestos_items:[];
+      const mdoLineas=(d.mano_de_obra_detalle||"").split("\n").filter(l=>l.trim());
+      const cerrado=d.terminado;
+      return`<div class="cr-diag-card">
+        <div style="display:flex;justify-content:space-between;align-items:flex-start;margin-bottom:10px">
+          <div class="cr-diag-tipo">${d.tipo_servicio||"Diagnóstico Técnico"}</div>
+          <span style="font-size:11px;font-weight:700;padding:3px 10px;border-radius:20px;background:${cerrado?"rgba(34,197,94,.15)":"rgba(245,158,11,.12)"};color:${cerrado?"#4ade80":"#fbbf24"}">${cerrado?"✅ Cerrado":"⏳ En proceso"}</span>
+        </div>
+        ${d.descripcion||d.hallazgos?`<div class="cr-det-falla" style="margin-bottom:10px"><div class="cr-det-falla-title">🔎 Hallazgos / Diagnóstico</div><div class="cr-det-falla-txt" style="white-space:pre-wrap">${d.descripcion||d.hallazgos}</div></div>`:""}
+        ${d.codigos_falla?`<div style="font-size:12px;color:#fca5a5;margin-bottom:8px">Códigos de falla: <b>${d.codigos_falla}</b></div>`:""}
+        ${mdoLineas.length?`<div style="margin-bottom:10px"><div style="font-size:11px;font-weight:700;color:#34d399;text-transform:uppercase;letter-spacing:.8px;margin-bottom:6px">🔧 Trabajos a Realizar</div>${mdoLineas.map(l=>`<div style="font-size:13px;color:#a7f3d0;margin-bottom:4px;display:flex;gap:7px"><span style="color:#34d399;flex-shrink:0">✓</span><span>${l.trim()}</span></div>`).join("")}</div>`:""}
+        ${items.length?`<div style="margin-bottom:10px"><div style="font-size:11px;font-weight:700;color:var(--muted2);text-transform:uppercase;letter-spacing:.8px;margin-bottom:6px">🔩 Repuestos</div><table class="cr-fac-table"><thead><tr><th>Repuesto</th><th style="text-align:center">Cant.</th><th style="text-align:right">P/U</th><th style="text-align:right">Subtotal</th></tr></thead><tbody>${items.map(r=>`<tr><td>${r.nombre||"—"}</td><td style="text-align:center">${r.cantidad||1}</td><td style="text-align:right">${moneda(r.precio_unitario)}</td><td style="text-align:right;font-weight:700">${moneda(r.subtotal)}</td></tr>`).join("")}</tbody></table></div>`:""}
+        ${total>0?`<div style="background:rgba(52,211,153,.06);border:1px solid rgba(52,211,153,.2);border-radius:10px;padding:12px;display:flex;gap:20px;flex-wrap:wrap;align-items:center">
+          ${moTotal>0?`<div><span style="font-size:11px;color:var(--muted)">Mano de obra:</span> <b style="color:#f1f5f9">${moneda(moTotal)}</b></div>`:""}
+          ${repTotal>0?`<div><span style="font-size:11px;color:var(--muted)">Repuestos:</span> <b style="color:#f1f5f9">${moneda(repTotal)}</b></div>`:""}
+          <div style="margin-left:auto"><span style="font-size:11px;color:#64748b">TOTAL: </span><b style="font-size:18px;color:#34d399">${moneda(total)}</b></div>
+        </div>`:""}
+        ${d.tiempo_estimado?`<div style="font-size:12px;color:var(--muted);margin-top:8px">⏱ Tiempo estimado: ${d.tiempo_estimado}</div>`:""}
+        ${d.notas?`<div style="font-size:12px;color:#fbbf24;background:rgba(245,158,11,.06);border-radius:8px;padding:8px 10px;margin-top:8px">📝 ${d.notas}</div>`:""}
+        <a href="${waUrl("Hola, consulto sobre el diagnóstico de mi vehículo ("+_resultado.vehiculo.placa+")")}" target="_blank" class="cr-btn-wa-card" style="margin-top:12px">💬 Consultar por WhatsApp</a>
+      </div>`;
+    }).join("");
     return;
   }
   if(_tabActual==="historial"){
@@ -1565,7 +1592,21 @@ function renderTab(){
   }
 }
 
-function verDetalleHist(idx){_histDetalle=_histPerm[idx];renderHistDetalle();}
+async function verDetalleHist(idx){
+  const h=_histPerm[idx];
+  _histDetalle=h;
+  _histDetalleCompleto=null;
+  renderHistDetalle(); // render snapshot inmediatamente
+  // Luego carga datos enriquecidos desde el backend
+  try{
+    const esOrdenActiva=typeof h.id==="string"&&h.id.startsWith("orden_");
+    const url=esOrdenActiva
+      ?`${CONFIG.API_BASE}/vehiculo-historial/orden/${h._orden_id}/detalle`
+      :`${CONFIG.API_BASE}/vehiculo-historial/${h.id}/detalle`;
+    const res=await fetch(url);
+    if(res.ok){_histDetalleCompleto=await res.json();renderHistDetalle();}
+  }catch(e){console.warn("Detalle completo no disponible:",e);}
+}
 
 function renderHistDetalle(){
   const h=_histDetalle;
@@ -1576,16 +1617,37 @@ function renderHistDetalle(){
   const fmtF=v=>v?new Date(v).toLocaleDateString("es-DO",{year:"numeric",month:"short",day:"numeric"}):null;
   const fmtFH=v=>v?new Date(v).toLocaleString("es-DO",{year:"numeric",month:"short",day:"numeric",hour:"2-digit",minute:"2-digit"}):null;
 
-  // Parsear campos JSONB del snapshot
-  const insp=(h.inspeccion_data&&typeof h.inspeccion_data==="object"&&!Array.isArray(h.inspeccion_data))?h.inspeccion_data:null;
-  const avances=Array.isArray(h.avances_data)?h.avances_data:[];
+  // Datos en vivo (si ya se cargaron) y snapshot
+  const dc=_histDetalleCompleto||{};
+  const parseArr=v=>{if(Array.isArray(v))return v;if(typeof v==="string"&&v.trim().startsWith("["))try{return JSON.parse(v);}catch{return[];}return[];};
+
+  // Parsear campos JSONB del snapshot — con fallback a datos en vivo
+  const insp=(dc.inspeccion&&typeof dc.inspeccion==="object"?dc.inspeccion:null)||
+             ((h.inspeccion_data&&typeof h.inspeccion_data==="object"&&!Array.isArray(h.inspeccion_data))?h.inspeccion_data:null);
+  const avances=(Array.isArray(dc.avances)&&dc.avances.length?dc.avances:null)||
+                (Array.isArray(h.avances_data)?h.avances_data:[]);
   const timeline=Array.isArray(h.timeline_data)?h.timeline_data:[];
-  const cot=(h.cotizacion_data&&typeof h.cotizacion_data==="object"&&!Array.isArray(h.cotizacion_data))?h.cotizacion_data:null;
+  const cot=(h.cotizacion_data&&typeof h.cotizacion_data==="object"&&!Array.isArray(h.cotizacion_data))?h.cotizacion_data:
+            (dc.cotizacion&&typeof dc.cotizacion==="object"?dc.cotizacion:null);
   const fac=(h.factura_data&&typeof h.factura_data==="object"&&!Array.isArray(h.factura_data))?h.factura_data:null;
   const fechas=(h.fechas_proceso&&typeof h.fechas_proceso==="object")?h.fechas_proceso:{};
   const checklist=(h.checklist_qc&&typeof h.checklist_qc==="object")?h.checklist_qc:{};
-  const cotItems=Array.isArray(cot?.items)?cot.items:(Array.isArray(cot?.items_detalle)?cot.items_detalle:[]);
+  const cotItems=Array.isArray(cot?.items_detalle)&&cot.items_detalle.length?cot.items_detalle:(Array.isArray(cot?.items)?cot.items:[]);
   const facItems=Array.isArray(fac?.items)?fac.items:[];
+
+  // Datos enriquecidos del detalle en vivo
+  const diagLive=dc.diagnostico||null;
+  const hallazgos=diagLive?.descripcion||diagLive?.hallazgos||h.fallas_identificadas||"";
+  const codigosFalla=diagLive?.codigos_falla||h.codigos_falla||"";
+  const manoDeObraDetalle=diagLive?.mano_de_obra_detalle||dc.cotizacion?.mano_de_obra_detalle||cot?.mano_de_obra_detalle||h.mano_de_obra_detalle||"";
+  const trabajosItems=parseArr(diagLive?.trabajos_realizados_items||dc.cotizacion?.trabajos_realizados_items||cot?.trabajos_realizados_items||h.trabajos_realizados_items);
+  const descripcionTrabajo=dc.orden?.descripcion||h.descripcion||h.motivo_entrada||"";
+  const motivoEntrada=h.motivo_entrada||dc.orden?.motivo||"";
+  const clienteNombre=h.cliente_nombre||dc.orden?.cliente_nombre||"";
+  const clienteTelefono=h.cliente_telefono||dc.orden?.cliente_telefono||"";
+  const firmaEntrega=dc.orden?.firma_entrega||h.firma_entrega||"";
+  const usuarioEntrego=dc.orden?.usuario_entrego||h.usuario_entrego||h.tecnico_nombre||"";
+  const fechaEntrega=dc.orden?.fecha_entrega||h.fecha_entrega||(fechas.entrega)||"";
 
   const ECOL={ENTREGADO:"#10b981",LISTO:"#3b82f6",REPARACION:"#f59e0b",CONTROL_CALIDAD:"#8b5cf6",ESPERANDO_APROBACION:"#f97316",DIAGNOSTICO:"#6366f1",RECIBIDO:"#64748b",CANCELADO:"#ef4444",APROBADO:"#10b981",RECHAZADO:"#ef4444"};
   const badge=(txt,col)=>`<span style="background:${col||ECOL[txt]||"#64748b"};color:#fff;padding:2px 10px;border-radius:20px;font-size:11px;font-weight:800">${txt}</span>`;
@@ -1604,6 +1666,16 @@ function renderHistDetalle(){
         ${badge(h.estado||"ENTREGADO")}
       </div>
     </div>`;
+
+  // ── DATOS GENERALES (cliente + motivo) ─────────────────────────
+  const hayDatosGen=clienteNombre||clienteTelefono||motivoEntrada||descripcionTrabajo;
+  const datosGenHTML=hayDatosGen?`
+    ${seccion("📝","Datos del Servicio")}
+    <div class="cr-det-card">
+      ${clienteNombre?`<div class="cr-det-section"><div class="cr-det-sub">Cliente</div><div class="cr-det-txt">${clienteNombre}${clienteTelefono?` · <a href="tel:${clienteTelefono}" style="color:var(--blue3)">${clienteTelefono}</a>`:""}</div></div>`:""}
+      ${motivoEntrada?`<div class="cr-det-section"><div class="cr-det-sub">Motivo de Entrada</div><div class="cr-det-txt">${motivoEntrada}</div></div>`:""}
+      ${descripcionTrabajo&&descripcionTrabajo!==motivoEntrada?`<div class="cr-det-section"><div class="cr-det-sub">Trabajo Solicitado</div><div class="cr-det-txt" style="white-space:pre-wrap;line-height:1.7">${descripcionTrabajo}</div></div>`:""}
+    </div>`:"";
 
   // ── INSPECCIÓN VEHICULAR DE RECEPCIÓN ───────────────────────────
   let inspeccionVehHTML="";
@@ -1676,24 +1748,42 @@ function renderHistDetalle(){
   }
 
   // ── DIAGNÓSTICO ─────────────────────────────────────────────────
-  const hayInsp=h.inspeccion_mecanica||h.inspeccion_electrica||h.inspeccion_electronica;
+  const hayInsp=h.inspeccion_mecanica||h.inspeccion_electrica||h.inspeccion_electronica||hallazgos||codigosFalla;
   const diagHTML=hayInsp?`
     ${seccion("🔬","Diagnóstico Técnico")}
-    ${h.diagnostico_general?`<div style="background:rgba(99,102,241,.08);border:1px solid rgba(99,102,241,.2);border-radius:10px;padding:10px 14px;margin-bottom:10px;font-size:13px;color:#a5b4fc;font-weight:600">${h.diagnostico_general}</div>`:""}
-    <div class="cr-det-card" style="display:grid;grid-template-columns:repeat(auto-fill,minmax(200px,1fr));gap:10px;background:none;padding:0;border:none">
+    ${h.diagnostico_general||diagLive?.diagnostico_general?`<div style="background:rgba(99,102,241,.08);border:1px solid rgba(99,102,241,.2);border-radius:10px;padding:10px 14px;margin-bottom:10px;font-size:13px;color:#a5b4fc;font-weight:600">${h.diagnostico_general||diagLive?.diagnostico_general}</div>`:""}
+    ${(h.inspeccion_mecanica||h.inspeccion_electrica||h.inspeccion_electronica)?`<div class="cr-det-card" style="display:grid;grid-template-columns:repeat(auto-fill,minmax(200px,1fr));gap:10px;background:none;padding:0;border:none">
       ${h.inspeccion_mecanica?`<div class="cr-det-card"><div class="cr-det-sub">🔧 Mecánica</div><div class="cr-det-txt">${h.inspeccion_mecanica}</div></div>`:""}
       ${h.inspeccion_electrica?`<div class="cr-det-card"><div class="cr-det-sub">⚡ Eléctrica</div><div class="cr-det-txt">${h.inspeccion_electrica}</div></div>`:""}
       ${h.inspeccion_electronica?`<div class="cr-det-card"><div class="cr-det-sub">💻 Escáner</div><div class="cr-det-txt">${h.inspeccion_electronica}</div></div>`:""}
-    </div>
-    ${(h.codigos_falla||h.fallas_identificadas)?`<div class="cr-det-falla" style="margin-top:10px"><div class="cr-det-falla-title">⚠️ Fallas Identificadas</div>${h.codigos_falla?`<div class="cr-det-falla-txt" style="margin-bottom:4px">Códigos: ${h.codigos_falla}</div>`:""}${h.fallas_identificadas?`<div class="cr-det-falla-txt">${h.fallas_identificadas}</div>`:""}</div>`:""}
-    ${h.observaciones?`<div class="cr-det-card" style="margin-top:10px"><div class="cr-det-sub">📝 Observaciones del técnico</div><div class="cr-det-txt" style="white-space:pre-wrap">${h.observaciones}</div></div>`:""}
+    </div>`:""}
+    ${(codigosFalla||hallazgos)?`<div class="cr-det-falla" style="margin-top:10px"><div class="cr-det-falla-title">⚠️ Fallas / Hallazgos</div>${codigosFalla?`<div class="cr-det-falla-txt" style="margin-bottom:4px">Códigos: <b>${codigosFalla}</b></div>`:""}${hallazgos?`<div class="cr-det-falla-txt" style="white-space:pre-wrap">${hallazgos}</div>`:""}</div>`:""}
+    ${h.observaciones||diagLive?.observaciones?`<div class="cr-det-card" style="margin-top:10px"><div class="cr-det-sub">📝 Observaciones del técnico</div><div class="cr-det-txt" style="white-space:pre-wrap">${h.observaciones||diagLive?.observaciones}</div></div>`:""}
   `:"";
 
+  // ── MANO DE OBRA DETALLE ────────────────────────────────────────
+  const manoDeObraHTML=manoDeObraDetalle?`
+    ${seccion("🔧","Mano de Obra — Trabajos a Realizar")}
+    <div class="cr-det-card" style="background:rgba(16,185,129,0.05);border-color:rgba(16,185,129,0.2)">
+      ${manoDeObraDetalle.split("\n").filter(l=>l.trim()).map(l=>`<div style="font-size:13px;color:#a7f3d0;margin-bottom:6px;display:flex;align-items:flex-start;gap:8px"><span style="color:#34d399;flex-shrink:0">✓</span><span>${l.trim()}</span></div>`).join("")}
+    </div>`:"";
+
+  // ── TRABAJOS ESTRUCTURADOS ──────────────────────────────────────
+  const trabajosHTML=trabajosItems.length>0?`
+    ${seccion("🛠️","Trabajos Realizados (Detalle)")}
+    <div class="cr-det-card" style="padding:0;overflow:hidden">
+      <table class="cr-fac-table">
+        <thead><tr><th>Trabajo</th><th style="text-align:center">Tipo</th><th style="text-align:center">Estado</th></tr></thead>
+        <tbody>${trabajosItems.map(t=>{const col=t.estado==="REALIZADO"?"#34d399":t.estado==="PENDIENTE"?"#fbbf24":"#94a3b8";return`<tr><td>${t.nombre||t.descripcion||"—"}</td><td style="text-align:center;font-size:11px;color:var(--muted)">${t.tipo||"—"}</td><td style="text-align:center"><span style="background:${col}22;color:${col};padding:2px 9px;border-radius:10px;font-size:11px;font-weight:700">${t.estado||"—"}</span></td></tr>`;}).join("")}</tbody>
+      </table>
+    </div>`:"";
+
   // ── AVANCES DE REPARACIÓN ───────────────────────────────────────
-  const avancesHTML=(avances.length>0||h.trabajos_realizados)?`
-    ${seccion("🛠️","Trabajos Realizados")}
-    ${avances.length>0
-      ?avances.map(a=>`<div class="cr-det-avance"><div class="cr-det-avance-date">${fmtF(a.created_at)||"—"}</div><div class="cr-det-avance-desc">${a.descripcion||""}</div>${a.tecnico_nombre?`<div class="cr-det-avance-tec">👨‍🔧 ${a.tecnico_nombre}</div>`:""}</div>`).join("")
+  const avancesArr=Array.isArray(avances)?avances:[];
+  const avancesHTML=(avancesArr.length>0||h.trabajos_realizados)?`
+    ${seccion("📋","Avances de Reparación")}
+    ${avancesArr.length>0
+      ?avancesArr.map(a=>`<div class="cr-det-avance"><div class="cr-det-avance-date">${fmtF(a.created_at)||"—"}</div><div class="cr-det-avance-desc">${a.descripcion||""}</div>${a.tecnico_nombre?`<div class="cr-det-avance-tec">👨‍🔧 ${a.tecnico_nombre}</div>`:""}</div>`).join("")
       :`<div class="cr-det-card"><div class="cr-det-txt" style="white-space:pre-wrap">${h.trabajos_realizados}</div></div>`}
   `:"";
 
@@ -1780,16 +1870,34 @@ function renderHistDetalle(){
     </div>
   `:"";
 
-  // ── RENDER FINAL ────────────────────────────────────────────────
+  // ── FIRMA DE ENTREGA ─────────────────────────────────────────
+  const hayEntrega=firmaEntrega||usuarioEntrego||fechaEntrega;
+  const entregaHTML=hayEntrega?`
+    ${seccion("🚗","Entrega del Vehículo")}
+    <div class="cr-det-card">
+      ${usuarioEntrego?`<div class="cr-det-section"><div class="cr-det-sub">Entregado por</div><div class="cr-det-txt">👨‍🔧 ${usuarioEntrego}</div></div>`:""}
+      ${fechaEntrega?`<div class="cr-det-section"><div class="cr-det-sub">Fecha de entrega</div><div class="cr-det-txt">${fmtFH(fechaEntrega)}</div></div>`:""}
+      ${firmaEntrega?`<div style="margin-top:12px"><div style="font-size:11px;font-weight:700;color:var(--muted2);text-transform:uppercase;letter-spacing:.8px;margin-bottom:6px">✍️ Firma de conformidad del cliente</div><div class="cr-firma-wrap"><div class="cr-firma-lbl">Firmado al momento de la entrega</div><img class="cr-firma-img" src="${firmaEntrega}" alt="Firma de entrega"/></div></div>`:""}
+    </div>`:"";
+
+  // ── CARGANDO EN VIVO ─────────────────────────────────────────
+  const cargandoLive=!_histDetalleCompleto?`<div style="text-align:center;padding:8px;font-size:11px;color:#475569">⧖ Cargando datos completos…</div>`:"";
+
+  // ── RENDER FINAL ─────────────────────────────────────────────
   cont.innerHTML=`
-    <button class="cr-btn-volver" style="width:100%;margin-bottom:14px" onclick="_histDetalle=null;renderTab()">← Volver al historial</button>
+    <button class="cr-btn-volver" style="width:100%;margin-bottom:14px" onclick="_histDetalle=null;_histDetalleCompleto=null;renderTab()">← Volver al historial</button>
+    ${cargandoLive}
     ${headerHTML}
+    ${datosGenHTML}
     ${inspeccionVehHTML}
     ${diagHTML}
+    ${manoDeObraHTML}
+    ${trabajosHTML}
     ${avancesHTML}
     ${cotHTML}
     ${qcHTML}
     ${costoHTML}
+    ${entregaHTML}
     ${timelineHTML}
     ${fechasHTML}
   `;
@@ -1797,11 +1905,11 @@ function renderHistDetalle(){
 
 function crEmpty(icon,msg,sub){return`<div style="text-align:center;padding:32px 20px;color:#64748b"><div style="font-size:36px;margin-bottom:10px">${icon}</div><div style="font-weight:600;font-size:15px;color:var(--muted)">${msg}</div>${sub?`<div style="font-size:12px;color:#475569;margin-top:6px">${sub}</div>`:""}</div>`}
 
-function limpiarResultado(){_resultado=null;_histPerm=[];_histDetalle=null;document.getElementById("resultado").innerHTML="";document.getElementById("placa-input").value="";}
+function limpiarResultado(){_resultado=null;_histPerm=[];_histDetalle=null;_histDetalleCompleto=null;document.getElementById("resultado").innerHTML="";document.getElementById("placa-input").value="";}
 
 function showErr(msg){document.getElementById("resultado").innerHTML=`<div class="consulta-error"><span style="font-size:22px;flex-shrink:0">⚠️</span><div>${msg}<br><br><a href="${waUrl()}" target="_blank" style="color:#93c5fd;font-weight:700">💬 Contáctanos por WhatsApp</a></div></div>`}
 
-/* ══ CAFETERÍA ══════════════════════════════════════════════════ */
+/* ══ CAFETERÍA ══ */
 let todosProds=[],catActiva="TODOS";
 
 async function loadCafe(){
@@ -1837,20 +1945,18 @@ function renderGrid(cat){
 
 function cardHTML(p){
   const img=p.imagen
-    ?`<div class="cafe-img-wrap"><img class="cafe-img" src="${p.imagen}" alt="${p.nombre}" loading="lazy" onerror="this.parentElement.innerHTML='<div class=\\'cafe-placeholder\\'>☕</div>'"/></div>`
+    ?`<div class="cafe-img-wrap"><img class="cafe-img" src="${p.imagen}" alt="${p.nombre}" loading="lazy" onerror="this.parentElement.innerHTML='<div class=\'cafe-placeholder\'>☕</div>'"/></div>`
     :`<div class="cafe-placeholder">☕</div>`;
   return`<div class="cafe-card">${img}<div class="cafe-body"><div class="cafe-cat">${p.categoria||"General"}</div><div class="cafe-name">${p.nombre}</div><div class="cafe-price">RD$ ${Number(p.precio).toLocaleString("es-DO",{minimumFractionDigits:2})}</div></div></div>`;
 }
 
-/* ══ REPUESTOS ══════════════════════════════════════════════════ */
-// Usa el endpoint /inventario (ya desplegado) — campos: name, price, stock, code
+/* ══ REPUESTOS ══ */
 let todosRep=[],catRepActiva="TODOS";
 
 async function loadRep(){
   try{
     const r=await fetch(`${CONFIG.API_BASE}/inventario`);
     const data=await r.json();
-    // Solo mostrar items con stock disponible
     todosRep=(Array.isArray(data)?data:[]).filter(p=>Number(p.stock)>0);
     buildCatsRep();
     renderRep();
@@ -1860,13 +1966,7 @@ async function loadRep(){
 }
 
 function buildCatsRep(){
-  // Usar el campo `categoria` real del inventario
-  const CAT_ICON={
-    "Filtros":"🔽","Frenos":"🛑","Suspensión":"🔧","Motor":"⚙️","Eléctrico":"⚡",
-    "Transmisión":"🔄","Enfriamiento":"❄️","Escape":"💨","Lubricantes":"🛢️",
-    "Iluminación":"💡","Correas y Cadenas":"🔗","Inyección":"⛽",
-    "Aceites":"🛢️","Fluidos":"💧","General":"📦","Otro":"🔩"
-  };
+  const CAT_ICON={"Filtros":"🔽","Frenos":"🛑","Suspensión":"🔧","Motor":"⚙️","Eléctrico":"⚡","Transmisión":"🔄","Enfriamiento":"❄️","Escape":"💨","Lubricantes":"🛢️","Iluminación":"💡","Correas y Cadenas":"🔗","Inyección":"⛽","Aceites":"🛢️","Fluidos":"💧","General":"📦","Otro":"🔩"};
   const cats=[...new Set(todosRep.map(p=>p.categoria||"General"))].sort();
   document.getElementById("rep-cats").innerHTML=
     `<button class="rep-cat active" data-cat="TODOS" onclick="setCatRep('TODOS')">🔩 Todos</button>`+
@@ -1927,7 +2027,7 @@ function repCardHTML(p){
   </div>`;
 }
 
-/* ══ SERVICIOS ACCORDION ════════════════════════════════════════ */
+/* ══ SERVICIOS ACCORDION ══ */
 function toggleSrv(id){
   const item=document.getElementById(id);
   const wasOpen=item.classList.contains("open");
