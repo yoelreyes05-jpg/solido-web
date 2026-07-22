@@ -4,32 +4,32 @@
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1" />
   <meta name="description" content="Conoce a Sólido Auto Servicio — Misión, Visión, Valores y nuestros servicios automotrices en Santo Domingo." />
-  <meta name="theme-color" content="#ffffff" />
+  <meta name="theme-color" content="#0f172a" />
   <title>Nosotros — Sólido Auto Servicio</title>
 
   <style>
     /* ── Reset & Variables ──────────────────────────────────────── */
     *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
     :root {
-      --blue:    #2563eb;
+      --blue:    #3b82f6;
       --blue2:   #1d4ed8;
-      --blue3:   #2563eb;
+      --blue3:   #60a5fa;
       --orange:  #f97316;
       --orange2: #ea580c;
-      --dark:    #ffffff;
-      --dark2:   #e8eef7;
-      --dark3:   #f1f5f9;
-      --dark4:   #f5f8fc;
-      --glass:   rgba(255,255,255,0.85);
-      --glass2:  rgba(255,255,255,0.9);
+      --dark:    #0f172a;
+      --dark2:   #1e293b;
+      --dark3:   #111827;
+      --dark4:   #0a1120;
+      --glass:   rgba(30,41,59,0.7);
+      --glass2:  rgba(15,23,42,0.85);
       --glow:    rgba(59,130,246,0.15);
       --glow2:   rgba(249,115,22,0.12);
-      --white:   #0f172a;
-      --muted:   #64748b;
-      --muted2:  #7688a0;
-      --border:  rgba(37,99,235,0.15);
-      --border2: rgba(59,130,246,0.28);
-      --green:   #059669;
+      --white:   #ffffff;
+      --muted:   #94a3b8;
+      --muted2:  #64748b;
+      --border:  rgba(148,163,184,0.12);
+      --border2: rgba(59,130,246,0.25);
+      --green:   #22c55e;
       --radius:  16px;
       --radius2: 24px;
     }
@@ -97,7 +97,7 @@
       padding: 0 20px; transition: all 0.3s;
     }
     #nav.scrolled {
-      background: rgba(248,250,253,0.97);
+      background: rgba(10,17,32,0.97);
       backdrop-filter: blur(16px);
       box-shadow: 0 2px 30px rgba(0,0,0,0.4), 0 1px 0 rgba(59,130,246,0.15);
     }
@@ -116,7 +116,7 @@
     }
     .nav-logo-icon img { width: 100%; height: 100%; object-fit: contain; }
     .nav-logo-text strong { display: block; font-size: 14px; font-weight: 900; color: #fff; letter-spacing: 0.3px; }
-    .nav-logo-text span  { display: block; font-size: 10px; color: #2563eb; letter-spacing: 1.5px; font-weight: 600; }
+    .nav-logo-text span  { display: block; font-size: 10px; color: #93c5fd; letter-spacing: 1.5px; font-weight: 600; }
     .nav-links { display: flex; align-items: center; gap: 2px; }
     .nav-links a {
       padding: 7px 13px; border-radius: 8px;
@@ -140,7 +140,7 @@
     .hamburger span { display: block; width: 24px; height: 2px; background: #fff; border-radius: 2px; }
     .nav-mobile {
       display: none; flex-direction: column; gap: 4px;
-      background: rgba(248,250,253,0.98); padding: 14px 20px;
+      background: rgba(10,17,32,0.98); padding: 14px 20px;
       border-top: 1px solid rgba(255,255,255,0.06);
     }
     .nav-mobile.open { display: flex; }
@@ -156,7 +156,7 @@
     ══════════════════════════════════════════════════════════════ */
     #hero {
       min-height: 100vh;
-      background: linear-gradient(135deg, #eaf2fd 0%, #dbe8fb 45%, #eaf2fd 100%);
+      background: linear-gradient(135deg, #040c1a 0%, #0c1f3d 45%, #040c1a 100%);
       display: flex; align-items: center;
       position: relative; overflow: hidden;
       padding-top: 80px;
@@ -186,7 +186,7 @@
     .hero-h1 {
       font-size: clamp(40px, 7vw, 80px);
       font-weight: 900; line-height: 1.05; margin-bottom: 10px;
-      background: linear-gradient(135deg, #0f2350 15%, #1d4ed8 60%, #2563eb 100%);
+      background: linear-gradient(135deg, #fff 30%, #93c5fd 70%, #60a5fa 100%);
       -webkit-background-clip: text; -webkit-text-fill-color: transparent; background-clip: text;
     }
     .hero-h1 span {
@@ -198,7 +198,7 @@
       color: var(--muted); max-width: 580px;
       line-height: 1.8; margin: 20px 0 36px;
     }
-    .hero-desc strong { color: #334155; }
+    .hero-desc strong { color: #cbd5e1; }
     .hero-stats {
       display: flex; gap: 36px; flex-wrap: wrap; margin-top: 44px;
       padding-top: 44px; border-top: 1px solid rgba(255,255,255,0.07);
@@ -212,7 +212,7 @@
     .img-placeholder {
       border: 2px dashed rgba(59,130,246,0.3);
       border-radius: var(--radius2);
-      background: rgba(237,242,252,0.4);
+      background: rgba(30,41,59,0.4);
       display: flex; flex-direction: column;
       align-items: center; justify-content: center; gap: 12px;
       color: var(--muted2); font-size: 13px; font-weight: 600;
@@ -235,7 +235,7 @@
        SECTION BASE
     ══════════════════════════════════════════════════════════════ */
     section { padding: 96px 0; }
-    section.alt { background: rgba(248,250,253,0.6); }
+    section.alt { background: rgba(10,17,32,0.6); }
     .section-head { margin-bottom: 64px; }
 
     /* ══════════════════════════════════════════════════════════════
@@ -289,7 +289,7 @@
        ACRÓNIMO SÓLIDO
     ══════════════════════════════════════════════════════════════ */
     #acronimo {
-      background: linear-gradient(180deg, var(--dark) 0%, #eaf2fd 100%);
+      background: linear-gradient(180deg, var(--dark) 0%, #060e1e 100%);
       position: relative; overflow: hidden;
     }
     #acronimo .grid-bg { opacity: 0.6; }
@@ -332,14 +332,14 @@
     /* ══════════════════════════════════════════════════════════════
        VALORES
     ══════════════════════════════════════════════════════════════ */
-    #valores { background: rgba(248,250,253,0.5); }
+    #valores { background: rgba(10,17,32,0.5); }
     .valores-grid {
       display: flex; flex-wrap: wrap; gap: 12px;
       justify-content: center;
     }
     .val-chip {
       display: flex; align-items: center; gap: 10px;
-      background: rgba(237,242,252,0.8);
+      background: rgba(30,41,59,0.8);
       border: 1px solid rgba(148,163,184,0.1);
       border-radius: 50px;
       padding: 12px 22px;
@@ -359,7 +359,7 @@
        OBJETIVOS
     ══════════════════════════════════════════════════════════════ */
     #objetivos {
-      background: linear-gradient(180deg, #eaf2fd 0%, var(--dark) 100%);
+      background: linear-gradient(180deg, #060e1e 0%, var(--dark) 100%);
     }
     .obj-grid {
       display: grid; grid-template-columns: repeat(2, 1fr); gap: 16px;
@@ -380,13 +380,13 @@
       font-size: 15px; font-weight: 900; color: var(--blue3);
       border: 1px solid rgba(59,130,246,0.3);
     }
-    .obj-text { font-size: 14px; color: #334155; line-height: 1.7; padding-top: 8px; }
+    .obj-text { font-size: 14px; color: #cbd5e1; line-height: 1.7; padding-top: 8px; }
 
     /* ══════════════════════════════════════════════════════════════
        PROCEDIMIENTO
     ══════════════════════════════════════════════════════════════ */
     #procedimiento {
-      background: linear-gradient(180deg, var(--dark) 0%, #eaf2fd 100%);
+      background: linear-gradient(180deg, var(--dark) 0%, #040c1a 100%);
       position: relative; overflow: hidden;
     }
     .proc-timeline { position: relative; max-width: 860px; margin: 0 auto; }
@@ -446,13 +446,13 @@
        SERVICIOS (ACORDEÓN)
     ══════════════════════════════════════════════════════════════ */
     #servicios {
-      background: linear-gradient(180deg, #eaf2fd 0%, var(--dark) 100%);
+      background: linear-gradient(180deg, #040c1a 0%, var(--dark) 100%);
     }
     .srv-grid {
       display: flex; flex-direction: column; gap: 12px;
     }
     .srv-item {
-      background: rgba(237,242,252,0.8);
+      background: rgba(20,32,54,0.8);
       border: 1px solid var(--border);
       border-radius: var(--radius);
       overflow: hidden;
@@ -475,7 +475,7 @@
       width: 48px; height: 48px; border-radius: 14px; flex-shrink: 0;
       display: flex; align-items: center; justify-content: center;
       font-size: 22px;
-      background: rgba(237,242,252,0.8);
+      background: rgba(30,41,59,0.8);
       border: 1px solid rgba(148,163,184,0.1);
       transition: all 0.3s;
     }
@@ -485,7 +485,7 @@
       box-shadow: 0 4px 16px rgba(37,99,235,0.2);
     }
     .srv-title-block { flex: 1; }
-    .srv-title { font-size: 17px; font-weight: 800; color: #0f172a; }
+    .srv-title { font-size: 17px; font-weight: 800; color: #f1f5f9; }
     .srv-subtitle { font-size: 13px; color: var(--muted2); margin-top: 2px; }
     .srv-arrow {
       width: 32px; height: 32px; border-radius: 8px; flex-shrink: 0;
@@ -526,7 +526,7 @@
       border: 1px solid rgba(59,130,246,0.2);
       border-radius: 10px;
       padding: 10px 14px;
-      font-size: 13px; color: #334155; font-weight: 600;
+      font-size: 13px; color: #cbd5e1; font-weight: 600;
       display: flex; align-items: center; gap: 8px;
     }
     /* Service image placeholder */
@@ -536,7 +536,7 @@
        CTA STRIP
     ══════════════════════════════════════════════════════════════ */
     #cta {
-      background: linear-gradient(135deg, #dbe8fb 0%, #eaf2fd 50%, #dbe8fb 100%);
+      background: linear-gradient(135deg, #0c1f3d 0%, #060e1e 50%, #0c1f3d 100%);
       padding: 80px 0; text-align: center; position: relative; overflow: hidden;
     }
     #cta .grid-bg { opacity: 0.4; }
@@ -649,32 +649,6 @@
       .srv-icon-wrap { width: 40px; height: 40px; font-size: 18px; border-radius: 10px; }
       .footer-inner { flex-direction: column; align-items: flex-start; }
     }
-
-    /* ══ AJUSTES TEMA CLARO ═════════════════════════════════════════ */
-    #nav.scrolled { box-shadow: 0 2px 24px rgba(15,23,42,0.08), 0 1px 0 rgba(37,99,235,0.12); }
-    .nav-logo-icon { background: rgba(37,99,235,0.06); }
-    .nav-logo-text strong { color: #0f172a; }
-    .nav-logo-text span { color: #2563eb; }
-    .nav-links a { color: rgba(15,23,42,0.62); }
-    .nav-links a:hover, .nav-links a.active { color: #0f172a; background: rgba(37,99,235,0.07); }
-    .nav-links a.active { color: #2563eb; }
-    .hamburger span { background: #0f172a; }
-    .nav-mobile { border-top-color: rgba(15,23,42,0.08); }
-    .nav-mobile a { color: rgba(15,23,42,0.8); }
-    .nav-mobile a:hover { background: rgba(37,99,235,0.07); }
-    .hero-desc strong { color: #1e293b; }
-    .hero-stats { border-top-color: rgba(15,23,42,0.1); }
-    .acr-word { color: #0f172a; }
-    .acr-num { color: rgba(15,23,42,0.045); }
-    .proc-body h4 { color: #0f172a; }
-    .srv-header { color: #0f172a; }
-    .srv-header:hover { background: rgba(37,99,235,0.05); }
-    .srv-arrow { background: rgba(15,23,42,0.04); border-color: rgba(15,23,42,0.08); }
-    .srv-body { border-top-color: rgba(15,23,42,0.06); }
-    footer { border-top-color: rgba(15,23,42,0.08); }
-    .footer-brand strong { color: #0f172a; }
-    .footer-links a:hover { color: #0f172a; background: rgba(37,99,235,0.07); }
-    .footer-copy { border-top-color: rgba(15,23,42,0.06); }
   </style>
 </head>
 <body>
@@ -688,7 +662,7 @@
       </div>
       <div class="nav-logo-text">
         <strong>SÓLIDO AUTO</strong>
-        <span>SERVICIO</span>
+        <span>SERVICIO &amp; CAFÉ</span>
       </div>
     </a>
     <div class="nav-links">
@@ -709,9 +683,9 @@
     <a href="index.html#servicios"  onclick="closeMob()">🔧 Servicios</a>
     <a href="index.html#consulta"   onclick="closeMob()">🚗 Mi Vehículo</a>
     <a href="index.html#cafeteria"  onclick="closeMob()">☕ Cafetería</a>
-    <a href="nosotros.html"         onclick="closeMob()" style="color:#2563eb">🏢 Nosotros</a>
+    <a href="nosotros.html"         onclick="closeMob()" style="color:#93c5fd">🏢 Nosotros</a>
     <a href="index.html#contacto"   onclick="closeMob()">📍 Contacto</a>
-    <a href="https://wa.me/18495692027" target="_blank" rel="noopener" onclick="closeMob()" style="color:#15803d">💬 WhatsApp</a>
+    <a href="https://wa.me/18495692027" target="_blank" rel="noopener" onclick="closeMob()" style="color:#4ade80">💬 WhatsApp</a>
   </div>
 </nav>
 
