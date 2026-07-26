@@ -1473,6 +1473,11 @@ function showPortal(id) {
   if (panel) panel.classList.add("active");
   // Portal tabs
   document.querySelectorAll(".ptab").forEach(t => t.classList.toggle("active", t.dataset.portal === id));
+  // Llevar la vista al tope INMEDIATAMENTE, para que el contenido de la pestaña
+  // siempre se muestre desde arriba (antes de inyectar el sub-menú o cargar datos del CRM).
+  window.scrollTo(0, 0);
+  document.documentElement.scrollTop = 0;
+  document.body.scrollTop = 0;
   // Sub-nav
   const subs = PORTAL_SUBS[id] || [];
   const subNav = document.getElementById("sub-nav");
@@ -1487,8 +1492,6 @@ function showPortal(id) {
     subNav.innerHTML = "";
     subNav.classList.remove("visible");
   }
-  // Scroll to top
-  window.scrollTo({top:0, behavior:"smooth"});
   // Datos en vivo desde el CRM: se recargan cada vez que se abre la pestaña
   if (id === "cafeteria")  loadCafe();
   if (id === "repuestos")  loadRep();
