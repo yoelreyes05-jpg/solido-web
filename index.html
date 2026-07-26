@@ -717,6 +717,7 @@ footer{border-top-color:rgba(15,23,42,.08)}
     </a>
     <div class="portal-tabs">
       <button class="ptab" data-portal="clientes"      onclick="showPortal('clientes')">CLIENTES</button>
+      <button class="ptab" data-portal="citas"         onclick="showPortal('citas')">AGENDAR CITA</button>
       <button class="ptab" data-portal="servicios"     onclick="showPortal('servicios')">SERVICIOS</button>
       <button class="ptab" data-portal="procedimiento" onclick="showPortal('procedimiento')">PROCEDIMIENTO</button>
       <button class="ptab" data-portal="cafeteria"     onclick="showPortal('cafeteria')">CAFETERÍA</button>
@@ -741,6 +742,7 @@ footer{border-top-color:rgba(15,23,42,.08)}
   <div id="nav-mobile">
     <a href="#" onclick="showPortal('home');closeMob();return false">🏠 Inicio</a>
     <a href="#" onclick="showPortal('clientes');closeMob();return false">🚗 Clientes</a>
+    <a href="#" onclick="showPortal('citas');closeMob();return false">📅 Agendar Cita</a>
     <a href="#" onclick="showPortal('servicios');closeMob();return false">🔧 Servicios</a>
     <a href="#" onclick="showPortal('procedimiento');closeMob();return false">⚙️ Procedimiento</a>
     <a href="#" onclick="showPortal('cafeteria');closeMob();return false">☕ Cafetería</a>
@@ -778,6 +780,11 @@ footer{border-top-color:rgba(15,23,42,.08)}
         <span class="pcard-icon">🚗</span>
         <div class="pcard-name">Clientes</div>
         <div class="pcard-desc">Consulta el estado de tu vehículo</div>
+      </div>
+      <div class="pcard" onclick="showPortal('citas')">
+        <span class="pcard-icon">📅</span>
+        <div class="pcard-name">Agendar Cita</div>
+        <div class="pcard-desc">Reserva tu cita en línea</div>
       </div>
       <div class="pcard" onclick="showPortal('servicios')">
         <span class="pcard-icon">🔧</span>
@@ -858,6 +865,111 @@ footer{border-top-color:rgba(15,23,42,.08)}
             <div style="font-size:13px;color:var(--muted);line-height:1.6">Escríbenos por WhatsApp directamente desde tu resultado.</div>
           </div>
         </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ══════════════════════════════════════════════════════════════
+     PANEL: AGENDAR CITA
+══════════════════════════════════════════════════════════════════ -->
+<section id="panel-citas" class="panel">
+  <div class="panel-section">
+    <div class="container">
+      <div class="badge-pill" style="margin-bottom:16px">📅 Agendar Cita</div>
+      <h2 class="panel-title">Reserva tu <span style="color:var(--blue3)">Cita</span> en línea</h2>
+      <p class="panel-sub">Completa el formulario y recibirás un correo de confirmación. Nuestro equipo se comunicará contigo para confirmar la fecha.</p>
+
+      <style>
+        .cita-form{max-width:640px;background:#fff;border:1px solid var(--border);border-radius:18px;padding:26px;box-shadow:0 10px 40px rgba(15,23,42,.06)}
+        .cita-grid{display:grid;grid-template-columns:1fr 1fr;gap:16px}
+        .cita-field{display:flex;flex-direction:column;gap:6px}
+        .cita-field.full{grid-column:1 / -1}
+        .cita-field label{font-size:13px;font-weight:700;color:var(--muted)}
+        .cita-field label .req{color:#dc2626}
+        .cita-field input,.cita-field select,.cita-field textarea{
+          padding:12px 14px;border:1px solid var(--border);border-radius:11px;font-size:15px;
+          background:#f8fafc;color:#0f172a;font-family:inherit;width:100%;box-sizing:border-box;transition:border-color .15s,background .15s}
+        .cita-field input:focus,.cita-field select:focus,.cita-field textarea:focus{
+          outline:none;border-color:var(--blue3);background:#fff}
+        .cita-submit{margin-top:20px;width:100%;padding:15px;border:none;border-radius:12px;
+          background:var(--blue3);color:#fff;font-size:16px;font-weight:800;cursor:pointer;transition:filter .15s}
+        .cita-submit:hover{filter:brightness(1.07)}
+        .cita-submit:disabled{opacity:.6;cursor:not-allowed}
+        .cita-msg{margin-top:16px;padding:14px 16px;border-radius:11px;font-size:14px;line-height:1.5;display:none}
+        .cita-msg.ok{display:block;background:#dcfce7;color:#166534;border:1px solid #bbf7d0}
+        .cita-msg.err{display:block;background:#fee2e2;color:#991b1b;border:1px solid #fecaca}
+        .cita-ok-box{display:none;text-align:center;background:#fff;border:1px solid var(--border);border-radius:18px;padding:40px 26px;max-width:640px;box-shadow:0 10px 40px rgba(15,23,42,.06)}
+        @media(max-width:600px){.cita-grid{grid-template-columns:1fr}}
+      </style>
+
+      <div class="cita-form" id="cita-form">
+        <div class="cita-grid">
+          <div class="cita-field">
+            <label>Nombre completo <span class="req">*</span></label>
+            <input id="cita-nombre" type="text" placeholder="Ej: Juan Pérez" autocomplete="name"/>
+          </div>
+          <div class="cita-field">
+            <label>Correo electrónico <span class="req">*</span></label>
+            <input id="cita-email" type="email" placeholder="tucorreo@ejemplo.com" autocomplete="email"/>
+          </div>
+          <div class="cita-field">
+            <label>Placa del vehículo <span class="req">*</span></label>
+            <input id="cita-placa" type="text" placeholder="Ej: A123456" maxlength="10" autocapitalize="characters"/>
+          </div>
+          <div class="cita-field">
+            <label>Modelo del vehículo <span class="req">*</span></label>
+            <input id="cita-modelo" type="text" placeholder="Ej: Toyota Corolla 2018"/>
+          </div>
+          <div class="cita-field">
+            <label>Teléfono (opcional)</label>
+            <input id="cita-telefono" type="tel" placeholder="Ej: 809-000-0000" autocomplete="tel"/>
+          </div>
+          <div class="cita-field">
+            <label>Fecha preferida <span class="req">*</span></label>
+            <input id="cita-fecha" type="date"/>
+          </div>
+          <div class="cita-field">
+            <label>Hora preferida <span class="req">*</span></label>
+            <select id="cita-hora">
+              <option>08:00</option><option>08:30</option><option selected>09:00</option><option>09:30</option>
+              <option>10:00</option><option>10:30</option><option>11:00</option><option>11:30</option>
+              <option>12:00</option><option>13:00</option><option>13:30</option><option>14:00</option>
+              <option>14:30</option><option>15:00</option><option>15:30</option><option>16:00</option>
+              <option>16:30</option><option>17:00</option>
+            </select>
+          </div>
+          <div class="cita-field">
+            <label>Motivo de la cita <span class="req">*</span></label>
+            <select id="cita-motivo">
+              <option value="">— Selecciona —</option>
+              <option>Cambio de aceite</option>
+              <option>Frenos</option>
+              <option>Alineación y balanceo</option>
+              <option>Aire acondicionado</option>
+              <option>Diagnóstico computarizado</option>
+              <option>Electricidad automotriz</option>
+              <option>Suspensión / tren delantero</option>
+              <option>Lavado</option>
+              <option>Otro</option>
+            </select>
+          </div>
+          <div class="cita-field full">
+            <label>Detalle adicional (opcional)</label>
+            <textarea id="cita-detalle" rows="3" placeholder="Cuéntanos brevemente qué necesita tu vehículo…"></textarea>
+          </div>
+        </div>
+        <button class="cita-submit" id="cita-submit" onclick="agendarCita()">📅 Agendar mi cita</button>
+        <div class="cita-msg" id="cita-msg"></div>
+      </div>
+
+      <div class="cita-ok-box" id="cita-ok-box">
+        <div style="font-size:52px;margin-bottom:8px">✅</div>
+        <h3 style="font-size:22px;color:#166534;margin:0 0 8px">¡Cita agendada!</h3>
+        <p style="color:var(--muted);font-size:15px;line-height:1.6;margin:0 0 20px">
+          Te enviamos un correo de confirmación. Nuestro equipo se comunicará contigo para confirmar la fecha. ¡Gracias por confiar en Sólido Auto Servicio!
+        </p>
+        <button class="cita-submit" style="max-width:260px;margin:auto" onclick="resetCitaForm()">Agendar otra cita</button>
       </div>
     </div>
   </div>
@@ -1517,6 +1629,73 @@ document.getElementById("hamburger").addEventListener("click", () => {
 });
 function closeMob() { document.getElementById("nav-mobile").classList.remove("open"); }
 
+/* ── Agendar cita (portal público) ─────────────────────────────── */
+function resetCitaForm() {
+  const form = document.getElementById("cita-form");
+  const ok   = document.getElementById("cita-ok-box");
+  if (ok) ok.style.display = "none";
+  if (form) form.style.display = "block";
+  ["cita-nombre","cita-email","cita-placa","cita-modelo","cita-telefono","cita-detalle"].forEach(id => {
+    const el = document.getElementById(id); if (el) el.value = "";
+  });
+  const mot = document.getElementById("cita-motivo"); if (mot) mot.value = "";
+  const msg = document.getElementById("cita-msg"); if (msg) { msg.className = "cita-msg"; msg.textContent = ""; }
+  window.scrollTo(0, 0);
+}
+
+async function agendarCita() {
+  const val = id => (document.getElementById(id)?.value || "").trim();
+  const nombre = val("cita-nombre");
+  const email  = val("cita-email");
+  const placa  = val("cita-placa").toUpperCase();
+  const modelo = val("cita-modelo");
+  const telefono = val("cita-telefono");
+  const fecha  = val("cita-fecha");
+  const hora   = val("cita-hora") || "09:00";
+  const motSel = val("cita-motivo");
+  const detalle = val("cita-detalle");
+  const motivo = [motSel, detalle].filter(Boolean).join(" — ");
+
+  const msg = document.getElementById("cita-msg");
+  const showErr = (t) => { msg.className = "cita-msg err"; msg.textContent = t; };
+
+  // Validación en el navegador
+  if (!nombre)  return showErr("Por favor escribe tu nombre.");
+  if (!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email)) return showErr("Escribe un correo electrónico válido.");
+  if (!placa)   return showErr("Escribe la placa de tu vehículo.");
+  if (!modelo)  return showErr("Escribe el modelo de tu vehículo.");
+  if (!motSel)  return showErr("Selecciona el motivo de la cita.");
+  if (!fecha)   return showErr("Selecciona la fecha preferida.");
+  const hoy = new Date().toISOString().slice(0, 10);
+  if (fecha < hoy) return showErr("La fecha no puede ser en el pasado.");
+
+  const btn = document.getElementById("cita-submit");
+  btn.disabled = true;
+  const btnTxt = btn.textContent;
+  btn.textContent = "Enviando…";
+  msg.className = "cita-msg";
+  msg.textContent = "";
+
+  try {
+    const r = await fetch(`${CONFIG.API_BASE}/citas/publica`, {
+      method: "POST",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify({ nombre, email, placa, modelo, telefono, fecha, hora, motivo }),
+    });
+    const d = await r.json();
+    if (!r.ok || d.error) { showErr(d.error || "No se pudo agendar la cita. Intenta de nuevo."); return; }
+    // Éxito: mostrar confirmación
+    document.getElementById("cita-form").style.display = "none";
+    document.getElementById("cita-ok-box").style.display = "block";
+    window.scrollTo(0, 0);
+  } catch {
+    showErr("No pudimos conectar con el servidor. Verifica tu conexión e intenta de nuevo.");
+  } finally {
+    btn.disabled = false;
+    btn.textContent = btnTxt;
+  }
+}
+
 /* ── Init ──────────────────────────────────────────────────────── */
 document.addEventListener("DOMContentLoaded", () => {
   // WhatsApp links
@@ -1551,6 +1730,9 @@ document.addEventListener("DOMContentLoaded", () => {
   ).join("");
   // Year
   document.getElementById("yr").textContent = new Date().getFullYear();
+  // Fecha mínima del formulario de citas = hoy
+  const citaFecha = document.getElementById("cita-fecha");
+  if (citaFecha) citaFecha.min = new Date().toISOString().slice(0, 10);
 });
 
 /* ══ VEHICLE LOOKUP ════════════════════════════════════════════ */
