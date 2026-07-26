@@ -131,6 +131,12 @@ button{cursor:pointer;font-family:inherit;border:none}
 #panel-home{
   background:linear-gradient(160deg,#eaf2fd 0%,#dbe8fb 40%,#eaf2fd 100%);
   min-height:calc(100vh - 104px);position:relative;overflow:hidden;
+}
+/* El home solo se muestra (como flex centrado) cuando está activo.
+   Antes tenía display:flex fijo en el #id, que por mayor especificidad
+   ganaba sobre .panel{display:none} y hacía que el home NUNCA se ocultara,
+   por eso el contenido de las pestañas aparecía debajo del hero. */
+#panel-home.active{
   display:flex;flex-direction:column;justify-content:center;
 }
 .home-orb{position:absolute;border-radius:50%;pointer-events:none;filter:blur(80px)}
