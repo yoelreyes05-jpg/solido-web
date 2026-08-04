@@ -724,7 +724,9 @@ footer{border-top-color:rgba(15,23,42,.08)}
     <div class="portal-tabs">
       <button class="ptab" data-portal="clientes"      onclick="showPortal('clientes')">CLIENTES</button>
       <button class="ptab" data-portal="citas"         onclick="showPortal('citas')">AGENDAR CITA</button>
+      <button class="ptab" data-portal="diagnostico"   onclick="showPortal('diagnostico')">DIAGNÓSTICO</button>
       <button class="ptab" data-portal="servicios"     onclick="showPortal('servicios')">SERVICIOS</button>
+      <button class="ptab" data-portal="cursos"        onclick="showPortal('cursos')">CURSOS</button>
       <button class="ptab" data-portal="procedimiento" onclick="showPortal('procedimiento')">PROCEDIMIENTO</button>
       <button class="ptab" data-portal="cafeteria"     onclick="showPortal('cafeteria')">CAFETERÍA</button>
       <button class="ptab" data-portal="repuestos"     onclick="showPortal('repuestos')">REPUESTOS</button>
@@ -749,7 +751,9 @@ footer{border-top-color:rgba(15,23,42,.08)}
     <a href="#" onclick="showPortal('home');closeMob();return false">🏠 Inicio</a>
     <a href="#" onclick="showPortal('clientes');closeMob();return false">🚗 Clientes</a>
     <a href="#" onclick="showPortal('citas');closeMob();return false">📅 Agendar Cita</a>
+    <a href="#" onclick="showPortal('diagnostico');closeMob();return false">🩺 Diagnóstico rápido</a>
     <a href="#" onclick="showPortal('servicios');closeMob();return false">🔧 Servicios</a>
+    <a href="#" onclick="showPortal('cursos');closeMob();return false">🎓 Cursos</a>
     <a href="#" onclick="showPortal('procedimiento');closeMob();return false">⚙️ Procedimiento</a>
     <a href="#" onclick="showPortal('cafeteria');closeMob();return false">☕ Cafetería</a>
     <a href="#" onclick="showPortal('repuestos');closeMob();return false">🔩 Repuestos</a>
@@ -980,6 +984,189 @@ footer{border-top-color:rgba(15,23,42,.08)}
     </div>
   </div>
 </section>
+
+<!-- ══════════════════════════════════════════════════════════════
+     PANEL: DIAGNÓSTICO RÁPIDO (síntomas frecuentes)
+══════════════════════════════════════════════════════════════════ -->
+<section id="panel-diagnostico" class="panel">
+  <div class="panel-section">
+    <div class="container">
+      <div class="badge-pill" style="margin-bottom:16px">🩺 Diagnóstico rápido</div>
+      <h2 class="panel-title">¿Qué le pasa a <span style="color:var(--orange)">tu vehículo</span>?</h2>
+      <p class="panel-sub">
+        Busca lo que estás sintiendo y te decimos qué suele causarlo y qué tan urgente es.
+        Es una orientación, no un diagnóstico: la causa real se confirma con el vehículo en el taller.
+      </p>
+
+      <style>
+        .dx-search-wrap{max-width:640px;margin:0 auto 18px;position:relative}
+        .dx-search{width:100%;padding:15px 18px 15px 46px;border:1px solid var(--border);border-radius:14px;
+          font-size:16px;font-family:inherit;background:#fff;color:#0f172a;box-shadow:0 6px 24px rgba(15,23,42,.05)}
+        .dx-search:focus{outline:none;border-color:var(--blue3)}
+        .dx-search-ico{position:absolute;left:16px;top:50%;transform:translateY(-50%);font-size:18px;opacity:.5}
+        .dx-cats{display:flex;flex-wrap:wrap;gap:8px;justify-content:center;margin-bottom:22px}
+        .dx-cat{padding:8px 15px;border:1px solid var(--border);border-radius:999px;background:#fff;
+          font-size:13px;font-weight:700;color:var(--muted);transition:all .15s;font-family:inherit}
+        .dx-cat:hover{border-color:var(--blue3);color:var(--blue3)}
+        .dx-cat.active{background:var(--blue3);border-color:var(--blue3);color:#fff}
+        .dx-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(250px,1fr));gap:12px}
+        .dx-item{background:#fff;border:1px solid var(--border);border-radius:14px;padding:16px 18px;
+          text-align:left;font-family:inherit;transition:all .15s;display:flex;gap:12px;align-items:flex-start;width:100%}
+        .dx-item:hover{border-color:var(--blue3);transform:translateY(-2px);box-shadow:0 8px 24px rgba(37,99,235,.10)}
+        .dx-item-ico{font-size:22px;line-height:1;flex-shrink:0}
+        .dx-item-t{font-size:14.5px;font-weight:700;color:#0f172a;line-height:1.35}
+        .dx-item-c{font-size:11.5px;font-weight:700;color:var(--muted2);text-transform:uppercase;letter-spacing:.4px;margin-top:4px}
+        .dx-empty{text-align:center;color:var(--muted);padding:34px 16px;font-size:15px}
+
+        /* Ficha del síntoma */
+        .dx-detail{max-width:720px;margin:0 auto;background:#fff;border:1px solid var(--border);
+          border-radius:18px;padding:26px;box-shadow:0 10px 40px rgba(15,23,42,.07)}
+        .dx-back{background:none;border:none;color:var(--blue3);font-weight:700;font-size:14px;
+          padding:0;margin-bottom:16px;font-family:inherit}
+        .dx-d-head{display:flex;gap:14px;align-items:flex-start;margin-bottom:6px}
+        .dx-d-ico{font-size:34px;line-height:1}
+        .dx-d-title{font-size:22px;font-weight:800;color:#0f172a;line-height:1.25}
+        .dx-urg{display:inline-block;padding:6px 13px;border-radius:999px;font-size:12.5px;font-weight:800;margin:10px 0 4px}
+        .dx-urg.critica{background:#fee2e2;color:#991b1b;border:1px solid #fecaca}
+        .dx-urg.alta   {background:#ffedd5;color:#9a3412;border:1px solid #fed7aa}
+        .dx-urg.media  {background:#fef9c3;color:#854d0e;border:1px solid #fde68a}
+        .dx-urg.baja   {background:#dcfce7;color:#166534;border:1px solid #bbf7d0}
+        .dx-block{margin-top:18px}
+        .dx-block h4{font-size:13px;font-weight:800;color:var(--muted2);text-transform:uppercase;
+          letter-spacing:.5px;margin-bottom:8px}
+        .dx-causas{list-style:none;padding:0;margin:0;display:flex;flex-direction:column;gap:7px}
+        .dx-causas li{font-size:14.5px;color:#334155;line-height:1.5;padding-left:22px;position:relative}
+        .dx-causas li::before{content:"▸";position:absolute;left:4px;color:var(--blue3);font-weight:900}
+        .dx-riesgo{font-size:14.5px;color:#334155;line-height:1.6;background:#f8fafc;
+          border-left:3px solid var(--orange);border-radius:0 10px 10px 0;padding:12px 15px}
+        .dx-manejar{font-size:14.5px;line-height:1.6;border-radius:11px;padding:12px 15px;font-weight:600}
+        .dx-manejar.no {background:#fee2e2;color:#991b1b}
+        .dx-manejar.ojo{background:#fef9c3;color:#854d0e}
+        .dx-manejar.si {background:#dcfce7;color:#166534}
+        .dx-cta{margin-top:24px;padding-top:22px;border-top:1px solid var(--border)}
+        .dx-cta-txt{font-size:15px;color:#334155;line-height:1.6;margin-bottom:14px}
+        .dx-cta-row{display:flex;gap:10px;flex-wrap:wrap}
+        .dx-btn{flex:1;min-width:190px;padding:15px;border-radius:12px;font-size:15.5px;font-weight:800;
+          font-family:inherit;text-align:center;border:none;transition:filter .15s;display:block}
+        .dx-btn:hover{filter:brightness(1.07)}
+        .dx-btn.primary{background:var(--blue3);color:#fff}
+        .dx-btn.wa{background:#25d366;color:#fff;line-height:1.3}
+        .dx-nota{font-size:12.5px;color:var(--muted);margin-top:14px;line-height:1.5}
+        @media(max-width:600px){.dx-detail{padding:20px 17px}.dx-d-title{font-size:19px}}
+      </style>
+
+      <!-- Buscador + lista -->
+      <div id="dx-list-view">
+        <div class="dx-search-wrap">
+          <span class="dx-search-ico">🔍</span>
+          <input class="dx-search" id="dx-search" type="text" autocomplete="off"
+                 placeholder="Ej: chillido al frenar, no arranca, humo blanco…" oninput="dxFiltrar()"/>
+        </div>
+        <div class="dx-cats" id="dx-cats"></div>
+        <div class="dx-grid" id="dx-grid"></div>
+      </div>
+
+      <!-- Ficha del síntoma seleccionado -->
+      <div id="dx-detail-view" style="display:none"></div>
+    </div>
+  </div>
+</section>
+
+<!-- ══════════════════════════════════════════════════════════════
+     PANEL: CURSOS (vitrina en vivo desde el CRM)
+══════════════════════════════════════════════════════════════════ -->
+<section id="panel-cursos" class="panel">
+  <div class="panel-section">
+    <div class="container">
+      <div class="badge-pill" style="margin-bottom:16px">🎓 Capacitaciones</div>
+      <h2 class="panel-title">Cursos <span style="color:var(--blue3)">Sólido</span></h2>
+      <p class="panel-sub">
+        Formación técnica automotriz impartida en nuestro taller. Las fechas y cupos que ves
+        se actualizan solos desde nuestro sistema interno.
+      </p>
+
+      <style>
+        .cur-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(300px,1fr));gap:16px}
+        .cur-card{background:#fff;border:1px solid var(--border);border-radius:16px;padding:22px;
+          display:flex;flex-direction:column;box-shadow:0 6px 24px rgba(15,23,42,.05);transition:transform .15s,box-shadow .15s}
+        .cur-card:hover{transform:translateY(-3px);box-shadow:0 12px 34px rgba(37,99,235,.11)}
+        .cur-mod{display:inline-block;align-self:flex-start;padding:5px 11px;border-radius:999px;
+          font-size:11.5px;font-weight:800;text-transform:uppercase;letter-spacing:.4px;
+          background:#dbeafe;color:#1d4ed8;margin-bottom:11px}
+        .cur-nom{font-size:18px;font-weight:800;color:#0f172a;line-height:1.3;margin-bottom:7px}
+        .cur-desc{font-size:14px;color:var(--muted);line-height:1.55;margin-bottom:15px;flex:1}
+        .cur-meta{display:flex;flex-direction:column;gap:7px;font-size:13.5px;color:#334155;margin-bottom:16px}
+        .cur-meta span{display:flex;gap:8px;align-items:center}
+        .cur-precio{font-size:22px;font-weight:900;color:var(--blue3);margin-bottom:14px}
+        .cur-precio small{font-size:13px;font-weight:600;color:var(--muted)}
+        .cur-cupo{font-size:12.5px;font-weight:700;margin-bottom:12px}
+        .cur-cupo.ok{color:#166534}.cur-cupo.poco{color:#9a3412}.cur-cupo.lleno{color:#991b1b}
+        .cur-btn{width:100%;padding:13px;border:none;border-radius:11px;background:var(--blue3);
+          color:#fff;font-size:15px;font-weight:800;font-family:inherit;transition:filter .15s}
+        .cur-btn:hover{filter:brightness(1.07)}
+        .cur-btn:disabled{background:#e2e8f0;color:#94a3b8;cursor:not-allowed}
+        .cur-msg{text-align:center;color:var(--muted);padding:44px 16px;font-size:15px;line-height:1.6}
+
+        /* Formulario de pre-inscripción */
+        .cur-modal{position:fixed;inset:0;background:rgba(15,23,42,.55);z-index:999;
+          display:none;align-items:center;justify-content:center;padding:18px;overflow-y:auto}
+        .cur-modal.open{display:flex}
+        .cur-box{background:#fff;border-radius:18px;padding:26px;max-width:470px;width:100%;
+          box-shadow:0 24px 60px rgba(15,23,42,.28);max-height:92vh;overflow-y:auto}
+        .cur-box h3{font-size:20px;font-weight:800;color:#0f172a;margin-bottom:4px;line-height:1.3}
+        .cur-box .cur-sub{font-size:13.5px;color:var(--muted);margin-bottom:19px;line-height:1.5}
+        .cur-f{display:flex;flex-direction:column;gap:6px;margin-bottom:14px}
+        .cur-f label{font-size:13px;font-weight:700;color:var(--muted)}
+        .cur-f label .req{color:#dc2626}
+        .cur-f input,.cur-f textarea{padding:12px 14px;border:1px solid var(--border);border-radius:11px;
+          font-size:15px;background:#f8fafc;color:#0f172a;font-family:inherit;width:100%;box-sizing:border-box}
+        .cur-f input:focus,.cur-f textarea:focus{outline:none;border-color:var(--blue3);background:#fff}
+        .cur-acts{display:flex;gap:10px;margin-top:6px}
+        .cur-acts button{flex:1;padding:13px;border-radius:11px;font-size:15px;font-weight:800;
+          font-family:inherit;border:none;transition:filter .15s}
+        .cur-cancel{background:#f1f5f9;color:var(--muted)}
+        .cur-send{background:var(--blue3);color:#fff}
+        .cur-send:disabled{opacity:.6;cursor:not-allowed}
+        .cur-fmsg{margin-top:14px;padding:13px 15px;border-radius:11px;font-size:14px;line-height:1.5;display:none}
+        .cur-fmsg.ok{display:block;background:#dcfce7;color:#166534;border:1px solid #bbf7d0}
+        .cur-fmsg.err{display:block;background:#fee2e2;color:#991b1b;border:1px solid #fecaca}
+      </style>
+
+      <div id="cur-wrap">
+        <div class="cur-msg">Cargando cursos…</div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- Modal de pre-inscripción a curso -->
+<div class="cur-modal" id="cur-modal" onclick="if(event.target===this)cerrarPreinscripcion()">
+  <div class="cur-box">
+    <h3 id="cur-modal-title">Pre-inscripción</h3>
+    <p class="cur-sub" id="cur-modal-sub"></p>
+    <div class="cur-f">
+      <label>Nombre completo <span class="req">*</span></label>
+      <input id="cur-nombre" type="text" placeholder="Ej: Juan Pérez" autocomplete="name"/>
+    </div>
+    <div class="cur-f">
+      <label>Teléfono / WhatsApp <span class="req">*</span></label>
+      <input id="cur-telefono" type="tel" placeholder="Ej: 809-000-0000" autocomplete="tel"/>
+    </div>
+    <div class="cur-f">
+      <label>Correo electrónico (opcional)</label>
+      <input id="cur-email" type="email" placeholder="tucorreo@ejemplo.com" autocomplete="email"/>
+    </div>
+    <div class="cur-f">
+      <label>¿Alguna pregunta? (opcional)</label>
+      <textarea id="cur-comentario" rows="2" placeholder="Ej: ¿hay facilidades de pago?"></textarea>
+    </div>
+    <div class="cur-acts">
+      <button class="cur-cancel" onclick="cerrarPreinscripcion()">Cancelar</button>
+      <button class="cur-send" id="cur-send" onclick="enviarPreinscripcion()">Apartar mi cupo</button>
+    </div>
+    <div class="cur-fmsg" id="cur-fmsg"></div>
+  </div>
+</div>
 
 <!-- ══════════════════════════════════════════════════════════════
      PANEL: SERVICIOS
@@ -1568,7 +1755,9 @@ footer{border-top-color:rgba(15,23,42,.08)}
 const PORTAL_SUBS = {
   home:          [],
   clientes:      [],
+  diagnostico:   [],
   servicios:     [],
+  cursos:        [],
   procedimiento: [],
   cafeteria:     [],
   repuestos:     [],
@@ -1614,6 +1803,11 @@ function showPortal(id) {
   if (id === "cafeteria")  loadCafe();
   if (id === "repuestos")  loadRep();
   if (id === "membresias") loadPlanes();
+  if (id === "cursos")     loadCursos();
+  // El diagnóstico siempre abre en la lista: si el visitante vuelve a la
+  // pestaña esperando buscar otro síntoma y se encuentra la ficha anterior,
+  // parece que la página se trabó.
+  if (id === "diagnostico") dxVolver();
 }
 
 /* ── Sub-section switching ─────────────────────────────────────── */
@@ -1739,6 +1933,10 @@ document.addEventListener("DOMContentLoaded", () => {
   // Fecha mínima del formulario de citas = hoy
   const citaFecha = document.getElementById("cita-fecha");
   if (citaFecha) citaFecha.min = new Date().toISOString().slice(0, 10);
+  // Diagnóstico rápido: el catálogo es local, así que se pinta de una vez.
+  // No espera al clic en la pestaña porque no hay nada que ir a buscar.
+  dxRenderCats();
+  dxFiltrar();
 });
 
 /* ══ VEHICLE LOOKUP ════════════════════════════════════════════ */
@@ -2393,6 +2591,637 @@ function memCardHTML(p){
     <ul class="mem-benefits">${benes}</ul>
     <button class="mem-cta" onclick="window.open('https://wa.me/${CONFIG.WHATSAPP}?text=${waMsg}','_blank')">💬 Quiero este plan</button>
   </div>`;
+}
+
+/* ══════════════════════════════════════════════════════════════════
+   🩺 DIAGNÓSTICO RÁPIDO
+   ──────────────────────────────────────────────────────────────────
+   Catálogo cerrado, escrito a mano y revisado por el taller. No hay
+   IA aquí a propósito: el visitante llega asustado y con prisa, y una
+   respuesta inventada sobre frenos es peor que no responder. Todas las
+   fichas terminan igual — invitando a que traiga el vehículo — porque
+   ninguna de estas causas se confirma sin verlo.
+
+   Campos de cada entrada:
+     cat      categoría para los filtros
+     t        el síntoma tal como lo diría el cliente, no el mecánico
+     alias    otras formas de decirlo (dominicanismos incluidos) — sólo
+              alimenta el buscador, no se muestra
+     causas   lo más probable primero
+     urg      critica | alta | media | baja
+     riesgo   qué pasa si lo deja así
+     manejar  no | ojo | si  → cómo se pinta el aviso de conducción
+     conducir texto del aviso
+     motivo   se precarga en el formulario de cita; debe coincidir con
+              una opción del <select id="cita-motivo">
+══════════════════════════════════════════════════════════════════ */
+const DX = [
+  /* ── FRENOS ─────────────────────────────────────────────────── */
+  { cat:"Frenos", ico:"🛑", t:"Chillido agudo al frenar",
+    alias:"pito chillido silbido freno pastilla",
+    causas:["Pastillas de freno gastadas: casi todas traen una lengüeta metálica que chilla a propósito cuando llegan al límite","Pastillas vidriadas por calentamiento o polvo de frenado acumulado","Pastillas de baja calidad o mal asentadas"],
+    urg:"alta", manejar:"ojo",
+    conducir:"Puedes moverte, pero deja más distancia con el carro de adelante y evita frenadas fuertes.",
+    riesgo:"Ese chillido es el aviso de cortesía. Si lo dejas pasar, la pastilla se acaba y el metal empieza a comerse el disco: el trabajo pasa de cambiar pastillas a cambiar pastillas y discos.",
+    motivo:"Frenos" },
+
+  { cat:"Frenos", ico:"⚠️", t:"Ruido metálico o rasqueteo al frenar",
+    alias:"raspa metal contra metal freno ruido feo",
+    causas:["Pastilla totalmente consumida: el soporte metálico está rozando el disco","Piedra o suciedad atrapada entre la pastilla y el disco","Caliper trabado que mantiene la pastilla pegada"],
+    urg:"critica", manejar:"no",
+    conducir:"No lo sigas usando. Sin material de fricción la distancia de frenado se alarga muchísimo.",
+    riesgo:"Ya se está dañando el disco, y en cualquier momento puedes quedarte sin frenado efectivo en una bajada o en un tapón.",
+    motivo:"Frenos" },
+
+  { cat:"Frenos", ico:"🦶", t:"El pedal de freno se hunde o se siente esponjoso",
+    alias:"pedal blando bajo se va al fondo esponjoso freno",
+    causas:["Aire en el sistema hidráulico","Fuga de líquido de frenos en una manguera, cañería o cilindro","Bomba de freno (cilindro maestro) desgastada"],
+    urg:"critica", manejar:"no",
+    conducir:"No manejes el vehículo. Un pedal que se hunde puede quedarse sin frenado sin más aviso.",
+    riesgo:"Es la falla de frenos que más accidentes causa, porque avisa poco y falla de golpe. Llámanos y lo evaluamos donde esté.",
+    motivo:"Frenos" },
+
+  { cat:"Frenos", ico:"🔄", t:"El volante vibra cuando freno",
+    alias:"tiembla volante frenando vibracion disco",
+    causas:["Discos alabeados por calentamiento (típico tras bajadas largas o frenadas continuas)","Espesor desigual del disco por desgaste","Tuercas de rueda mal apretadas o buje con juego"],
+    urg:"media", manejar:"ojo",
+    conducir:"Puedes seguir manejando, pero baja la velocidad en carretera y evita frenar de golpe.",
+    riesgo:"Alargar el problema desgasta las pastillas de forma despareja y termina exigiendo discos nuevos en vez de una rectificación.",
+    motivo:"Frenos" },
+
+  { cat:"Frenos", ico:"↔️", t:"El carro se va hacia un lado al frenar",
+    alias:"jala hacia un lado frenando desvia",
+    causas:["Caliper pegado en una rueda","Manguera de freno colapsada por dentro (deja pasar la presión pero no la suelta)","Pastillas desgastadas de forma despareja entre lados"],
+    urg:"alta", manejar:"ojo",
+    conducir:"Maneja lo mínimo y a baja velocidad. Una frenada de emergencia puede sacarte del carril.",
+    riesgo:"El lado que sí frena se recalienta y se desgasta el doble; además el vehículo se vuelve impredecible en piso mojado.",
+    motivo:"Frenos" },
+
+  { cat:"Frenos", ico:"🔴", t:"Se encendió la luz de freno en el tablero",
+    alias:"testigo luz roja freno abs tablero",
+    causas:["Freno de mano puesto o mal liberado","Nivel de líquido de frenos bajo, casi siempre por pastillas gastadas o una fuga","Falla en el sistema ABS (suele ser una luz ámbar aparte)"],
+    urg:"alta", manejar:"ojo",
+    conducir:"Verifica primero que el freno de mano esté abajo. Si sigue encendida, muévete lo mínimo indispensable.",
+    riesgo:"Si es nivel bajo por fuga, el sistema se vacía poco a poco hasta que el pedal deja de responder.",
+    motivo:"Frenos" },
+
+  /* ── MOTOR ──────────────────────────────────────────────────── */
+  { cat:"Motor", ico:"🟡", t:"Check Engine encendido (fijo)",
+    alias:"check engine luz motor amarilla tablero encendida",
+    causas:["Sensor de oxígeno o MAF fuera de rango","Tapa de gasolina floja o sello dañado (más común de lo que parece)","Falla de emisiones o catalizador perdiendo eficiencia","Bujías o bobinas al final de su vida"],
+    urg:"media", manejar:"si",
+    conducir:"Puedes seguir manejando con normalidad si el carro se siente igual que siempre.",
+    riesgo:"La computadora ya guardó un código. Mientras más se tarda, más probable es que la falla original arrastre otras piezas — un sensor barato terminando en un catalizador caro.",
+    motivo:"Diagnóstico computarizado" },
+
+  { cat:"Motor", ico:"🚨", t:"Check Engine parpadeando",
+    alias:"check engine intermitente parpadea titila",
+    causas:["Fallo de encendido activo (misfire): un cilindro no está quemando","Bobina o bujía muerta","Inyector obstruido o problema de compresión"],
+    urg:"critica", manejar:"no",
+    conducir:"Detente cuando sea seguro y apágalo. Parpadeando significa daño ocurriendo ahora mismo.",
+    riesgo:"La gasolina sin quemar pasa al escape y funde el catalizador, que es una de las piezas más caras del vehículo.",
+    motivo:"Diagnóstico computarizado" },
+
+  { cat:"Motor", ico:"〰️", t:"El motor tiembla o se siente áspero en ralentí",
+    alias:"vibra tiembla parado semaforo ralenti inestable se apaga",
+    causas:["Bujías o cables de bujía gastados","Cuerpo de aceleración o inyectores sucios","Entrada de aire falsa por una manguera de vacío rota","Soportes de motor vencidos (el motor está bien, lo que falla es lo que lo sujeta)"],
+    urg:"media", manejar:"ojo",
+    conducir:"Puedes moverte, pero evita viajes largos hasta saber qué es.",
+    riesgo:"Un cilindro trabajando mal aumenta el consumo, ensucia el aceite y a la larga castiga el catalizador.",
+    motivo:"Diagnóstico computarizado" },
+
+  { cat:"Motor", ico:"🐢", t:"Perdió fuerza / no acelera como antes",
+    alias:"sin potencia flojo no jala no sube lomas lento",
+    causas:["Filtro de aire o de gasolina saturado","Bomba de gasolina entregando poca presión","Catalizador tapado","Turbo con fuga de presión, en motores turboalimentados","Sensores de flujo o de posición dando lecturas erradas"],
+    urg:"media", manejar:"ojo",
+    conducir:"Evita autopistas y adelantamientos: la falta de respuesta al acelerar es peligrosa al rebasar.",
+    riesgo:"Si es catalizador o combustible, el motor está trabajando forzado y el consumo se dispara mientras tanto.",
+    motivo:"Diagnóstico computarizado" },
+
+  { cat:"Motor", ico:"🔑", t:"Cuesta arrancar (pero al final prende)",
+    alias:"tarda en prender arranca duro cuesta encender",
+    causas:["Batería debilitada o terminales sulfatados","Bujías gastadas","Bomba de gasolina perdiendo presión de reposo","Sensor de cigüeñal o de temperatura fallando de forma intermitente"],
+    urg:"media", manejar:"ojo",
+    conducir:"Puedes usarlo, pero no confíes en él para un viaje o una salida de madrugada.",
+    riesgo:"Este síntoma casi siempre empeora: el día que no prenda va a ser en el peor sitio posible.",
+    motivo:"Electricidad automotriz" },
+
+  { cat:"Motor", ico:"🌡️", t:"La temperatura sube / aguja en rojo",
+    alias:"calienta recalienta temperatura alta hirviendo agua",
+    causas:["Nivel de refrigerante bajo por una fuga","Termostato pegado cerrado","Abanico del radiador que no enciende","Radiador obstruido o bomba de agua dañada"],
+    urg:"critica", manejar:"no",
+    conducir:"Detente y apaga el motor. No abras el tapón del radiador caliente: el vapor a presión quema en serio.",
+    riesgo:"Un recalentamiento sostenido deforma la culata o quema el empaque. Es la diferencia entre una reparación menor y una factura de motor.",
+    motivo:"Otro" },
+
+  { cat:"Motor", ico:"💨", t:"Sale humo azul del escape",
+    alias:"humo azul quema aceite escape",
+    causas:["Anillos de pistón desgastados","Sellos o guías de válvula endurecidos","Turbo pasando aceite, en motores turbo"],
+    urg:"alta", manejar:"ojo",
+    conducir:"Puedes moverte, pero revisa el nivel de aceite antes de cada salida.",
+    riesgo:"Estás quemando aceite. Si el nivel baja sin que te des cuenta, el motor se queda sin lubricación.",
+    motivo:"Diagnóstico computarizado" },
+
+  { cat:"Motor", ico:"☁️", t:"Sale humo blanco denso y no se disipa",
+    alias:"humo blanco espeso dulce vapor escape",
+    causas:["Refrigerante entrando a la cámara de combustión: empaque de culata soplado","Culata fisurada","En frío y poco humo que desaparece, puede ser sólo condensación normal"],
+    urg:"critica", manejar:"no",
+    conducir:"No lo sigas usando si el humo es constante y huele dulce.",
+    riesgo:"El refrigerante en los cilindros arruina anillos y bancadas. Atendido a tiempo es un empaque; ignorado, es el motor completo.",
+    motivo:"Otro" },
+
+  { cat:"Motor", ico:"🖤", t:"Sale humo negro del escape",
+    alias:"humo negro hollin gasta mucha gasolina",
+    causas:["Mezcla demasiado rica: inyectores goteando o sensores mal calibrados","Filtro de aire tapado","Regulador de presión de combustible fallando"],
+    urg:"media", manejar:"ojo",
+    conducir:"Puedes manejar, pero vas gastando gasolina de más en cada kilómetro.",
+    riesgo:"El exceso de combustible lava la película de aceite de los cilindros y ensucia bujías y catalizador.",
+    motivo:"Diagnóstico computarizado" },
+
+  { cat:"Motor", ico:"🛢️", t:"El aceite baja rápido o no lo veo en la varilla",
+    alias:"consume aceite nivel bajo varilla seca",
+    causas:["Fuga externa por empaque de cárter, tapa de válvulas o retenes","Consumo interno por anillos o guías","Cambio de aceite muy atrasado"],
+    urg:"alta", manejar:"ojo",
+    conducir:"Completa el nivel con el aceite que corresponde y ven pronto. Nunca lo muevas con la varilla seca.",
+    riesgo:"Trabajar con poco aceite castiga bancadas y turbo. Es la forma más rápida y silenciosa de perder un motor.",
+    motivo:"Cambio de aceite" },
+
+  { cat:"Motor", ico:"👃", t:"Huele a quemado o a gasolina",
+    alias:"olor quemado gasolina plastico humo capo",
+    causas:["Aceite goteando sobre el múltiple caliente","Fuga de combustible en mangueras o inyectores","Correa patinando o cableado recalentado","Freno de mano puesto o caliper trabado (olor a fricción)"],
+    urg:"critica", manejar:"no",
+    conducir:"Estaciona en un sitio seguro y apaga. El olor a gasolina en marcha es riesgo real de incendio.",
+    riesgo:"Combustible o aceite sobre superficies calientes es la causa más común de incendios en vehículos.",
+    motivo:"Otro" },
+
+  /* ── TRANSMISIÓN ────────────────────────────────────────────── */
+  { cat:"Transmisión", ico:"⚙️", t:"La caja automática cambia con brincos o jalones",
+    alias:"caja automatica brinca patina cambios bruscos golpea",
+    causas:["Aceite de transmisión (ATF) degradado o en nivel bajo","Solenoides de control sucios o fallando","Cuerpo de válvulas con desgaste","Módulo de transmisión con códigos guardados"],
+    urg:"alta", manejar:"ojo",
+    conducir:"Maneja suave y evita cargas o pendientes largas.",
+    riesgo:"Los brincos son fricción. Cada semana que pasa, un servicio de caja se acerca más a un reacondicionamiento.",
+    motivo:"Diagnóstico computarizado" },
+
+  { cat:"Transmisión", ico:"🌀", t:"El motor sube de RPM pero el carro no avanza",
+    alias:"patina caja embrague no agarra revoluciona no avanza",
+    causas:["Embrague desgastado, en caja manual","Aceite de transmisión muy bajo o quemado, en automática","Convertidor de par o paquete de discos internos dañados"],
+    urg:"critica", manejar:"no",
+    conducir:"Evita moverlo por su cuenta. Cada arranque en ese estado empeora el daño interno.",
+    riesgo:"El patinaje genera calor y limalla que se reparte por toda la caja, encareciendo la reparación cada día.",
+    motivo:"Otro" },
+
+  { cat:"Transmisión", ico:"🎚️", t:"Cuesta meter los cambios (caja manual)",
+    alias:"cambios duros no entra cambio clutch pesado manual",
+    causas:["Embrague desajustado o disco desgastado","Cilindro de embrague con aire o fuga","Aceite de caja degradado","Sincronizados gastados"],
+    urg:"media", manejar:"ojo",
+    conducir:"Se puede manejar, pero forzar la palanca acelera el desgaste de los sincronizados.",
+    riesgo:"Lo que hoy es un ajuste o un cambio de líquido puede volverse desarme completo de caja.",
+    motivo:"Otro" },
+
+  /* ── SUSPENSIÓN Y DIRECCIÓN ─────────────────────────────────── */
+  { cat:"Suspensión", ico:"🕳️", t:"Golpeteo al pasar hoyos o badenes",
+    alias:"suena golpea hoyo policia acostado ruido suspension toc toc",
+    causas:["Amortiguadores vencidos","Bujes de tijera o barra estabilizadora gastados","Terminales o rótulas con juego","Bases de amortiguador dañadas"],
+    urg:"media", manejar:"ojo",
+    conducir:"Puedes manejar, pero baja la velocidad en calles en mal estado.",
+    riesgo:"La suspensión floja daña las gomas de forma despareja y alarga la distancia de frenado. Una rótula con juego puede desprenderse.",
+    motivo:"Suspensión / tren delantero" },
+
+  { cat:"Suspensión", ico:"↗️", t:"El carro se va hacia un lado al rodar derecho",
+    alias:"jala hacia un lado desvia volante torcido no va derecho",
+    causas:["Alineación fuera de especificación","Presión de aire dispareja entre gomas","Terminales o brazos de dirección con desgaste","Goma con deformación interna"],
+    urg:"media", manejar:"ojo",
+    conducir:"Puedes manejar. Verifica primero la presión de las cuatro gomas.",
+    riesgo:"Una alineación mala se come un juego de gomas en pocos meses, y suele salir más caro que la alineación misma.",
+    motivo:"Alineación y balanceo" },
+
+  { cat:"Suspensión", ico:"📳", t:"El volante vibra a velocidad de carretera",
+    alias:"vibra volante autopista alta velocidad tiembla goma",
+    causas:["Ruedas desbalanceadas","Goma deformada o con separación interna","Rin doblado por un hoyo","Buje de rueda con juego"],
+    urg:"media", manejar:"ojo",
+    conducir:"Reduce la velocidad en carretera hasta revisarlo.",
+    riesgo:"Una goma con separación interna puede reventar a velocidad. Vale la pena descartarlo antes de un viaje.",
+    motivo:"Alineación y balanceo" },
+
+  { cat:"Suspensión", ico:"🎯", t:"El volante está duro o suena al girar",
+    alias:"direccion dura pesada suena al girar hidraulica",
+    causas:["Nivel bajo de líquido de dirección hidráulica o fuga","Bomba de dirección desgastada","Correa de accesorios floja","Falla en la dirección asistida eléctrica, en modelos con EPS"],
+    urg:"alta", manejar:"ojo",
+    conducir:"Maneja despacio. Si la asistencia se corta del todo, el volante se pone muy pesado sin aviso.",
+    riesgo:"Perder asistencia en una maniobra a baja velocidad, como un parqueo o una esquina, es más peligroso de lo que parece.",
+    motivo:"Suspensión / tren delantero" },
+
+  /* ── NEUMÁTICOS ─────────────────────────────────────────────── */
+  { cat:"Gomas", ico:"🛞", t:"Las gomas se gastan disparejo",
+    alias:"desgaste irregular goma gastada por dentro por fuera",
+    causas:["Alineación descuadrada","Presión de aire incorrecta de forma sostenida","Amortiguadores o bujes vencidos","Falta de rotación de gomas"],
+    urg:"media", manejar:"si",
+    conducir:"Puedes manejar, pero revisa que ninguna esté por debajo del indicador de desgaste.",
+    riesgo:"El desgaste desigual reduce el agarre en mojado justo cuando más falta hace.",
+    motivo:"Alineación y balanceo" },
+
+  { cat:"Gomas", ico:"💡", t:"Se encendió la luz de presión de gomas (TPMS)",
+    alias:"tpms luz presion gomas herradura amarilla",
+    causas:["Una o más gomas con presión baja","Cambio brusco de temperatura ambiente","Sensor de presión con batería agotada","Pinchazo lento por un clavo o tornillo"],
+    urg:"media", manejar:"ojo",
+    conducir:"Revisa la presión de las cuatro cuanto antes. Si una está claramente baja, no sigas rodando con ella.",
+    riesgo:"Rodar con presión baja calienta el flanco de la goma y puede hacerla reventar.",
+    motivo:"Otro" },
+
+  /* ── ELÉCTRICO ──────────────────────────────────────────────── */
+  { cat:"Eléctrico", ico:"🔋", t:"No arranca / solo suena un clic",
+    alias:"no prende no enciende clic bateria muerta arranque",
+    causas:["Batería descargada o al final de su vida","Terminales sulfatados o flojos","Motor de arranque fallando","Alternador que dejó de cargar hace días"],
+    urg:"alta", manejar:"no",
+    conducir:"Si logras arrancarlo con puente, no lo apagues hasta llegar al taller.",
+    riesgo:"Si el problema es el alternador y no la batería, arrancarlo con puente sólo te da unos kilómetros antes de quedarte en el camino.",
+    motivo:"Electricidad automotriz" },
+
+  { cat:"Eléctrico", ico:"🔌", t:"Se encendió la luz de batería manejando",
+    alias:"luz bateria roja tablero alternador no carga",
+    causas:["Alternador no está cargando","Correa de accesorios rota o patinando","Regulador de voltaje dañado","Cable de carga flojo o corroído"],
+    urg:"alta", manejar:"ojo",
+    conducir:"Ve directo al taller y apaga aire, radio y todo lo que puedas. Estás rodando con la carga de la batería.",
+    riesgo:"Sin alternador el vehículo se apaga en marcha cuando la batería se agota — y puede pasar en medio del tránsito.",
+    motivo:"Electricidad automotriz" },
+
+  { cat:"Eléctrico", ico:"🪫", t:"La batería se descarga estando parqueado",
+    alias:"amanece sin bateria se descarga sola consumo fantasma",
+    causas:["Consumo parásito: algún módulo, alarma o accesorio que no se duerme","Batería al final de su vida útil","Alternador cargando por debajo de lo debido","Instalación de accesorios mal hecha"],
+    urg:"media", manejar:"ojo",
+    conducir:"Puedes usarlo, pero ten a mano cables de puente mientras tanto.",
+    riesgo:"Las descargas profundas repetidas arruinan la batería nueva que compres si no se encuentra el consumo que la vacía.",
+    motivo:"Electricidad automotriz" },
+
+  { cat:"Eléctrico", ico:"🔦", t:"Las luces se ven tenues o parpadean",
+    alias:"luces debiles bajan intensidad parpadean tablero",
+    causas:["Alternador entregando voltaje irregular","Masas (tierras) corroídas","Batería en mal estado","Cableado con resistencia por empalmes viejos"],
+    urg:"media", manejar:"ojo",
+    conducir:"Evita manejar de noche hasta revisarlo.",
+    riesgo:"El voltaje inestable daña bombillos, módulos electrónicos y el sistema de audio.",
+    motivo:"Electricidad automotriz" },
+
+  /* ── AIRE ACONDICIONADO ─────────────────────────────────────── */
+  { cat:"Aire acond.", ico:"❄️", t:"El aire no enfría o enfría poco",
+    alias:"aire acondicionado no enfria caliente ac",
+    causas:["Gas refrigerante bajo por una fuga (el gas no se gasta: si falta, se está yendo)","Filtro de cabina saturado","Compresor o su embrague fallando","Condensador tapado con suciedad"],
+    urg:"baja", manejar:"si",
+    conducir:"No afecta la seguridad. Puedes manejar con normalidad.",
+    riesgo:"Recargar sin buscar la fuga es tirar el dinero: en semanas vuelve a quedarse sin gas. Y un compresor trabajando con poco gas se queda sin lubricación.",
+    motivo:"Aire acondicionado" },
+
+  { cat:"Aire acond.", ico:"🦠", t:"El aire huele a humedad o a encierro",
+    alias:"olor humedad moho aire acondicionado feo hongos",
+    causas:["Hongos y bacterias en el evaporador","Filtro de cabina vencido","Drenaje del evaporador tapado (charco en la alfombra del pasajero)"],
+    urg:"baja", manejar:"si",
+    conducir:"Puedes manejar. Usa el modo de aire exterior mientras tanto.",
+    riesgo:"Más allá del olor, es un problema de salud para quien tenga alergia o asma. Y el agua estancada oxida el piso.",
+    motivo:"Aire acondicionado" },
+
+  { cat:"Aire acond.", ico:"🔁", t:"El aire enfría un rato y luego deja de enfriar",
+    alias:"aire intermitente enfria y deja de enfriar por ratos",
+    causas:["Evaporador congelándose por gas mal cargado o sensor de temperatura fallando","Embrague del compresor conectando de forma intermitente","Presostato o ventilador del condensador con falla"],
+    urg:"baja", manejar:"si",
+    conducir:"Puedes manejar con normalidad.",
+    riesgo:"El ciclado constante del compresor le acorta la vida, y el compresor es la pieza más cara del sistema.",
+    motivo:"Aire acondicionado" },
+
+  /* ── RUIDOS Y FUGAS ─────────────────────────────────────────── */
+  { cat:"Ruidos y fugas", ico:"🎵", t:"Chirrido agudo al arrancar el motor",
+    alias:"chilla correa al prender chirrido motor frio",
+    causas:["Correa de accesorios floja, vidriada o agrietada","Tensor o polea loca con rodamiento gastado","Polea del alternador o de la bomba de agua con juego"],
+    urg:"media", manejar:"ojo",
+    conducir:"Puedes moverte, pero no lo dejes para el mes que viene.",
+    riesgo:"Esa correa mueve el alternador, la dirección y la bomba de agua. Si se parte en marcha, te quedas sin carga y el motor recalienta en minutos.",
+    motivo:"Otro" },
+
+  { cat:"Ruidos y fugas", ico:"📢", t:"Zumbido que aumenta con la velocidad",
+    alias:"zumbido ruido avion rodamiento buje aumenta velocidad",
+    causas:["Rodamiento (buje) de rueda desgastado","Goma con desgaste irregular tipo sierra","Diferencial o caja con nivel de aceite bajo"],
+    urg:"alta", manejar:"ojo",
+    conducir:"Maneja despacio y evita carretera hasta identificar de qué rueda viene.",
+    riesgo:"Un rodamiento muy gastado puede llegar a trabar la rueda en movimiento. No es común, pero cuando pasa es grave.",
+    motivo:"Suspensión / tren delantero" },
+
+  { cat:"Ruidos y fugas", ico:"💧", t:"Deja una mancha en el piso donde parqueo",
+    alias:"gotea fuga mancha piso liquido charco",
+    causas:["Verde o naranja y dulce: refrigerante","Marrón o negro y espeso: aceite de motor","Rojo o rosado: aceite de transmisión o de dirección","Claro y aceitoso cerca de las ruedas: líquido de frenos","Agua transparente bajo el pasajero con el aire puesto: es normal, es condensación"],
+    urg:"alta", manejar:"ojo",
+    conducir:"Depende del líquido. Si es de frenos o refrigerante, no lo muevas hasta revisarlo.",
+    riesgo:"Casi ninguna fuga se arregla sola y todas empeoran. Ubicar el origen temprano suele ser un empaque; tarde, es la pieza completa.",
+    motivo:"Otro" },
+
+  { cat:"Ruidos y fugas", ico:"🔊", t:"El escape suena más fuerte de lo normal",
+    alias:"escape ronco ruidoso mofle roto suena duro",
+    causas:["Mofle o silenciador perforado por óxido","Empaque de múltiple soplado","Tubo o abrazadera partida","Catalizador con el material interno suelto (suena a piedritas)"],
+    urg:"media", manejar:"ojo",
+    conducir:"Puedes manejar, pero mantén una ventana abierta hasta revisarlo.",
+    riesgo:"Una fuga de escape antes de la cabina puede meter monóxido de carbono adentro, y eso no se huele.",
+    motivo:"Otro" },
+];
+
+const DX_URG_TXT = {
+  critica:"🚨 Atención inmediata — no lo sigas usando",
+  alta:   "⚠️ Urgente — tráelo en las próximas 24 a 48 horas",
+  media:  "🟡 Revísalo esta semana",
+  baja:   "🟢 Sin riesgo de seguridad — agéndalo con calma",
+};
+const DX_MANEJAR_TXT = { no:"🚫 ", ojo:"⚠️ ", si:"✅ " };
+
+let dxCat = "Todos";
+
+/** Quita tildes y baja a minúsculas: el visitante escribe "vibracion" y el
+ *  catálogo dice "vibración". Sin esto el buscador no encuentra la mitad. */
+function dxNorm(s){
+  return (s||"").toLowerCase().normalize("NFD").replace(/[\u0300-\u036f]/g,"");
+}
+function dxEsc(s){
+  return String(s==null?"":s).replace(/[&<>"']/g, c => (
+    {"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;","'":"&#39;"}[c]));
+}
+
+function dxRenderCats(){
+  const cats = ["Todos", ...new Set(DX.map(d => d.cat))];
+  document.getElementById("dx-cats").innerHTML = cats.map(c =>
+    `<button class="dx-cat${c===dxCat?' active':''}" onclick="dxSetCat('${dxEsc(c)}')">${dxEsc(c)}</button>`
+  ).join("");
+}
+
+function dxSetCat(c){ dxCat = c; dxRenderCats(); dxFiltrar(); }
+
+function dxFiltrar(){
+  const q = dxNorm(document.getElementById("dx-search")?.value || "").trim();
+  const palabras = q ? q.split(/\s+/) : [];
+
+  const lista = DX.map((d,i) => ({d,i})).filter(({d}) => {
+    if (dxCat !== "Todos" && d.cat !== dxCat) return false;
+    if (!palabras.length) return true;
+    // Se busca en título, alias, categoría y causas: quien escribe "pastilla"
+    // debe llegar al chillido de frenos aunque esa palabra sólo esté en la causa.
+    const heno = dxNorm([d.t, d.alias, d.cat, d.causas.join(" ")].join(" "));
+    return palabras.every(p => heno.includes(p));
+  });
+
+  const grid = document.getElementById("dx-grid");
+  if (!lista.length){
+    grid.innerHTML = `<div class="dx-empty" style="grid-column:1/-1">
+      No encontramos ese síntoma en la lista.<br/>
+      <button class="dx-btn primary" style="max-width:280px;margin:16px auto 0"
+        onclick="irACitaDesdeSintoma(-1)">📅 Cuéntanos en una cita</button>
+    </div>`;
+    return;
+  }
+  grid.innerHTML = lista.map(({d,i}) => `
+    <button class="dx-item" onclick="dxAbrir(${i})">
+      <span class="dx-item-ico">${d.ico}</span>
+      <span>
+        <span class="dx-item-t">${dxEsc(d.t)}</span>
+        <span class="dx-item-c">${dxEsc(d.cat)}</span>
+      </span>
+    </button>`).join("");
+}
+
+function dxAbrir(i){
+  const d = DX[i]; if (!d) return;
+  const causas = d.causas.map(c => `<li>${dxEsc(c)}</li>`).join("");
+  const waMsg = `Hola, entré a la web y consulté por: "${d.t}". Quiero traer mi vehículo para que lo evalúen.`;
+
+  document.getElementById("dx-detail-view").innerHTML = `
+    <div class="dx-detail">
+      <button class="dx-back" onclick="dxVolver()">← Ver otros síntomas</button>
+      <div class="dx-d-head">
+        <span class="dx-d-ico">${d.ico}</span>
+        <div>
+          <div class="dx-d-title">${dxEsc(d.t)}</div>
+          <div class="dx-urg ${d.urg}">${DX_URG_TXT[d.urg]}</div>
+        </div>
+      </div>
+
+      <div class="dx-block">
+        <h4>Qué suele causarlo</h4>
+        <ul class="dx-causas">${causas}</ul>
+      </div>
+
+      <div class="dx-block">
+        <h4>¿Puedo seguir manejando?</h4>
+        <div class="dx-manejar ${d.manejar}">${DX_MANEJAR_TXT[d.manejar]}${dxEsc(d.conducir)}</div>
+      </div>
+
+      <div class="dx-block">
+        <h4>Qué pasa si lo dejo así</h4>
+        <div class="dx-riesgo">${dxEsc(d.riesgo)}</div>
+      </div>
+
+      <div class="dx-cta">
+        <div class="dx-cta-txt">
+          <strong>Lo de arriba son las causas más frecuentes, no un diagnóstico.</strong>
+          Varias de ellas dan exactamente el mismo síntoma y sólo se distinguen con
+          el vehículo delante. Tráelo y te decimos con certeza qué es y cuánto cuesta,
+          antes de tocar nada.
+        </div>
+        <div class="dx-cta-row">
+          <button class="dx-btn primary" onclick="irACitaDesdeSintoma(${i})">
+            📅 Agendar evaluación
+          </button>
+          <a class="dx-btn wa" href="${waUrl(waMsg)}" target="_blank" rel="noopener">
+            💬 Escribir por WhatsApp
+          </a>
+        </div>
+        <div class="dx-nota">
+          Esta orientación es general y no sustituye una revisión presencial.
+          Ante cualquier síntoma de frenos, dirección o temperatura, lo prudente
+          es no conducir hasta que un técnico lo verifique.
+        </div>
+      </div>
+    </div>`;
+
+  document.getElementById("dx-list-view").style.display   = "none";
+  document.getElementById("dx-detail-view").style.display = "block";
+  window.scrollTo(0,0);
+}
+
+function dxVolver(){
+  const det = document.getElementById("dx-detail-view");
+  const lst = document.getElementById("dx-list-view");
+  if (det) { det.style.display = "none"; det.innerHTML = ""; }
+  if (lst) lst.style.display = "block";
+}
+
+/**
+ * Puente entre el diagnóstico y el formulario de cita.
+ *
+ * Lleva el síntoma consultado al campo de detalle para que el cliente no lo
+ * escriba dos veces, y de paso el taller ve en la cita exactamente qué leyó
+ * antes de decidirse — información útil para preparar la recepción.
+ * Con i = -1 sólo abre el formulario en blanco.
+ */
+function irACitaDesdeSintoma(i){
+  const d = DX[i];
+  showPortal("citas");
+  if (!d) return;
+
+  const sel = document.getElementById("cita-motivo");
+  if (sel) {
+    // Sólo se selecciona si el motivo existe entre las opciones; si algún día
+    // cambia el <select>, esto degrada a "Otro" en vez de dejarlo vacío.
+    const opciones = [...sel.options].map(o => o.value || o.text);
+    sel.value = opciones.includes(d.motivo) ? d.motivo
+              : (opciones.includes("Otro") ? "Otro" : sel.value);
+  }
+  const det = document.getElementById("cita-detalle");
+  if (det && !det.value.trim()) {
+    det.value = `Consulté en la web por: ${d.t}. Quiero que evalúen el vehículo.`;
+  }
+}
+
+/* ══════════════════════════════════════════════════════════════════
+   🎓 CURSOS — se leen del CRM en cada visita a la pestaña
+   ──────────────────────────────────────────────────────────────────
+   No hay lista de cursos escrita en este archivo. Cuando el taller
+   cambia una fecha o agrega un curso en el CRM (Capacitaciones), el
+   portal lo muestra sin que nadie edite la web.
+══════════════════════════════════════════════════════════════════ */
+let cursosData = [];
+let cursoSeleccionado = null;
+
+function fmtFechaLarga(iso){
+  if (!iso) return null;
+  const d = new Date(iso + "T12:00:00");
+  if (isNaN(d)) return null;
+  return d.toLocaleDateString("es-DO", { day:"numeric", month:"long", year:"numeric" });
+}
+
+async function loadCursos(){
+  const wrap = document.getElementById("cur-wrap");
+  if (!wrap) return;
+  wrap.innerHTML = `<div class="cur-msg">Cargando cursos…</div>`;
+  try {
+    const r = await fetch(`${CONFIG.API_BASE}/cursos/publicos`, { cache:"no-store" });
+    if (!r.ok) throw new Error("respuesta " + r.status);
+    cursosData = await r.json();
+    if (!Array.isArray(cursosData)) cursosData = [];
+  } catch (e) {
+    wrap.innerHTML = `<div class="cur-msg">
+      No pudimos cargar los cursos en este momento.<br/>
+      Escríbenos por WhatsApp y te contamos la programación vigente.<br/>
+      <a class="dx-btn wa" style="max-width:280px;margin:18px auto 0"
+         href="${waUrl("Hola, quiero información sobre los cursos de Sólido Auto Servicio.")}"
+         target="_blank" rel="noopener">💬 Consultar por WhatsApp</a>
+    </div>`;
+    return;
+  }
+
+  if (!cursosData.length){
+    wrap.innerHTML = `<div class="cur-msg">
+      Ahora mismo no hay cursos con fecha abierta.<br/>
+      Déjanos tus datos por WhatsApp y te avisamos cuando salga la próxima convocatoria.<br/>
+      <a class="dx-btn wa" style="max-width:300px;margin:18px auto 0"
+         href="${waUrl("Hola, quiero que me avisen cuando abran el próximo curso.")}"
+         target="_blank" rel="noopener">💬 Avísenme del próximo curso</a>
+    </div>`;
+    return;
+  }
+  wrap.innerHTML = `<div class="cur-grid">${cursosData.map(cursoCardHTML).join("")}</div>`;
+}
+
+function cursoCardHTML(c){
+  const fecha = fmtFechaLarga(c.fecha_proxima);
+  const meta = [];
+  meta.push(`<span>📅 ${fecha ? "Inicia el " + fecha : "Matrícula abierta — fecha por confirmar"}</span>`);
+  if (c.horas)      meta.push(`<span>⏱️ ${c.horas} horas de duración</span>`);
+  if (c.instructor) meta.push(`<span>👨‍🏫 ${dxEsc(c.instructor)}</span>`);
+
+  // Cupos: sólo se muestran si el curso tiene un límite declarado en el CRM.
+  let cupo = "";
+  if (c.cupo_disponible !== null && c.cupo_disponible !== undefined){
+    if (c.agotado)                 cupo = `<div class="cur-cupo lleno">● Cupos agotados</div>`;
+    else if (c.cupo_disponible<=3) cupo = `<div class="cur-cupo poco">● Últimos ${c.cupo_disponible} cupos</div>`;
+    else                           cupo = `<div class="cur-cupo ok">● ${c.cupo_disponible} cupos disponibles</div>`;
+  }
+
+  const precio = Number(c.precio) > 0
+    ? `<div class="cur-precio">RD$ ${Number(c.precio).toLocaleString("es-DO")} <small>por participante</small></div>`
+    : `<div class="cur-precio">Consultar <small>inversión</small></div>`;
+
+  return `<div class="cur-card">
+    <span class="cur-mod">${dxEsc(c.modalidad || "Presencial")}</span>
+    <div class="cur-nom">${dxEsc(c.nombre)}</div>
+    <div class="cur-desc">${dxEsc(c.descripcion || "Formación técnica impartida por nuestro equipo en el taller.")}</div>
+    <div class="cur-meta">${meta.join("")}</div>
+    ${precio}
+    ${cupo}
+    <button class="cur-btn" onclick="abrirPreinscripcion(${c.id})" ${c.agotado ? "disabled" : ""}>
+      ${c.agotado ? "Sin cupos" : "🎓 Apartar mi cupo"}
+    </button>
+  </div>`;
+}
+
+function abrirPreinscripcion(id){
+  const c = cursosData.find(x => x.id === id);
+  if (!c) return;
+  cursoSeleccionado = c;
+  const fecha = fmtFechaLarga(c.fecha_proxima);
+  document.getElementById("cur-modal-title").textContent = c.nombre;
+  document.getElementById("cur-modal-sub").textContent =
+    (fecha ? `Inicia el ${fecha}. ` : "Matrícula abierta. ") +
+    "Apartamos tu lugar y te llamamos para confirmar el cupo y la forma de pago. No pagas nada ahora.";
+  ["cur-nombre","cur-telefono","cur-email","cur-comentario"].forEach(x => {
+    const el = document.getElementById(x); if (el) el.value = "";
+  });
+  const msg = document.getElementById("cur-fmsg");
+  msg.className = "cur-fmsg"; msg.textContent = "";
+  const btn = document.getElementById("cur-send");
+  btn.disabled = false; btn.textContent = "Apartar mi cupo";
+  document.getElementById("cur-modal").classList.add("open");
+}
+
+function cerrarPreinscripcion(){
+  document.getElementById("cur-modal").classList.remove("open");
+  cursoSeleccionado = null;
+}
+
+async function enviarPreinscripcion(){
+  if (!cursoSeleccionado) return;
+  const val = id => (document.getElementById(id)?.value || "").trim();
+  const msg = document.getElementById("cur-fmsg");
+  const btn = document.getElementById("cur-send");
+
+  const nombre   = val("cur-nombre");
+  const telefono = val("cur-telefono");
+  const email    = val("cur-email");
+
+  if (nombre.length < 3){ msg.className="cur-fmsg err"; msg.textContent="Escribe tu nombre completo."; return; }
+  if (!telefono && !email){ msg.className="cur-fmsg err"; msg.textContent="Necesitamos un teléfono o un correo para contactarte."; return; }
+
+  btn.disabled = true; btn.textContent = "Enviando…";
+  msg.className = "cur-fmsg"; msg.textContent = "";
+  try {
+    const r = await fetch(`${CONFIG.API_BASE}/cursos/preinscripcion`, {
+      method:"POST",
+      headers:{ "Content-Type":"application/json" },
+      body: JSON.stringify({
+        curso_id: cursoSeleccionado.id,
+        nombre, telefono, email,
+        comentario: val("cur-comentario"),
+      }),
+    });
+    const data = await r.json().catch(() => ({}));
+    if (!r.ok || data.error) throw new Error(data.error || "No se pudo enviar");
+
+    msg.className = "cur-fmsg ok";
+    msg.textContent = data.duplicado
+      ? data.mensaje
+      : "¡Listo! Tu cupo quedó apartado. Te contactaremos para confirmar los detalles y la forma de pago.";
+    btn.textContent = "Enviado ✓";
+    // La lista se recarga para que los cupos restantes reflejen esta solicitud.
+    loadCursos();
+    setTimeout(cerrarPreinscripcion, 3200);
+  } catch (e) {
+    msg.className = "cur-fmsg err";
+    msg.textContent = e.message || "No pudimos enviar tu solicitud. Intenta por WhatsApp.";
+    btn.disabled = false; btn.textContent = "Apartar mi cupo";
+  }
 }
 
 /* ══ SERVICIOS ACCORDION ══ */

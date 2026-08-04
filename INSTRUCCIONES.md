@@ -65,8 +65,71 @@ Si el logo no existe, la web funciona igual (simplemente no muestra imagen).
 |---|---|
 | Consulta de vehículo | `GET /vehiculo-historial/placa/:placa` |
 | Menú cafetería | `GET /cafeteria/productos` |
+| Repuestos | `GET /inventario` |
+| Membresías | `GET /planes` |
+| Agendar cita | `POST /citas/publica` |
+| **Portal de cursos** | `GET /cursos/publicos` |
+| **Pre-inscripción a curso** | `POST /cursos/preinscripcion` |
 
-Ambos endpoints ya existen en tu backend de Railway.
+---
+
+## 🎓 Portal de cursos — cómo se mantiene
+
+**No se edita nada en esta web.** El portal lee los cursos directamente del CRM:
+
+1. En el CRM → **Capacitaciones**, crea o edita el curso.
+2. Marca su estado como **activo** y ponle `fecha_proxima`.
+3. Listo: aparece en la web la próxima vez que alguien abra la pestaña CURSOS.
+
+Reglas que aplica el portal por su cuenta:
+
+- Sólo muestra cursos **activos**.
+- Oculta los que ya terminaron (`fecha_fin` anterior a hoy).
+- Un curso **sin fecha** sí se muestra, como "Matrícula abierta".
+- Ordena por fecha de inicio, del más próximo al más lejano.
+
+### Cupos (opcional)
+
+Para mostrar "Últimos 3 cupos" y cerrar la inscripción cuando se llene, ejecuta
+una sola vez en **Supabase → SQL Editor** el archivo
+`crm-automotriz/sql/migracion_cupo_maximo_cursos.sql`, y luego llena la columna
+`cupo_maximo` del curso. Si la dejas vacía, el curso simplemente no muestra
+contador de cupos.
+
+### Qué pasa cuando alguien se pre-inscribe
+
+Entra al CRM → Capacitaciones como alumno del curso, con **monto pagado en 0** y
+la nota **"PRE-INSCRIPCIÓN WEB"**. Además llega un correo al buzón del taller
+(el mismo de las citas nuevas). Nadie paga nada desde la web: el cobro se cuadra
+por teléfono.
+
+---
+
+## 🩺 Diagnóstico rápido — cómo editarlo
+
+El catálogo de síntomas **sí vive en `index.html`**, en la constante `DX` dentro
+del `<script>` final. Está en el HTML a propósito: son respuestas de seguridad
+que conviene revisar antes de publicar, no datos que cambien solos.
+
+Para agregar un síntoma, copia un bloque existente y llena:
+
+```js
+{ cat:"Frenos", ico:"🛑", t:"El síntoma como lo diría el cliente",
+  alias:"otras formas de decirlo, sólo alimenta el buscador",
+  causas:["Lo más probable primero","Segunda causa","Tercera"],
+  urg:"alta",        // critica | alta | media | baja
+  manejar:"ojo",     // no | ojo | si
+  conducir:"Qué hacer mientras tanto.",
+  riesgo:"Qué pasa si lo deja así.",
+  motivo:"Frenos" }, // debe coincidir con una opción del <select id="cita-motivo">
+```
+
+El campo `motivo` es el que se precarga en el formulario de cita cuando el
+cliente pulsa **Agendar evaluación**. Si escribes uno que no exista en el
+`<select>`, cae automáticamente en "Otro".
+
+Todos los endpoints están en tu backend de Railway. Los dos de cursos son
+nuevos: hay que **redesplegar el backend** para que funcionen.
 
 ---
 
