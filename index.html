@@ -216,6 +216,12 @@ button{cursor:pointer;font-family:inherit;border:none}
   border-top-color:#fff;border-radius:50%;animation:spin .7s linear infinite;display:inline-block}
 @keyframes spin{to{transform:rotate(360deg)}}
 #resultado{margin-top:4px}
+/* Verificación por teléfono (misma política que la app) */
+.consulta-nota{font-size:12.5px;color:var(--muted);margin-top:12px;line-height:1.6}
+.verif-veh{font-size:14px;color:#e2e8f0;background:rgba(59,130,246,.1);
+  border:1px solid rgba(59,130,246,.25);border-radius:10px;
+  padding:10px 14px;margin-bottom:12px}
+#tel-input{letter-spacing:8px;text-align:center;font-size:22px}
 .consulta-error{
   background:rgba(239,68,68,.1);border:1px solid rgba(239,68,68,.25);
   border-radius:14px;padding:20px 22px;display:flex;gap:14px;align-items:flex-start;
@@ -244,6 +250,36 @@ button{cursor:pointer;font-family:inherit;border:none}
   border:1px solid rgba(59,130,246,.4);border-radius:8px;
   padding:4px 14px;font-size:15px;font-weight:900;color:var(--blue3);
   letter-spacing:2px;margin-top:8px}
+
+/* ── Ficha técnica y fotos del vehículo ── */
+.cr-car-foto{width:96px;height:72px;object-fit:cover;border-radius:12px;
+  border:1px solid rgba(255,255,255,.18);cursor:zoom-in;flex-shrink:0;background:#0f1729}
+.cr-ficha{position:relative;margin-top:16px;padding-top:14px;
+  border-top:1px solid rgba(255,255,255,.09);
+  display:grid;grid-template-columns:1fr 1fr;gap:8px 18px}
+@media(max-width:420px){.cr-ficha{grid-template-columns:1fr}}
+.cr-ficha-fila{display:flex;justify-content:space-between;gap:10px;align-items:baseline}
+.cr-ficha-lbl{font-size:11px;color:var(--muted);text-transform:uppercase;letter-spacing:.5px}
+.cr-ficha-val{font-size:13px;color:#e2e8f0;font-weight:600;text-align:right;word-break:break-all}
+
+.cr-fotos{position:relative;margin-top:16px;padding-top:14px;
+  border-top:1px solid rgba(255,255,255,.09)}
+.cr-fotos-titulo{font-size:11px;color:var(--muted);text-transform:uppercase;
+  letter-spacing:.5px;margin-bottom:10px}
+.cr-fotos-tira{display:flex;gap:10px;overflow-x:auto;padding-bottom:4px;scrollbar-width:none}
+.cr-fotos-tira::-webkit-scrollbar{display:none}
+.cr-foto-mini{flex-shrink:0;background:none;border:none;padding:0;cursor:zoom-in;
+  display:flex;flex-direction:column;gap:4px;align-items:center}
+.cr-foto-mini img{width:104px;height:78px;object-fit:cover;border-radius:10px;
+  border:1px solid rgba(255,255,255,.14);display:block}
+.cr-foto-mini span{font-size:10px;color:var(--muted)}
+
+.cr-foto-zoom{position:fixed;inset:0;z-index:9999;background:rgba(2,6,23,.94);
+  display:flex;flex-direction:column;align-items:center;justify-content:center;
+  gap:14px;padding:20px;cursor:zoom-out}
+.cr-foto-zoom img{max-width:100%;max-height:82vh;object-fit:contain;
+  border-radius:14px;border:1px solid rgba(255,255,255,.12)}
+.cr-foto-zoom-txt{font-size:12px;color:var(--muted)}
 .cr-estado-card{border-radius:var(--radius);padding:22px;margin-bottom:14px}
 .cr-estado-top{font-size:10px;font-weight:700;color:rgba(255,255,255,.5);
   text-transform:uppercase;letter-spacing:1.5px;margin-bottom:12px}
@@ -833,9 +869,10 @@ footer{border-top-color:rgba(15,23,42,.08)}
     <div class="container">
       <div class="badge-pill" style="margin-bottom:16px">🚗 Portal de Clientes</div>
       <h2 class="panel-title">Estado de tu <span style="color:var(--blue3)">Vehículo</span></h2>
-      <p class="panel-sub">Ingresa la placa de tu vehículo para ver el estado en tiempo real, órdenes activas, diagnósticos e historial de servicios.</p>
+      <p class="panel-sub">Ingresa la placa de tu vehículo y verifica tu identidad para ver el estado en tiempo real, órdenes activas, diagnósticos e historial de servicios.</p>
 
-      <div class="consulta-box">
+      <!-- Paso 1: placa -->
+      <div class="consulta-box" id="paso-placa">
         <div class="consulta-label">Número de placa</div>
         <div class="consulta-row">
           <input class="placa-input" id="placa-input" type="text" maxlength="10"
@@ -843,9 +880,28 @@ footer{border-top-color:rgba(15,23,42,.08)}
             onkeydown="if(event.key==='Enter')buscar()"/>
           <button class="buscar-btn" id="buscar-btn" onclick="buscar()">
             <span id="btn-icon">🔍</span>
-            <span id="btn-txt">Consultar</span>
+            <span id="btn-txt">Continuar</span>
           </button>
         </div>
+        <div class="consulta-nota">🔒 Te pediremos los últimos 4 dígitos de tu teléfono para proteger tu información.</div>
+      </div>
+
+      <!-- Paso 2: verificación por teléfono.
+           Misma política que la app: sin verificar, no se muestra nada. -->
+      <div class="consulta-box" id="paso-telefono" style="display:none">
+        <div class="consulta-label">Verifica que eres tú</div>
+        <div id="verif-vehiculo" class="verif-veh"></div>
+        <div id="verif-pista" class="consulta-nota" style="margin:0 0 14px"></div>
+        <div class="consulta-row">
+          <input class="placa-input" id="tel-input" type="tel" inputmode="numeric"
+            maxlength="4" placeholder="Últimos 4 dígitos" autocomplete="off"
+            onkeydown="if(event.key==='Enter')verificarTelefono()"/>
+          <button class="buscar-btn" id="verif-btn" onclick="verificarTelefono()">
+            <span id="verif-icon">🔓</span>
+            <span id="verif-txt">Ver mi vehículo</span>
+          </button>
+        </div>
+        <button class="cr-btn-volver" style="margin-top:14px" onclick="volverAPlaca()">← Usar otra placa</button>
       </div>
 
       <div id="resultado"></div>
@@ -1954,50 +2010,147 @@ const ESTADO_INFO = {
 const PASOS       = ["RECIBIDO","DIAGNOSTICO","REPARACION","CONTROL_CALIDAD","LISTO","ENTREGADO"];
 const PASOS_LABEL = ["Recibido","Diagnóstico","Reparación","C. Calidad","Listo","Entregado"];
 
-let _resultado=null,_histPerm=[],_tabActual="ordenes",_histDetalle=null,_histDetalleCompleto=null;
+let _resultado=null,_histPerm=[],_tabActual="ordenes",_histDetalle=null,_histDetalleCompleto=null,_fotos=[];
 
 function waUrl(msg){return`https://wa.me/${CONFIG.WHATSAPP}?text=${encodeURIComponent(msg||"Hola, me comunico desde la web de Sólido Auto Servicio 👋")}`}
 
+// Normaliza una placa para comparar: mayúsculas, sin espacios, guiones ni
+// guiones bajos. Antes el input solo quitaba espacios y la comparación con la
+// placa guardada era `===`, así que un vehículo registrado como "B-1234" no
+// aparecía si el visitante escribía "B1234".
+function normPlaca(v){return String(v||"").toUpperCase().replace(/[\s\-_]/g,"").trim();}
+
+// ═══════════════════════════════════════════════════════════════════════════
+// CONSULTA DEL CLIENTE — acceso verificado
+//
+// Antes bastaba escribir una placa cualquiera para ver el expediente completo
+// de ese vehículo, y además la página descargaba /vehiculos, /ordenes y
+// /diagnosticos ENTEROS al navegador de cualquier visitante anónimo.
+//
+// Ahora se usa el mismo portal autenticado que la app: placa → últimos 4
+// dígitos del teléfono registrado → token de sesión → datos acotados a ese
+// vehículo. El backend ya trae toda la lógica (rutas /portal/*), aquí solo se
+// consume.
+//
+// El token va en sessionStorage y no en localStorage: esta web se abre en
+// computadoras compartidas y el acceso debe morir al cerrar la pestaña.
+// ═══════════════════════════════════════════════════════════════════════════
+
+const TOKEN_KEY="solido_portal_token";
+let _placaPendiente="";
+
+function tokenPortal(){try{return sessionStorage.getItem(TOKEN_KEY);}catch(e){return null;}}
+function guardarToken(t){try{sessionStorage.setItem(TOKEN_KEY,t);}catch(e){}}
+function borrarToken(){try{sessionStorage.removeItem(TOKEN_KEY);}catch(e){}}
+
+/** Llamada al portal. `conToken` adjunta la sesión. */
+async function portal(ruta,opciones={},conToken=true){
+  const headers={"Content-Type":"application/json",...(opciones.headers||{})};
+  if(conToken){const t=tokenPortal();if(t)headers.Authorization=`Bearer ${t}`;}
+  const res=await fetch(`${CONFIG.API_BASE}/portal${ruta}`,{...opciones,headers,cache:"no-store"});
+  let cuerpo=null;
+  try{cuerpo=await res.json();}catch(e){}
+  if(!res.ok){
+    if(res.status===401&&conToken)borrarToken();
+    const err=new Error(cuerpo?.mensaje||`Error ${res.status}`);
+    err.status=res.status;err.datos=cuerpo;
+    throw err;
+  }
+  return cuerpo;
+}
+
+/** Paso 1: comprobar la placa y averiguar qué pista de teléfono mostrar. */
 async function buscar(){
-  const placa=document.getElementById("placa-input").value.trim().toUpperCase().replace(/\s/g,"");
-  const resEl=document.getElementById("resultado");
+  const placa=normPlaca(document.getElementById("placa-input").value);
   const btn=document.getElementById("buscar-btn");
   const icon=document.getElementById("btn-icon");
   const txt=document.getElementById("btn-txt");
   if(!placa){showErr("Ingresa un número de placa para continuar.");return;}
+
   btn.disabled=true;
   icon.innerHTML='<span class="spinner-sm"></span>';
   txt.textContent="Buscando...";
-  resEl.innerHTML="";
-  _resultado=null;_histPerm=[];_tabActual="ordenes";_histDetalle=null;
+  document.getElementById("resultado").innerHTML="";
+  _resultado=null;_histPerm=[];_fotos=[];_tabActual="ordenes";_histDetalle=null;
+
   try{
-    const [vRes,oRes,dRes,hRes]=await Promise.all([
-      fetch(`${CONFIG.API_BASE}/vehiculos`,{cache:"no-store"}),
-      fetch(`${CONFIG.API_BASE}/ordenes`,{cache:"no-store"}),
-      fetch(`${CONFIG.API_BASE}/diagnosticos`,{cache:"no-store"}),
-      fetch(`${CONFIG.API_BASE}/vehiculo-historial/placa/${encodeURIComponent(placa)}`,{cache:"no-store"}),
-    ]);
-    const vehiculos=await vRes.json();
-    const ordenes=await oRes.json();
-    const diagnosticos=await dRes.json();
-    const histData=await hRes.json();
-    const vehiculo=Array.isArray(vehiculos)?vehiculos.find(v=>v.placa?.toUpperCase()===placa):null;
-    if(!vehiculo&&!histData.found){showErr(`No encontramos registros para la placa <b>${placa}</b>.<br>Verifica el número o contáctanos.`);return;}
-    if(histData.found)_histPerm=histData.historial||[];
-    if(vehiculo){
-      const ordenesVeh=Array.isArray(ordenes)?ordenes.filter(o=>o.vehiculo_id===vehiculo.id||o.vehiculo_info?.includes(vehiculo.placa)).sort((a,b)=>new Date(b.created_at)-new Date(a.created_at)):[];
-      const diagsVeh=Array.isArray(diagnosticos)?diagnosticos.filter(d=>d.vehiculo_id===vehiculo.id).sort((a,b)=>new Date(b.created_at)-new Date(a.created_at)):[];
-      _resultado={vehiculo,ordenes:ordenesVeh,diagnosticos:diagsVeh};
-    }else{
-      _resultado={vehiculo:{...histData.vehiculo,id:null},ordenes:[],diagnosticos:[]};
-    }
-    renderResultado();
+    const r=await portal("/acceso/placa",{method:"POST",body:JSON.stringify({placa})},false);
+    _placaPendiente=placa;
+
+    const v=r.vehiculo||{};
+    document.getElementById("verif-vehiculo").innerHTML=
+      `🚗 <b>${[v.marca,v.modelo,v.ano].filter(Boolean).join(" ")||"Tu vehículo"}</b> · placa ${placa}`;
+
+    document.getElementById("verif-pista").innerHTML=r.metodos?.telefono?.pista
+      ? `Ingresa los últimos 4 dígitos del teléfono registrado: <b>${r.metodos.telefono.pista}</b>`
+      : `Tu ficha no tiene teléfono registrado. Escríbenos por WhatsApp y te damos un código en el taller.`;
+
+    document.getElementById("paso-placa").style.display="none";
+    document.getElementById("paso-telefono").style.display="";
+    const t=document.getElementById("tel-input");t.value="";t.focus();
   }catch(e){
-    showErr("Error de conexión. Verifica tu internet e inténtalo de nuevo.");
-    console.error(e);
+    showErr(e.status===429
+      ? "Demasiados intentos. Espera un momento o contáctanos por WhatsApp."
+      : (e.message||"No encontramos esa placa. Verifica el número o contáctanos."));
   }finally{
-    btn.disabled=false;icon.textContent="🔍";txt.textContent="Consultar";
+    btn.disabled=false;icon.textContent="🔍";txt.textContent="Continuar";
   }
+}
+
+function volverAPlaca(){
+  _placaPendiente="";
+  document.getElementById("paso-telefono").style.display="none";
+  document.getElementById("paso-placa").style.display="";
+  document.getElementById("resultado").innerHTML="";
+  document.getElementById("placa-input").focus();
+}
+
+/** Paso 2: verificar los 4 dígitos y abrir sesión. */
+async function verificarTelefono(){
+  const ultimos4=String(document.getElementById("tel-input").value||"").replace(/\D/g,"");
+  const btn=document.getElementById("verif-btn");
+  const icon=document.getElementById("verif-icon");
+  const txt=document.getElementById("verif-txt");
+
+  if(ultimos4.length!==4){showErr("Ingresa los últimos 4 dígitos de tu teléfono.");return;}
+
+  btn.disabled=true;
+  icon.innerHTML='<span class="spinner-sm"></span>';
+  txt.textContent="Verificando...";
+
+  try{
+    const s=await portal("/acceso/telefono",
+      {method:"POST",body:JSON.stringify({placa:_placaPendiente,ultimos4})},false);
+    guardarToken(s.token);
+    await cargarDatosPortal();
+  }catch(e){
+    showErr(e.status===401
+      ? "Los dígitos no coinciden con el teléfono registrado para esa placa."
+      : (e.message||"No pudimos verificar tu identidad."));
+  }finally{
+    btn.disabled=false;icon.textContent="🔓";txt.textContent="Ver mi vehículo";
+  }
+}
+
+/** Con sesión abierta: trae estado + historial y pinta el resultado. */
+async function cargarDatosPortal(){
+  const [estado,hist]=await Promise.all([
+    portal("/estado"),
+    portal("/historial").catch(()=>({historial:[],fotos:[]})),
+  ]);
+
+  _histPerm=hist.historial||[];
+  _fotos=(estado.fotos&&estado.fotos.length?estado.fotos:hist.fotos)||[];
+
+  _resultado={
+    vehiculo:estado.vehiculo||hist.vehiculo||{},
+    ordenes:estado.ordenes||[],
+    diagnosticos:estado.diagnosticos||[],
+  };
+
+  document.getElementById("paso-telefono").style.display="none";
+  document.getElementById("paso-placa").style.display="none";
+  renderResultado();
 }
 
 function renderResultado(){
@@ -2013,15 +2166,54 @@ function renderResultado(){
   const estadoHTML=estadoInfo?`<div class="cr-estado-card" style="background:${estadoInfo.grad}"><div class="cr-estado-top">Estado Actual</div><div class="cr-estado-row"><span class="cr-estado-emoji">${estadoInfo.emoji}</span><div><div class="cr-estado-name">${(ultimaOrden?.estado||"ENTREGADO").replace("_"," ")}</div><div class="cr-estado-msg">${estadoInfo.msg}</div></div></div><div class="cr-prog-wrap">${progHTML}</div></div>`:"";
   const tabs=[{key:"ordenes",label:`📋 Órdenes (${ordenes.length})`},{key:"diagnosticos",label:`🔬 Diagnósticos (${diagnosticos.length})`},{key:"historial",label:`📚 Historial (${_histPerm.length})`}];
   const tabsHTML=`<div class="cr-tabs">${tabs.map(t=>`<button class="cr-tab ${_tabActual===t.key?"cr-tab-active":""}" onclick="cambiarTab('${t.key}')">${t.label}</button>`).join("")}</div>`;
+  // ── Ficha técnica ──
+  // El endpoint ahora devuelve la fila completa de `vehiculos`. Se omiten los
+  // campos vacíos para no mostrar una lista de guiones.
+  const fichaFilas=[
+    ["VIN",vehiculo.vin],["Motor",vehiculo.motor],["Combustible",vehiculo.combustible],
+    ["Cilindros",vehiculo.cilindros],["Aceite",vehiculo.tipo_aceite],
+    ["Viscosidad",vehiculo.viscosidad],
+    ["Capacidad",vehiculo.cuartos_aceite?`${vehiculo.cuartos_aceite} qt`:null],
+    ["Kilometraje",vehiculo.km_actual?`${Number(vehiculo.km_actual).toLocaleString("es-DO")} km`:null],
+  ].filter(([,v])=>v!==null&&v!==undefined&&v!=="");
+
+  const fichaHTML=fichaFilas.length?`<div class="cr-ficha">${fichaFilas.map(([l,v])=>
+    `<div class="cr-ficha-fila"><span class="cr-ficha-lbl">${l}</span><span class="cr-ficha-val"${l==="VIN"?' style="font-family:monospace;font-size:11px"':""}>${v}</span></div>`
+  ).join("")}</div>`:"";
+
+  // ── Fotos de recepción ──
+  // Vienen de `inspeccion_vehiculo`; la tabla `vehiculos` no guarda imágenes.
+  const portada=_fotos.find(f=>f.slot==="frente")||_fotos[0]||null;
+  const fotosHTML=_fotos.length?`<div class="cr-fotos">
+      <div class="cr-fotos-titulo">📸 Fotos de recepción (${_fotos.length})</div>
+      <div class="cr-fotos-tira">${_fotos.map((f,i)=>
+        `<button type="button" class="cr-foto-mini" onclick="verFoto(${i})" title="${f.label||""}">
+           <img src="${f.src}" alt="${f.label||""}" loading="lazy"><span>${f.label||""}</span>
+         </button>`).join("")}</div>
+    </div>`:"";
+
   document.getElementById("resultado").innerHTML=`
     <button class="cr-btn-volver" onclick="limpiarResultado()">← Nueva consulta</button>
-    <div class="cr-car-card"><div class="cr-car-main"><span class="cr-car-emoji">🚗</span><div>
-      <div class="cr-car-marca">${vehiculo.marca||""} ${vehiculo.modelo||""}</div>
-      <div class="cr-car-meta">${vehiculo.ano?`Año ${vehiculo.ano}`:""}${vehiculo.color?` · ${vehiculo.color}`:""}</div>
-      <div class="cr-placa-badge">${vehiculo.placa||""}</div>
-    </div></div></div>
+    <div class="cr-car-card"><div class="cr-car-main">
+      ${portada?`<img src="${portada.src}" alt="${portada.label||"Vehículo"}" class="cr-car-foto" onclick="verFoto(0)">`:`<span class="cr-car-emoji">🚗</span>`}
+      <div>
+        <div class="cr-car-marca">${vehiculo.marca||""} ${vehiculo.modelo||""}</div>
+        <div class="cr-car-meta">${vehiculo.ano?`Año ${vehiculo.ano}`:""}${vehiculo.color?` · ${vehiculo.color}`:""}</div>
+        <div class="cr-placa-badge">${vehiculo.placa||""}</div>
+      </div>
+    </div>${fichaHTML}${fotosHTML}</div>
     ${estadoHTML}${tabsHTML}<div id="cr-tab-content"></div>`;
   renderTab();
+}
+
+// Amplía una foto a pantalla completa. Se cierra tocando el fondo.
+function verFoto(i){
+  const f=_fotos[i];if(!f)return;
+  const d=document.createElement("div");
+  d.className="cr-foto-zoom";
+  d.innerHTML=`<img src="${f.src}" alt="${f.label||""}"><div class="cr-foto-zoom-txt">${f.label||""} — toca para cerrar</div>`;
+  d.onclick=()=>d.remove();
+  document.body.appendChild(d);
 }
 
 function cambiarTab(key){
@@ -2077,24 +2269,51 @@ function renderTab(){
   if(_tabActual==="historial"){
     if(_histDetalle){renderHistDetalle();return;}
     if(!_histPerm.length){cont.innerHTML=crEmpty("📚","Sin historial permanente.","El historial se genera cuando se completa un servicio.");return;}
-    cont.innerHTML=`<div style="font-size:12px;color:#64748b;margin-bottom:14px;font-weight:600">${_histPerm.length} servicio${_histPerm.length!==1?"s":""} registrado${_histPerm.length!==1?"s":""}</div><div class="cr-hist-timeline">${_histPerm.map((h,idx)=>`<div class="cr-hist-item" onclick="verDetalleHist(${idx})"><div class="cr-hist-servicio">${h.tipo_servicio||"Servicio"}</div><div class="cr-hist-meta">${h.fecha_servicio?new Date(h.fecha_servicio).toLocaleDateString("es-DO",{year:"numeric",month:"short",day:"numeric"}):"—"}${h.tecnico_nombre?` · ${h.tecnico_nombre}`:""} ${idx===0?'<span class="cr-hist-badge">Más reciente</span>':""}</div><div style="display:flex;justify-content:space-between;align-items:center;margin-top:6px">${h.costo_total>0?`<span class="cr-hist-cost">RD$ ${Number(h.costo_total).toLocaleString("es-DO",{minimumFractionDigits:2})}</span>`:"<span></span>"}<span style="font-size:11px;color:#64748b;font-weight:600">Ver detalle →</span></div></div>`).join("")}</div>`;
+    cont.innerHTML=`<div style="font-size:12px;color:#64748b;margin-bottom:14px;font-weight:600">${_histPerm.length} servicio${_histPerm.length!==1?"s":""} registrado${_histPerm.length!==1?"s":""}</div><div class="cr-hist-timeline">${_histPerm.map((h,idx)=>{
+      // La ficha "sin servicios" no abre detalle: se marca sin cursor ni
+      // flecha para que no parezca que la app no responde al tocarla.
+      const sinServ=!!h._sin_servicios;
+      return`<div class="cr-hist-item"${sinServ?' style="cursor:default"':` onclick="verDetalleHist(${idx})"`}>
+        <div style="display:flex;justify-content:space-between;align-items:flex-start;gap:8px">
+          <div class="cr-hist-servicio" style="flex:1">${h.tipo_servicio||"Servicio"}</div>
+          ${h.estado?`<span class="cr-orden-badge" style="background:${h._activa?"rgba(59,130,246,.15)":"rgba(52,211,153,.12)"};color:${h._activa?"#60a5fa":"#34d399"};white-space:nowrap">${String(h.estado).replace(/_/g," ")}</span>`:""}
+        </div>
+        <div class="cr-hist-meta">${h.fecha_servicio?new Date(h.fecha_servicio).toLocaleDateString("es-DO",{year:"numeric",month:"short",day:"numeric"}):"—"}${h.tecnico_nombre?` · 👨‍🔧 ${h.tecnico_nombre}`:""}${h.numero_orden?` · #${h.numero_orden}`:""} ${idx===0&&!sinServ?'<span class="cr-hist-badge">Más reciente</span>':""}</div>
+        ${h.fallas_identificadas?`<div style="font-size:12px;color:#fbbf24;background:rgba(251,191,36,.06);border-radius:7px;padding:5px 8px;margin-top:6px;line-height:1.5">⚠️ ${String(h.fallas_identificadas).substring(0,120)}${String(h.fallas_identificadas).length>120?"…":""}</div>`:""}
+        <div style="display:flex;justify-content:space-between;align-items:center;margin-top:6px">
+          ${h.costo_total>0?`<span class="cr-hist-cost">RD$ ${Number(h.costo_total).toLocaleString("es-DO",{minimumFractionDigits:2})}</span>`:"<span></span>"}
+          ${sinServ?"":'<span style="font-size:11px;color:#64748b;font-weight:600">Ver detalle →</span>'}
+        </div>
+      </div>`;}).join("")}</div>`;
   }
 }
 
 async function verDetalleHist(idx){
   const h=_histPerm[idx];
+  if(!h)return;
+  // La ficha de un vehículo sin servicios lleva id "veh_N": no corresponde a
+  // ninguna orden ni a ninguna fila de vehiculo_historial, así que pedir su
+  // detalle devolvía 404 y el panel se quedaba vacío sin explicación.
+  if(h._sin_servicios)return;
+
   _histDetalle=h;
   _histDetalleCompleto=null;
   renderHistDetalle(); // render snapshot inmediatamente
-  // Luego carga datos enriquecidos desde el backend
+
+  // El detalle va por el portal autenticado, no por la ruta pública: así el
+  // backend comprueba que el expediente pertenece al vehículo de la sesión.
+  // Cambiar el id en la petición ya no muestra el de otro cliente.
   try{
     const esOrdenActiva=typeof h.id==="string"&&h.id.startsWith("orden_");
-    const url=esOrdenActiva
-      ?`${CONFIG.API_BASE}/vehiculo-historial/orden/${h._orden_id}/detalle`
-      :`${CONFIG.API_BASE}/vehiculo-historial/${h.id}/detalle`;
-    const res=await fetch(url,{cache:"no-store"});
-    if(res.ok){_histDetalleCompleto=await res.json();renderHistDetalle();}
-  }catch(e){console.warn("Detalle completo no disponible:",e);}
+    const ruta=esOrdenActiva
+      ?`/historial/orden/${h._orden_id||String(h.id).replace("orden_","")}`
+      :`/historial/${h.id}`;
+    _histDetalleCompleto=await portal(ruta);
+    renderHistDetalle();
+  }catch(e){
+    console.warn("Detalle completo no disponible:",e);
+    if(e.status===401){borrarToken();showErr("Tu sesión expiró. Consulta tu placa de nuevo.");}
+  }
 }
 
 function renderHistDetalle(){
@@ -2115,7 +2334,13 @@ function renderHistDetalle(){
              ((h.inspeccion_data&&typeof h.inspeccion_data==="object"&&!Array.isArray(h.inspeccion_data))?h.inspeccion_data:null);
   const avances=(Array.isArray(dc.avances)&&dc.avances.length?dc.avances:null)||
                 (Array.isArray(h.avances_data)?h.avances_data:[]);
-  const timeline=Array.isArray(h.timeline_data)?h.timeline_data:[];
+  // La línea de tiempo llega con dos nombres según el origen: `timeline_data`
+  // es el snapshot que guarda vehiculo_historial al archivar el servicio, y
+  // `estado_historial` es lo que devuelve el detalle leyendo orden_trabajo_log.
+  // Antes solo se miraba el snapshot, así que un servicio todavía abierto
+  // —que no tiene fila archivada— salía sin ninguna etapa.
+  const timeline=(Array.isArray(h.timeline_data)&&h.timeline_data.length?h.timeline_data:null)
+                ||(Array.isArray(dc.estado_historial)?dc.estado_historial:[]);
   const cot=(h.cotizacion_data&&typeof h.cotizacion_data==="object"&&!Array.isArray(h.cotizacion_data))?h.cotizacion_data:
             (dc.cotizacion&&typeof dc.cotizacion==="object"?dc.cotizacion:null);
   const fac=(h.factura_data&&typeof h.factura_data==="object"&&!Array.isArray(h.factura_data))?h.factura_data:null;
@@ -2394,7 +2619,18 @@ function renderHistDetalle(){
 
 function crEmpty(icon,msg,sub){return`<div style="text-align:center;padding:32px 20px;color:#64748b"><div style="font-size:36px;margin-bottom:10px">${icon}</div><div style="font-weight:600;font-size:15px;color:var(--muted)">${msg}</div>${sub?`<div style="font-size:12px;color:#475569;margin-top:6px">${sub}</div>`:""}</div>`}
 
-function limpiarResultado(){_resultado=null;_histPerm=[];_histDetalle=null;_histDetalleCompleto=null;document.getElementById("resultado").innerHTML="";document.getElementById("placa-input").value="";}
+// "Nueva consulta" cierra la sesión además de limpiar la pantalla: si alguien
+// consulta desde una computadora prestada, el siguiente en usarla no debe
+// poder volver al expediente con el botón de atrás.
+function limpiarResultado(){
+  _resultado=null;_histPerm=[];_histDetalle=null;_histDetalleCompleto=null;_fotos=[];_placaPendiente="";
+  borrarToken();
+  portal("/salir",{method:"POST"}).catch(()=>{});
+  document.getElementById("resultado").innerHTML="";
+  document.getElementById("placa-input").value="";
+  document.getElementById("paso-telefono").style.display="none";
+  document.getElementById("paso-placa").style.display="";
+}
 
 function showErr(msg){document.getElementById("resultado").innerHTML=`<div class="consulta-error"><span style="font-size:22px;flex-shrink:0">⚠️</span><div>${msg}<br><br><a href="${waUrl()}" target="_blank" style="color:#2563eb;font-weight:700">💬 Contáctanos por WhatsApp</a></div></div>`}
 
